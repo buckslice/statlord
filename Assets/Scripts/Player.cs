@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
     //private float timeSinceJump = 0.0f;
     private PlayerStats stats;
     private Transform cam;
+    private Vector3 camStart;
 
     // Use this for initialization
     void Start() {
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour {
         myRigidbody = GetComponent<Rigidbody>();
         stats = GetComponent<PlayerStats>();
         cam = Camera.main.transform;
+        camStart = cam.position;
     }
 
     // Update is called once per frame
@@ -46,7 +48,8 @@ public class Player : MonoBehaviour {
         }
 
         myRigidbody.velocity = new Vector3(dir.x, newY, dir.z);
-        
+
+        cam.position = camStart + transform.position;
     }
 
     void FixedUpdate() {
