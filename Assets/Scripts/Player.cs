@@ -20,7 +20,7 @@ public class Player : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         RaycastHit info;
-        if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out info)){
+        if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out info, 1000.0f, 1 << 8)){
             Vector3 fw = info.point - tform.position;
             fw.y = 0.0f;
             fw.Normalize();
