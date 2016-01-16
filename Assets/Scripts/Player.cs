@@ -5,8 +5,8 @@ public class Player : MonoBehaviour {
     private Transform tform;
     private Rigidbody myRigidbody;
     public bool grounded = true;
-    public float timeSinceJump = 0.0f;
-    public PlayerStats stats;
+    //private float timeSinceJump = 0.0f;
+    private PlayerStats stats;
 
     // Use this for initialization
     void Start() {
@@ -17,6 +17,11 @@ public class Player : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
+        Vector3 rotdir = Input.mousePosition - pos;
+        float angle = -Mathf.Atan2(rotdir.y, rotdir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up); 
+
         float inputX = Input.GetAxisRaw("Horizontal");
         float inputY = Input.GetAxisRaw("Vertical");
 
@@ -29,12 +34,13 @@ public class Player : MonoBehaviour {
         float newY = myRigidbody.velocity.y;
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded) {
-            Debug.Log("jumped");
+            //Debug.Log("jumped");
             newY = stats.get(Stats.jumpSpeed).value;
             grounded = false;
         }
 
         myRigidbody.velocity = new Vector3(dir.x, newY, dir.z);
+        
     }
 
     void FixedUpdate() {
