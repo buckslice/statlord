@@ -72,9 +72,14 @@ public class PlayerStats : MonoBehaviour {
         return stats[index];
     }
 
-    public void fireBullet() {
+    public void fireBullet(GameObject bullet, float shotForce) {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
+
+        GameObject playerShot = Instantiate(bullet, transform.position + new Vector3(0, 2, 0) + transform.forward, Quaternion.identity) as GameObject;
+
+        playerShot.GetComponent<Rigidbody>().AddForce(transform.forward * shotForce);
+
 
         int multishot = Mathf.RoundToInt(get(Stats.multishot).value);
         for (int i = 0; i < multishot; ++i) {
