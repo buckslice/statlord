@@ -145,7 +145,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!1 &407022848
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,13 +200,13 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 1
+    width: 1.87
+    height: 1.82
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 19.37
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -226,12 +226,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 407022848}
-  m_LocalRotation: {x: -0.2998833, y: 0.19709048, z: -0.06346861, w: -0.9312342}
-  m_LocalPosition: {x: 3.77, y: 7.04, z: -7.95}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.31422952, y: 0.19608678, z: -0.06650491, w: -0.92649174}
+  m_LocalPosition: {x: 20.39, y: 52.36, z: -62.93}
+  m_LocalScale: {x: -0.3, y: -0.09, z: 1.69}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
 --- !u!1 &451223609
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,7 +306,7 @@ Transform:
   m_LocalScale: {x: 5, y: 1, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!1001 &1071522670
 Prefab:
   m_ObjectHideFlags: 0
@@ -353,6 +353,10 @@ Prefab:
     - target: {fileID: 13696794, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
       propertyPath: m_Center.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 425062, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
