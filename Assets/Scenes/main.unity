@@ -227,7 +227,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 407022848}
   m_LocalRotation: {x: -0.31422952, y: 0.19608678, z: -0.06650491, w: -0.92649174}
-  m_LocalPosition: {x: 27.94, y: 53.35, z: -66.1}
+  m_LocalPosition: {x: 18.74, y: 35.21, z: -42.15}
   m_LocalScale: {x: -0.3, y: -0.09, z: 1.69}
   m_Children: []
   m_Father: {fileID: 0}
@@ -349,6 +349,10 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1.2
       objectReference: {fileID: 0}
+    - target: {fileID: 2345698, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f92757181b5b74340b49d23e3988ce5a, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
   m_IsPrefabParent: 0
@@ -476,13 +480,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1753505030}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9a6b40174a15354aafb943a6fe303c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 6143a5810faa6f6488a79bde50f1ef6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 168290, guid: 72d0a0bf7a2febd4798d70c899a06893, type: 2}
   startTime: 2
-  spawnRate: 0.1
-  numOfEnemies: 140
+  spawnRate: 0.2
+  numOfEnemies: 120
 --- !u!4 &1753505032
 Transform:
   m_ObjectHideFlags: 0
@@ -512,4 +516,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f280da568a13284c9fcf883a1e1f1e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 138700, guid: bd9abe7ff09a7db4eb64d2480253e6d5, type: 2}
+  bullet: {fileID: 156856, guid: bd9abe7ff09a7db4eb64d2480253e6d5, type: 2}
