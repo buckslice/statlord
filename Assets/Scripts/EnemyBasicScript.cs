@@ -17,7 +17,7 @@ public class EnemyBasicScript : MonoBehaviour {
 
 	    if (hp<=0)
         {
-            enemySpawner.GetComponent<SpawnEnemies>().addToEnemyPool(gameObject);
+            enemySpawner.GetComponent<SpawnManager>().addToEnemyPool(gameObject);
             gameObject.SetActive(false);
         }
 	}

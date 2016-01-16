@@ -6,11 +6,13 @@ public class BulletManager: MonoBehaviour {
 
     public GameObject bullet;
     private List<GameObject> listOfBullets;
+    
+
 	void Awake()
     {
         listOfBullets = new List<GameObject>();
         
-        for (int i = 0; i<10;i++)
+        for (int i = 0; i<100;i++)
         {
             GameObject x = Instantiate(bullet, transform.position, Quaternion.identity) as GameObject;
 

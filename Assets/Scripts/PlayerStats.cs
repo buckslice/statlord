@@ -76,7 +76,7 @@ public class PlayerStats : MonoBehaviour {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
 
-        bullet.transform.position= transform.position + new Vector3(0, 2, 0) + transform.forward;
+        bullet.transform.position= transform.position + new Vector3(0, 2, 0) + (transform.forward*1.05f);
         bullet.setDamage(damage);
         bullet.GetComponent<Rigidbody>().AddForce(transform.forward * shotForce);
 

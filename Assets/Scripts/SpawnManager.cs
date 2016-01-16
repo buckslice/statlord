@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SpawnEnemies : MonoBehaviour {
+public class SpawnManager : MonoBehaviour {
     public GameObject enemy;
     private GameObject player;
     public float startTime, spawnRate;

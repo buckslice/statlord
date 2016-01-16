@@ -331,7 +331,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 425062, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11416094, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
+      propertyPath: fireRate
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 425062, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 425062, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 425062, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
@@ -446,7 +462,7 @@ GameObject:
   - 4: {fileID: 1753505032}
   - 114: {fileID: 1753505031}
   m_Layer: 0
-  m_Name: Spawner
+  m_Name: SpawnManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -496,7 +512,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f280da568a13284c9fcf883a1e1f1e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 0}
-  shotForce: 1000
-  fireRate: 4
-  nextFire: 0
+  bullet: {fileID: 138700, guid: bd9abe7ff09a7db4eb64d2480253e6d5, type: 2}
