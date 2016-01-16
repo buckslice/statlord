@@ -6,6 +6,7 @@ public class Stats {
     public static string attack = "attack";
     public static string health = "health";
     public static string moveSpeed = "moveSpeed";
+    public static string jumpSpeed = "jumpSpeed";
     public static string attackSpeed = "attackSpeed";
     public static string multishot = "multishot";
 
@@ -45,9 +46,10 @@ public class PlayerStats : MonoBehaviour {
     private Stat[] stats = new Stat[] {
         new Stat(Stats.attack, 1.0f, 1.0f ),
         new Stat(Stats.health, 3.0f, 1.0f),
-        new Stat(Stats.moveSpeed, 1.0f, .1f),
-        new Stat(Stats.attackSpeed, 2.0f, -.1f),
+        new Stat(Stats.moveSpeed, 5.0f, 1.0f),
 
+        new Stat(Stats.jumpSpeed, 5.0f, 1.0f),
+        new Stat(Stats.attackSpeed, 2.0f, -.1f),
         new Stat(Stats.multishot, 1.0f, 1.0f),
 
     };
@@ -74,9 +76,6 @@ public class PlayerStats : MonoBehaviour {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
 
-
-
-
         int multishot = Mathf.RoundToInt(get(Stats.multishot).value);
         for (int i = 0; i < multishot; ++i) {
             // probably change angle for each bullet depending on multishot
@@ -93,8 +92,6 @@ public class PlayerStats : MonoBehaviour {
         if (get(Stats.health).value <= 0.0f) {
             // die
         }
-
-
 
     }
 }

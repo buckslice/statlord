@@ -4,15 +4,15 @@ using System.Collections;
 public class Player : MonoBehaviour {
     private Transform tform;
     private Rigidbody myRigidbody;
-    public float moveSpeed;
-    public float jumpSpeed;
     public bool grounded = true;
     public float timeSinceJump = 0.0f;
+    public PlayerStats stats;
 
     // Use this for initialization
     void Start() {
         tform = transform;
         myRigidbody = GetComponent<Rigidbody>();
+        stats = GetComponent<PlayerStats>();
     }
 
     // Update is called once per frame
@@ -24,13 +24,13 @@ public class Player : MonoBehaviour {
         if (inputX != 0.0f || inputY != 0.0f) {
             dir = new Vector3(inputX, 0, inputY).normalized;
         }
-        dir *= moveSpeed;
+        dir *= stats.get(Stats.moveSpeed).value;
 
         float newY = myRigidbody.velocity.y;
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded) {
             Debug.Log("jumped");
-            newY = jumpSpeed;
+            newY = stats.get(Stats.jumpSpeed).value;
             grounded = false;
         }
 
