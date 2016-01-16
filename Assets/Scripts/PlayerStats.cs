@@ -80,7 +80,7 @@ public class PlayerStats : MonoBehaviour {
         bullet.GetComponentsInChildren<Transform>()[0].rotation = GameObject.Find("Player").GetComponent<Transform>().rotation;
         bullet.setDamage(damage);
         bullet.GetComponent<Rigidbody>().AddForce(transform.forward * shotForce);
-
+        bullet.gameObject.tag = "PlayerProjectile";
 
         int multishot = Mathf.RoundToInt(get(Stats.multishot).value);
         for (int i = 0; i < multishot; ++i) {

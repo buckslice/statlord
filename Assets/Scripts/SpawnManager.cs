@@ -39,6 +39,7 @@ public class SpawnManager : MonoBehaviour {
         GameObject x = Instantiate(enemy, spawnLocations[rng].transform.position, Quaternion.identity) as GameObject;
         
         x.SetActive(false);
+        x.gameObject.tag = "Enemy";
         disabledEnemies.Add(x);
     }
     void EnableEnemy()
