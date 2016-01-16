@@ -20,6 +20,7 @@ public class BulletCollider : MonoBehaviour {
 
     void turnOff()
     {
+        gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         bulletManager.AddBullet(gameObject);
         gameObject.SetActive(false);
     }
