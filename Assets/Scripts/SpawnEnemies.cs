@@ -36,7 +36,7 @@ public class SpawnEnemies : MonoBehaviour {
     void SpawnEnemy()
     {
         int rng = Random.Range(0, spawnLocations.Length);
-        GameObject x = Instantiate(enemy, spawnLocations[rng].transform.position, transform.rotation) as GameObject;
+        GameObject x = Instantiate(enemy, spawnLocations[rng].transform.position, Quaternion.identity) as GameObject;
         
         x.SetActive(false);
         disabledEnemies.Add(x);

@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
     private Transform cam;
     private Vector3 camStart;
     private BulletManager bullMan;
+
     public float shotForce = 1000f;
     public float fireRate = 4f;
     public float nextFire = 0.0f; 
@@ -20,7 +21,7 @@ public class Player : MonoBehaviour {
         tform = transform;
         myRigidbody = GetComponent<Rigidbody>();
         stats = GetComponent<PlayerStats>();
-        bullMan = GetComponent<
+        bullMan = GetComponent<BulletManager>();
         cam = Camera.main.transform;
         camStart = cam.position;
     }
@@ -60,7 +61,7 @@ public class Player : MonoBehaviour {
         if (Input.GetMouseButton(0) && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-            stats.fireBullet(bullet, shotForce);
+            stats.fireBullet(bullMan.EnableBullet(), shotForce);
         }
 
 

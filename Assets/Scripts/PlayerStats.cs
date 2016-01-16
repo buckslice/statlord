@@ -72,13 +72,13 @@ public class PlayerStats : MonoBehaviour {
         return stats[index];
     }
 
-    public void fireBullet(GameObject bullet, float shotForce) {
+    public void fireBullet(BulletCollider bullet, float shotForce) {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
 
-        GameObject playerShot = Instantiate(bullet, transform.position + new Vector3(0, 2, 0) + transform.forward, Quaternion.identity) as GameObject;
-
-        playerShot.GetComponent<Rigidbody>().AddForce(transform.forward * shotForce);
+        bullet.transform.position= transform.position + new Vector3(0, 2, 0) + transform.forward;
+        bullet.setDamage(damage);
+        bullet.GetComponent<Rigidbody>().AddForce(transform.forward * shotForce);
 
 
         int multishot = Mathf.RoundToInt(get(Stats.multishot).value);
