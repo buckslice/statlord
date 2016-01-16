@@ -15,7 +15,7 @@ public class BulletCollider : MonoBehaviour {
     void OnCollisionEnter()
 
     {
-        Destroy(bulletModel);
+        turnOff();
     }
 
     void turnOff()
