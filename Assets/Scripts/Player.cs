@@ -2,83 +2,48 @@
 using System.Collections;
 
 public class Player : MonoBehaviour {
-    Vector3 dir;
-    private Rigidbody rigidbody;
-    public float MoveSpeed;
-    public float jumpForce;
+    private Transform tform;
+    private Rigidbody myRigidbody;
+    public float moveSpeed;
+    public float jumpSpeed;
+    public bool grounded = true;
+    public float timeSinceJump = 0.0f;
 
-	// Use this for initialization
-	void Start () {
-        rigidbody = GetComponent<Rigidbody>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetKey(KeyCode.W) && (Input.GetKey(KeyCode.A)))
-        { //top left
-            dir = Vector3.forward;
-            dir += -Vector3.right;
-            rigidbody.velocity = dir * MoveSpeed;
+    // Use this for initialization
+    void Start() {
+        tform = transform;
+        myRigidbody = GetComponent<Rigidbody>();
+    }
+
+    // Update is called once per frame
+    void Update() {
+        float inputX = Input.GetAxisRaw("Horizontal");
+        float inputY = Input.GetAxisRaw("Vertical");
+
+        Vector3 dir = Vector3.zero;
+        if (inputX != 0.0f || inputY != 0.0f) {
+            dir = new Vector3(inputX, 0, inputY).normalized;
+        }
+        dir *= moveSpeed;
+
+        float newY = myRigidbody.velocity.y;
+
+        if (Input.GetKeyDown(KeyCode.Space) && grounded) {
+            Debug.Log("jumped");
+            newY = jumpSpeed;
+            grounded = false;
         }
 
-        else if (Input.GetKey(KeyCode.W) && (Input.GetKey(KeyCode.D)))
-        { //top right
-            dir = Vector3.forward;
-            dir += Vector3.right;
-            rigidbody.velocity = dir * MoveSpeed;
+        myRigidbody.velocity = new Vector3(dir.x, newY, dir.z);
+    }
+
+    void FixedUpdate() {
+        Vector3 castStart = tform.position + new Vector3(0.0f, 0.5f, 0.0f);
+        RaycastHit info;
+        grounded = Physics.SphereCast(castStart, 0.25f, Vector3.down, out info, 0.5f);
+        if(myRigidbody.velocity.y > 0.1f) { // prevent double jumping
+           grounded = false;
         }
+    }
 
-        else if (Input.GetKey(KeyCode.S) && (Input.GetKey(KeyCode.D)))
-        { //bottom right
-            dir = -Vector3.forward;
-            dir += Vector3.right;
-
-            rigidbody.velocity = dir * MoveSpeed;
-        }
-        else if (Input.GetKey(KeyCode.S) && (Input.GetKey(KeyCode.A)))
-        { //bottom right
-            dir = -Vector3.forward;
-            dir += -Vector3.right;
-            rigidbody.velocity = dir * MoveSpeed;
-        }
-
-        else if (Input.GetKey(KeyCode.D))
-        {
-
-            dir = Vector3.right;
-            rigidbody.velocity = dir * MoveSpeed;
-
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-
-            dir = -Vector3.forward;    // '-up' means 'down'
-            rigidbody.velocity = dir * MoveSpeed;
-
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-
-            dir = -Vector3.right; // '-right' means 'left'
-            rigidbody.velocity = dir * MoveSpeed;
-
-        }
-        else if (Input.GetKey(KeyCode.W))
-        {
-
-            dir = Vector3.forward;
-            rigidbody.velocity = dir * MoveSpeed;
-
-        }
-        else if (Input.GetKey(KeyCode.Space))
-        {
-            dir = Vector3.up;
-            rigidbody.velocity = dir * jumpForce;
-        }
-        else
-        {
-            rigidbody.velocity = new Vector3(0, GetComponent<Rigidbody>().velocity.y, 0);
-            //GetComponent<Rigidbody>().velocity = Vector3.zero;
-        }
-	}
 }
