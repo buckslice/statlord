@@ -15,7 +15,7 @@ public class Projectile : MonoBehaviour {
     private float life;
     public PType type;
     private bool dying = false;
-    private float pierceNum;
+    public float pierce;
     private GameObject mesh;
     private Collider col;
     private ParticleSystem.EmissionModule psem;
@@ -42,34 +42,22 @@ public class Projectile : MonoBehaviour {
         }
         dying = false;
         life = 3.0f;
+        pierce = 1.0f;
         rb.velocity = Vector3.zero;
     }
 
-    public void SetPierceAmount(float x)
-    {
-        pierceNum = x;
-    }
-
     void OnTriggerEnter(Collider col) {
-        pierceNum--;
-        if (pierceNum<=0)
-        {
-            if (type == PType.ARROW && gameObject.tag == Tags.PlayerProjectile && col.gameObject.tag == Tags.Enemy)
-            {
-                returnSelf();
-            }
-
-            if (col.gameObject.tag == Tags.Player)
-            {
-                returnSelf();
-            }
-
-            if (col.gameObject.tag == Tags.Wall)
-            {
-                returnSelf();
-            }
+        if (type == PType.ARROW && gameObject.tag == Tags.PlayerProjectile && col.gameObject.tag == Tags.Enemy) {
+            returnSelf();
         }
-      
+
+        if (col.gameObject.tag == Tags.Player) {
+            returnSelf();
+        }
+
+        if (col.gameObject.tag == Tags.Wall) {
+            returnSelf();
+        }
     }
 
     void Update() {
@@ -94,6 +82,11 @@ public class Projectile : MonoBehaviour {
     }
 
     private void returnSelf() {
+        if(pierce >= 1.0f) {
+            pierce -= 1.0f;
+            return;
+        }
+
         if (dying) {
             return;
         }

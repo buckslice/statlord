@@ -69,12 +69,10 @@ public class Player : MonoBehaviour {
         timeSinceAttack -= Time.deltaTime;
         if (Input.GetMouseButton(0) && timeSinceAttack < 0.0f) {
             timeSinceAttack = stats.get(Stats.attackRate).value;
-            float chanceForFireball = stats.get(Stats.fireballChance).value;
-            int chance = Random.Range(0, 100);
-            if (chance <= chanceForFireball) {
-                stats.fireProjectile(PType.FIREBALL, stats.get(Stats.pierce).value);
+            if (Random.value < stats.get(Stats.fireballChance).value) {
+                stats.fireProjectile(PType.FIREBALL);
             } else {
-                stats.fireProjectile(PType.ARROW, stats.get(Stats.pierce).value);
+                stats.fireProjectile(PType.ARROW);
             }
 
         }

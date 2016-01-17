@@ -33,15 +33,17 @@ public class Stats {
 // class instead of struct so it is passed by reference rather than value
 public class Stat {
 
-    public Stat(string name, float value, float increment) {
+    public Stat(string name, float value, float increment, float cap) {
         this.name = name;
         this.value = value;
         this.increment = increment;
+        this.cap = cap;
     }
 
     public string name;
     public float value;
     public float increment;
+    public float cap;
 }
 
 public class PlayerStats : MonoBehaviour {
@@ -49,33 +51,32 @@ public class PlayerStats : MonoBehaviour {
     //array of stats
     private Stat[] stats = new Stat[] {
         //Core stats (Unlock in this order)
-        new Stat(Stats.attack, 1.0f, 1.0f),
-        new Stat(Stats.health, 3.0f, 1.0f),
-        new Stat(Stats.moveSpeed, 5.0f, 1.0f),
-        new Stat(Stats.attackRate, 1.0f, -.1f),
+        new Stat(Stats.attack, 1.0f, 1.0f, 3.0f),               //implemented
+        new Stat(Stats.health, 3.0f, 1.0f, 20.0f),              //implemented
+        new Stat(Stats.moveSpeed, 5.0f, 0.5f, 10.0f),           //implemented
+        new Stat(Stats.attackRate, 1.0f, -.05f, 0.1f),          //implemented
 
         //Additional stats (unlock at random)
-        new Stat(Stats.fireballChance, 0.0f, 2.0f),
-        new Stat(Stats.jumpSpeed, 5.0f, 1.0f),
-        new Stat(Stats.shotSpeed, 1000.0f, 100.0f),
-        new Stat(Stats.multishot, 1.0f, 1.0f),
-        new Stat(Stats.mitigation, 0.0f, 1.0f),
-        new Stat(Stats.pierce, 0.0f, 1.0f),
-        new Stat(Stats.healthRegen, 0.0f, 0.2f),
-        new Stat(Stats.critChance, 0.0f, 1.0f),
-        new Stat(Stats.roll, 0.0f, 1.0f),
-        new Stat(Stats.healthOnKill, 0.0f, 0.1f),
+        new Stat(Stats.fireballChance, 0.0f, 0.02f, 1.0f),      //implemented
+        new Stat(Stats.jumpSpeed, 5.0f, 0.5f, 20.0f),           //implemented
+        new Stat(Stats.shotSpeed, 8.0f, 1.0f, 20.0f),           //implemented
+        new Stat(Stats.multishot, 1.0f, 0.25f, 5.0f),
+        new Stat(Stats.mitigation, 0.0f, 0.05f, 0.8f),
+        new Stat(Stats.pierce, 0.0f, 0.5f, 10.0f),
+        new Stat(Stats.healthRegen, 0.0f, 0.2f, 2.0f),
+        new Stat(Stats.critChance, 0.0f, 0.05f, 1.0f),
+        new Stat(Stats.healthOnKill, 0.0f, 0.2f, 5.0f),
 
         //Joke stats (unlock at random)
-        new Stat(Stats.randomize, 0.0f, 1.0f),
-        new Stat(Stats.enemySize, 1.0f, 0.1f),
-        new Stat(Stats.playerSize, 1.0f, 0.1f),
-        new Stat(Stats.cameraShake, 0.0f, 0.1f),
-        new Stat(Stats.deleteTextures, 0.0f, 2.5f),
-        new Stat(Stats.increaseBloom, 1.2f, 0.05f),
-        new Stat(Stats.doorsPerMinute, 0.0f, 1.0f),
-        new Stat(Stats.uiSize, 1.0f, 0.1f),
-        new Stat(Stats.misclick, 0.0f, 2.5f)
+        new Stat(Stats.increaseBloom, 1.25f, 2.0f, 30.0f),      //implemented
+        //new Stat(Stats.randomize, 0.0f, 1.0f),
+        //new Stat(Stats.enemySize, 1.0f, 0.1f),
+        //new Stat(Stats.playerSize, 1.0f, 0.1f),
+        //new Stat(Stats.cameraShake, 0.0f, 0.1f),
+        //new Stat(Stats.deleteTextures, 0.0f, 2.5f),
+        //new Stat(Stats.doorsPerMinute, 0.0f, 1.0f),
+        //new Stat(Stats.uiSize, 1.0f, 0.1f),
+        //new Stat(Stats.misclick, 0.0f, 2.5f)
     };
 
     //private StatTable stats;
@@ -111,7 +112,7 @@ public class PlayerStats : MonoBehaviour {
         return stats.Length;
     }
 
-    public void fireProjectile(PType type, float pierceAmount) {
+    public void fireProjectile(PType type) {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
 
@@ -121,12 +122,11 @@ public class PlayerStats : MonoBehaviour {
         p.transform.rotation = transform.rotation;
 
         p.damage = damage;
-        if (get(Stats.critChance).value < Random.Range(0,100))
-        {
+        if (get(Stats.critChance).value < Random.Range(0, 100)) {
             p.damage += damage;
         }
-        p.SetPierceAmount(pierceAmount);
-        p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value);
+        p.pierce = get(Stats.pierce).value;
+        p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value * 100.0f);
 
         p.gameObject.tag = Tags.PlayerProjectile;
 
