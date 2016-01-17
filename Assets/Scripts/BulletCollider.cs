@@ -13,7 +13,6 @@ public class BulletCollider : MonoBehaviour {
         
     }
     void OnCollisionEnter()
-
     {
         turnOff();
     }

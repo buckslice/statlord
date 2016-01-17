@@ -286,48 +286,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1753505032}
   m_RootOrder: 0
---- !u!1001 &857286989
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400002, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.8222804
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.0353315
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
-  m_IsPrefabParent: 0
 --- !u!1001 &1071522670
 Prefab:
   m_ObjectHideFlags: 0
@@ -587,7 +545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6143a5810faa6f6488a79bde50f1ef6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 100002, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
+  enemy: {fileID: 168290, guid: 254c90c7e6fd99c458e0134c1b51b5d4, type: 2}
   startTime: 2
   spawnRate: 0.2
   numOfEnemies: 120
@@ -604,7 +562,7 @@ Transform:
   - {fileID: 811227472}
   - {fileID: 610032710}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
 --- !u!1 &1802947372 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 149060, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
