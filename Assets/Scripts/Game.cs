@@ -7,6 +7,8 @@ public class Game : MonoBehaviour {
 
     public int level = 1;
 
+    public bool debug = false;
+
     private StatUI ui;
     private SpawnManager spawner;
     private Player player;
@@ -25,6 +27,10 @@ public class Game : MonoBehaviour {
         backInd = transform.Find("LevelIndicatorBack").GetComponent<Text>();
 
         spawnGuys();
+        if (debug)
+        {
+            StartCoroutine(loadLevelSequence());
+        }
     }
 
     // Update is called once per frame
@@ -67,7 +73,14 @@ public class Game : MonoBehaviour {
         backInd.color = Color.black;
         // play sound or something?
 
-        yield return new WaitForSeconds(3.0f);
+        if (!debug)
+        {
+            yield return new WaitForSeconds(3.0f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
 
         frontInd.enabled = false;
         backInd.enabled = false;

@@ -16,6 +16,8 @@ public class StatUI : MonoBehaviour {
     public Button undoButton;
     public Button doneButton;
 
+    public bool debug = false;
+
     private bool lastVisible = false;
 
     private PlayerStats stats;
@@ -137,90 +139,105 @@ public class StatUI : MonoBehaviour {
     }
 
     public void buildUI(int level) {
-        pointsLeft = level;
+        if (debug)
+        {
+            pointsLeft = 99999;
+            level = 30;
+        }
+        else
+        {
+            pointsLeft = level;
+        }
+
         visible = true;
         actions.Clear();
         valueTable.Clear();
         buttons.Clear();
 
         for (int i = 0, len = level + 2; i < len; ++i) {
-            Stat stat = stats.get(i);
-            if (stat == null) {
+            try
+            {
+                Stat stat = stats.get(i);
+                // later have max rows variable then make new column and balance
+                // if rows > 10 make two columns of 5 maybe
+                GameObject statPanel = new GameObject(stat.name + " panel");
+                RectTransform spt = statPanel.AddComponent<RectTransform>();
+                spt.SetParent(mainPanel.transform, false);
+                spt.offsetMin = Vector2.zero;
+                spt.offsetMax = Vector2.zero;
+                statPanel.AddComponent<Image>().color = Random.ColorHSV(0.6f, 0.7f, 1, 1, .1f, .2f, .5f, .5f);
+                float fi = i;
+                spt.anchorMin = new Vector2(0.0f, 1.0f - (fi + 1) / len);
+                spt.anchorMax = new Vector2(0.8f, 1.0f - fi / len);
+
+                // add name of stat
+                GameObject namePanel = new GameObject("name");
+                RectTransform npt = namePanel.AddComponent<RectTransform>();
+                npt.SetParent(spt, false);
+                npt.anchorMin = Vector2.zero;
+                npt.anchorMax = new Vector2(0.5f, 1.0f);
+                npt.offsetMin = Vector2.zero;
+                npt.offsetMax = Vector2.zero;
+
+                Text text = namePanel.AddComponent<Text>();
+                text.text = stat.name;//.PadLeft(10);
+                text.font = font;
+                text.alignment = TextAnchor.MiddleCenter;
+                //text.fontSize = 40;
+                text.resizeTextForBestFit = true;
+                text.resizeTextMinSize = 10;
+                text.resizeTextMaxSize = 50;
+                //text.horizontalOverflow = HorizontalWrapMode.Overflow;
+
+                // add current stat value
+                GameObject valuePanel = new GameObject("value");
+                RectTransform vpt = valuePanel.AddComponent<RectTransform>();
+                vpt.SetParent(spt, false);
+                vpt.anchorMin = new Vector2(0.55f, 0.0f);
+                vpt.anchorMax = new Vector2(0.75f, 1.0f);
+                vpt.offsetMin = Vector2.zero;
+                vpt.offsetMax = Vector2.zero;
+
+                text = valuePanel.AddComponent<Text>();
+                text.color = Color.yellow;
+                text.text = stat.value.ToString("F2");
+                text.font = font;
+                text.alignment = TextAnchor.MiddleCenter;
+                text.resizeTextForBestFit = true;
+                text.resizeTextMinSize = 10;
+                text.resizeTextMaxSize = 50;
+                valueTable[stat.name] = text;
+
+                // show increment and also make it a button???
+                GameObject incPanel = new GameObject("increment");
+                RectTransform ipt = incPanel.AddComponent<RectTransform>();
+                ipt.SetParent(spt, false);
+                ipt.anchorMin = new Vector2(0.8f, 0.0f);
+                ipt.anchorMax = new Vector2(1.0f, 1.0f);
+                ipt.offsetMin = Vector2.zero;
+                ipt.offsetMax = Vector2.zero;
+
+                //Button button = incPanel.AddComponent<Button>();
+                string buttonText;
+                if (stat.increment > 0.0f)
+                {
+                    buttonText = "+" + stat.increment.ToString("F2");
+                }
+                else
+                {
+                    buttonText = stat.increment.ToString("F2");
+                }
+                Button button = buildButton(incPanel, buttonText, new Color(0.0f, 0.0f, 1.0f));
+                UnityAction ba = new UnityAction(() => addToList(stat.name));
+                button.onClick.AddListener(ba);
+                buttons.Add(button);
+                statPanels.Add(spt);
+            }
+            catch
+            {
                 Debug.Log("OUT OF STATS!");
                 return;
             }
-
-            // later have max rows variable then make new column and balance
-            // if rows > 10 make two columns of 5 maybe
-            GameObject statPanel = new GameObject(stat.name + " panel");
-            RectTransform spt = statPanel.AddComponent<RectTransform>();
-            spt.SetParent(mainPanel.transform, false);
-            spt.offsetMin = Vector2.zero;
-            spt.offsetMax = Vector2.zero;
-            statPanel.AddComponent<Image>().color = Random.ColorHSV(0.6f, 0.7f, 1, 1, .1f, .2f, .5f, .5f);
-            float fi = i;
-            spt.anchorMin = new Vector2(0.0f, 1.0f - (fi + 1) / len);
-            spt.anchorMax = new Vector2(0.8f, 1.0f - fi / len);
-
-            // add name of stat
-            GameObject namePanel = new GameObject("name");
-            RectTransform npt = namePanel.AddComponent<RectTransform>();
-            npt.SetParent(spt, false);
-            npt.anchorMin = Vector2.zero;
-            npt.anchorMax = new Vector2(0.5f, 1.0f);
-            npt.offsetMin = Vector2.zero;
-            npt.offsetMax = Vector2.zero;
-
-            Text text = namePanel.AddComponent<Text>();
-            text.text = stat.name;//.PadLeft(10);
-            text.font = font;
-            text.alignment = TextAnchor.MiddleCenter;
-            //text.fontSize = 40;
-            text.resizeTextForBestFit = true;
-            text.resizeTextMinSize = 10;
-            text.resizeTextMaxSize = 50;
-            //text.horizontalOverflow = HorizontalWrapMode.Overflow;
-
-            // add current stat value
-            GameObject valuePanel = new GameObject("value");
-            RectTransform vpt = valuePanel.AddComponent<RectTransform>();
-            vpt.SetParent(spt, false);
-            vpt.anchorMin = new Vector2(0.55f, 0.0f);
-            vpt.anchorMax = new Vector2(0.75f, 1.0f);
-            vpt.offsetMin = Vector2.zero;
-            vpt.offsetMax = Vector2.zero;
-
-            text = valuePanel.AddComponent<Text>();
-            text.color = Color.yellow;
-            text.text = stat.value.ToString("F2");
-            text.font = font;
-            text.alignment = TextAnchor.MiddleCenter;
-            text.resizeTextForBestFit = true;
-            text.resizeTextMinSize = 10;
-            text.resizeTextMaxSize = 50;
-            valueTable[stat.name] = text;
-
-            // show increment and also make it a button???
-            GameObject incPanel = new GameObject("increment");
-            RectTransform ipt = incPanel.AddComponent<RectTransform>();
-            ipt.SetParent(spt, false);
-            ipt.anchorMin = new Vector2(0.8f, 0.0f);
-            ipt.anchorMax = new Vector2(1.0f, 1.0f);
-            ipt.offsetMin = Vector2.zero;
-            ipt.offsetMax = Vector2.zero;
-
-            //Button button = incPanel.AddComponent<Button>();
-            string buttonText;
-            if (stat.increment > 0.0f) {
-                buttonText = "+" + stat.increment.ToString("F2");
-            } else {
-                buttonText = stat.increment.ToString("F2");
-            }
-            Button button = buildButton(incPanel, buttonText, new Color(0.0f, 0.0f, 1.0f));
-            UnityAction ba = new UnityAction(() => addToList(stat.name));
-            button.onClick.AddListener(ba);
-            buttons.Add(button);
-            statPanels.Add(spt);
         }
     }
 

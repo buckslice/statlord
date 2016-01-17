@@ -6,13 +6,30 @@ public class Stats {
     public static string attack = "attack";
     public static string health = "health";
     public static string moveSpeed = "moveSpeed";
-    public static string jumpSpeed = "jumpSpeed";
+    public static string mana = "mana";
     public static string attackRate = "attackRate";
+
+    public static string jumpSpeed = "jumpSpeed";
     public static string shotSpeed = "shotSpeed";
     public static string multishot = "multishot";
-    // mitigation
-    // pierce amount = 1.0f
+    public static string mitigation = "mitigation";
+    public static string pierce = "pierce";
+    public static string manaRegen = "manaRegen";
+    public static string healthRegen = "healthRegen";
+    public static string critChance = "critChance";
+    public static string roll = "roll";
+    public static string manaOnKill = "manaOnKill";
+    public static string healthOnKill = "healthOnKill";
 
+    public static string randomize = "randomize";
+    public static string enemySize = "enemySize";
+    public static string cameraShake = "cameraShake";
+    public static string playerSize = "playerSize";
+    public static string deleteTextures = "deleteTextures";
+    public static string increaseBloom = "increaseBloom";
+    public static string doorsPerMinute = "doorsPerMinute";
+    public static string uiSize = "uiSize";
+    public static string misclick = "misclick";
 }
 
 // class instead of struct so it is passed by reference rather than value
@@ -33,15 +50,36 @@ public class PlayerStats : MonoBehaviour {
 
     //array of stats
     private Stat[] stats = new Stat[] {
+        //Core stats (Unlock in this order)
         new Stat(Stats.attack, 1.0f, 1.0f ),
         new Stat(Stats.health, 3.0f, 1.0f),
         new Stat(Stats.moveSpeed, 5.0f, 1.0f),
-
-        new Stat(Stats.jumpSpeed, 5.0f, 1.0f),
+        new Stat(Stats.mana, 3.0f, 1.0f),
         new Stat(Stats.attackRate, 1.0f, -.1f),
+
+        //Additional stats (unlock at random)
+        new Stat(Stats.jumpSpeed, 5.0f, 1.0f),
         new Stat(Stats.shotSpeed, 1000.0f, 100.0f),
         new Stat(Stats.multishot, 1.0f, 1.0f),
+        new Stat(Stats.mitigation, 0.0f, 1.0f),
+        new Stat(Stats.pierce, 0.0f, 1.0f),
+        new Stat(Stats.manaRegen, 0.0f, 0.2f),
+        new Stat(Stats.healthRegen, 0.0f, 0.2f),
+        new Stat(Stats.critChance, 0.0f, 1.0f),
+        new Stat(Stats.roll, 0.0f, 1.0f),
+        new Stat(Stats.manaOnKill, 0.0f, 0.1f),
+        new Stat(Stats.healthOnKill, 0.0f, 0.1f),
 
+        //Joke stats (unlock at random)
+        new Stat(Stats.randomize, 0.0f, 1.0f),
+        new Stat(Stats.enemySize, 1.0f, 0.1f),
+        new Stat(Stats.playerSize, 1.0f, 0.1f),
+        new Stat(Stats.cameraShake, 0.0f, 0.1f),
+        new Stat(Stats.deleteTextures, 0.0f, 2.5f),
+        new Stat(Stats.increaseBloom, 0.0f, 0.05f),
+        new Stat(Stats.doorsPerMinute, 0.0f, 1.0f),
+        new Stat(Stats.uiSize, 1.0f, 0.1f),
+        new Stat(Stats.misclick, 0.0f, 2.5f)
     };
 
     //private StatTable stats;
