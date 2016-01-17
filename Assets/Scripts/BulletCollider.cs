@@ -12,6 +12,12 @@ public class BulletCollider : MonoBehaviour {
         Invoke("turnOff", 3.0f);
         
     }
+
+    public void RestartInvoke()
+    {
+        Invoke("turnOff", 3.0f);
+    }
+
     void OnCollisionEnter()
     {
         turnOff();

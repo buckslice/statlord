@@ -77,15 +77,14 @@ public class PlayerStats : MonoBehaviour {
         float damage = get(Stats.attack).value;
 
         bullet.transform.position= transform.position + new Vector3(0, 2, 0) + (transform.forward*1.05f);
-        //bullet.transform.rotation = Quaternion.Euler(new Vector3 (0,0,0));
 
-        //Debug.Log("before change in rotation: "+bullet.transform.rotation);
-        bullet.GetComponentsInChildren<Transform>()[0].rotation = GameObject.Find("Player").GetComponent<Transform>().rotation;
-        //Debug.Log("after change in rotation: " + bullet.transform.rotation);
-        
+        bullet.transform.rotation = transform.rotation;
         bullet.setDamage(damage);
+        
+
         bullet.GetComponent<Rigidbody>().AddForce(transform.forward * shotForce);
-        //bullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        //bullet.transform.rotation
+
         bullet.gameObject.tag = "PlayerProjectile";
 
         int multishot = Mathf.RoundToInt(get(Stats.multishot).value);

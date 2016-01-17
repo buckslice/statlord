@@ -12,7 +12,7 @@ public class BulletManager: MonoBehaviour {
     {
         listOfBullets = new List<GameObject>();
         
-        for (int i = 0; i<10;i++)
+        for (int i = 0; i<100;i++)
         {
             GameObject x = Instantiate(bullet, transform.position, Quaternion.identity) as GameObject;
 
