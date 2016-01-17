@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class SpawnManager : MonoBehaviour {
-    public GameObject Skeleton, Ranger;
+    public GameObject Skeleton, Ranger, Mage, CrossBowMan;
     private PlayerStats player;
     public float startTime, spawnRate;
     public int maxEnemies;
@@ -24,11 +24,12 @@ public class SpawnManager : MonoBehaviour {
 
     void BuildEnemy() {
         GameObject x;
-        if (Random.Range(0, 10) <= 5) {
-            x = Instantiate(Skeleton, Vector3.zero, Quaternion.identity) as GameObject;
-        } else {
-            x = Instantiate(Ranger, Vector3.zero, Quaternion.identity) as GameObject;
-        }
+        //if (Random.Range(0, 10) <= 5) {
+        //    x = Instantiate(Skeleton, Vector3.zero, Quaternion.identity) as GameObject;
+        //} else {
+        //    x = Instantiate(Ranger, Vector3.zero, Quaternion.identity) as GameObject;
+        //}
+        x = Instantiate(CrossBowMan, Vector3.zero, Quaternion.identity) as GameObject;
 
         x.GetComponent<EnemyBasicScript>().initialize(this);
         x.transform.parent = transform;

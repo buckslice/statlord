@@ -26,7 +26,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 493164}
   - 195: {fileID: 19595748}
-  - 114: {fileID: 11481268}
   - 114: {fileID: 11428182}
   - 136: {fileID: 13657488}
   m_Layer: 0
@@ -106,17 +105,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 0
---- !u!114 &11481268
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 168290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91064a91796483542828ec88af851d37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &13657488
 CapsuleCollider:
   m_ObjectHideFlags: 1
