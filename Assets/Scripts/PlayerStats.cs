@@ -95,11 +95,11 @@ public class PlayerStats : MonoBehaviour {
         return stats[index];
     }
 
-    public void fireProjectile() {
+    public void fireArrow() {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
 
-        Projectile p = projectileManager.getProjectile();
+        Projectile p = projectileManager.getArrow();
         p.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
         p.transform.rotation = transform.rotation;
 
@@ -118,6 +118,32 @@ public class PlayerStats : MonoBehaviour {
         //}
     }
 
+    public void fireFireball()
+    {
+        //copy and pasta for the fireArrow func mostly
+        // calculate damage dealt
+        float damage = get(Stats.attack).value;
+
+        Projectile p = projectileManager.getFireball();
+        p.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
+        p.transform.rotation = transform.rotation;
+
+        p.damage = damage;
+
+        p.rb.AddForce(transform.forward * get(Stats.attackForce).value);
+
+        p.gameObject.tag = "PlayerProjectile";
+
+
+        //int multishot = Mathf.RoundToInt(get(Stats.multishot).value);
+        //for (int i = 0; i < multishot; ++i) {
+        //    // probably change angle for each bullet depending on multishot
+        //    // build and fire bullet        
+
+        //}
+    }
+
+
     public void changeHealth(float value) {
         get(Stats.health).value += value;
     }
@@ -131,7 +157,12 @@ public class PlayerStats : MonoBehaviour {
         timeSinceAttack -= Time.deltaTime;
         if (Input.GetMouseButton(0) && timeSinceAttack < 0.0f) {
             timeSinceAttack = get(Stats.attackSpeed).value;
-            fireProjectile();
+            fireArrow();
+        }
+        else if (Input.GetMouseButton(1) && timeSinceAttack < 0.0f)
+        {
+            timeSinceAttack = get(Stats.attackSpeed).value;
+            fireFireball();
         }
 
     }

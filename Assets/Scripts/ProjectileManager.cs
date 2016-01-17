@@ -4,41 +4,73 @@ using System.Collections.Generic;
 
 public class ProjectileManager : MonoBehaviour {
 
-    public GameObject projectile;
-    private List<Projectile> pool;
+    public GameObject arrow,fireball;
+    private List<Projectile> arrowPool, fireballPool;
 
     void Awake() {
-        pool = new List<Projectile>();
+        arrowPool = new List<Projectile>();
+        fireballPool = new List<Projectile>();
 
         for (int i = 0; i < 100; i++) {
-            buildProjectile();
+            buildArrow();
+            buildFireball();
         }
     }
 
-    public void buildProjectile() {
-        GameObject x = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
+    public void buildArrow() {
+        GameObject x = Instantiate(arrow, transform.position, Quaternion.identity) as GameObject;
         x.transform.parent = transform;
         x.SetActive(false);
         Projectile p = x.GetComponent<Projectile>();
         p.initialize(this);
-        pool.Add(p);
+        arrowPool.Add(p);
     }
 
-    public Projectile getProjectile() {
-        if (pool.Count <= 0) {
-            buildProjectile();
+    public void buildFireball()
+    {
+        GameObject x = Instantiate(fireball, transform.position, Quaternion.identity) as GameObject;
+        x.transform.parent = transform;
+        x.SetActive(false);
+        Projectile p = x.GetComponent<Projectile>();
+        p.initialize(this);
+        fireballPool.Add(p);
+    }
+
+    public Projectile getArrow() {
+        if (arrowPool.Count <= 0) {
+            buildArrow();
         }
-        int last = pool.Count - 1;
-        Projectile p = pool[last];
-        pool.RemoveAt(last);
+        int last = arrowPool.Count - 1;
+        Projectile p = arrowPool[last];
+        arrowPool.RemoveAt(last);
         p.gameObject.SetActive(true);
         return p;
     }
 
-    public void returnProjectile(Projectile p) {
+    public void returnArrow(Projectile p) {
         p.reset();
         p.gameObject.SetActive(false);
-        pool.Add(p);
+        arrowPool.Add(p);
+    }
+
+    public Projectile getFireball()
+    {
+        if (fireballPool.Count <= 0)
+        {
+            buildFireball();
+        }
+        int last = fireballPool.Count - 1;
+        Projectile p = fireballPool[last];
+        fireballPool.RemoveAt(last);
+        p.gameObject.SetActive(true);
+        return p;
+    }
+
+    public void returnFireball(Projectile p)
+    {
+        p.reset();
+        p.gameObject.SetActive(false);
+        fireballPool.Add(p);
     }
 
 }

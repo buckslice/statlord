@@ -22,18 +22,41 @@ public class Projectile : MonoBehaviour {
     }
 
     void OnCollisionEnter() {
-        manager.returnProjectile(this);
+        if (gameObject.name.Contains("Arrow"))
+        {
+            manager.returnArrow(this);
+        }
+        else 
+        {
+            manager.returnFireball(this);
+        }
+        //manager.returnProjectile(this);
     }
     void OnTriggerEnter(Collider c) {
         if(gameObject.tag == Tags.PlayerProjectile && c.gameObject.tag == Tags.Enemy) {
-            manager.returnProjectile(this);
+            if (gameObject.name.Contains("Arrow"))
+            {
+                manager.returnArrow(this);
+            }
+            else
+            {
+                manager.returnFireball(this);
+            }
         }
     }
 
     void Update() {
         life -= Time.deltaTime;
         if (life <= 0.0f) {
-            manager.returnProjectile(this);
+            if (gameObject.name.Contains("Arrow"))
+            {
+                manager.returnArrow(this);
+            }
+            else
+            {
+                manager.returnFireball(this);
+            }
+            //manager.returnProjectile(this);
         }
     }
 
