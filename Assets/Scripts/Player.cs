@@ -72,11 +72,11 @@ public class Player : MonoBehaviour {
             int chance = Random.Range(0, 100);
             if (chance <=chanceForFireball)
             {
-                stats.fireProjectile(PType.FIREBALL);
+                stats.fireProjectile(PType.FIREBALL, stats.get(Stats.pierce).value);
             }
             else
             {
-                stats.fireProjectile(PType.ARROW);
+                stats.fireProjectile(PType.ARROW, stats.get(Stats.pierce).value);
             }
             
         }
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour {
         // die if no health
         if (stats.get(Stats.health).value <= 0.0f) {
             // do something here eventually
-            Debug.Log("DED");
+
         }
 
     }

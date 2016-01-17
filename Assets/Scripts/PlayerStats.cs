@@ -14,11 +14,9 @@ public class Stats {
     public static string multishot = "multishot";
     public static string mitigation = "mitigation";
     public static string pierce = "pierce";
-    public static string manaRegen = "manaRegen";
     public static string healthRegen = "healthRegen";
     public static string critChance = "critChance";
     public static string roll = "roll";
-    public static string manaOnKill = "manaOnKill";
     public static string healthOnKill = "healthOnKill";
 
     public static string randomize = "randomize";
@@ -109,11 +107,7 @@ public class PlayerStats : MonoBehaviour {
         return stats[index];
     }
 
-    public int numStats() {
-        return stats.Length;
-    }
-
-    public void fireProjectile(PType type) {
+    public void fireProjectile(PType type, float pierceAmount) {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
 
@@ -123,7 +117,11 @@ public class PlayerStats : MonoBehaviour {
         p.transform.rotation = transform.rotation;
 
         p.damage = damage;
-
+        if (get(Stats.critChance).value < Random.Range(0,100))
+        {
+            p.damage += damage;
+        }
+        p.SetPierceAmount(pierceAmount);
         p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value);
 
         p.gameObject.tag = Tags.PlayerProjectile;
