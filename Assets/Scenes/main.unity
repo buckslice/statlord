@@ -314,7 +314,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!114 &407022854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -718,7 +718,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6143a5810faa6f6488a79bde50f1ef6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 168290, guid: 254c90c7e6fd99c458e0134c1b51b5d4, type: 2}
+  Skeleton: {fileID: 168290, guid: 254c90c7e6fd99c458e0134c1b51b5d4, type: 2}
+  Ranger: {fileID: 168290, guid: da70b5367bc40fc4fbd14d696ed0f116, type: 2}
   startTime: 2
   spawnRate: 1
   maxEnemies: 100
