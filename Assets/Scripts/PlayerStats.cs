@@ -56,8 +56,6 @@ public class PlayerStats : MonoBehaviour {
 
     //private StatTable stats;
     private Dictionary<string, int> lookup = new Dictionary<string, int>();
-    public int level = 1;   // determines how many stats are available
-
 
     void Awake() {
         // build lookup table from stats
@@ -66,9 +64,18 @@ public class PlayerStats : MonoBehaviour {
         }
     }
 
-    // return current stat
+    // return current stat from string
     public Stat get(string name) {
         int index = lookup[name];
+        return stats[index];
+    }
+
+    // return stat from index
+    public Stat get(int index) {
+        if (index < 0 || index >= stats.Length) {
+            Debug.Log("invalid stat index");
+            return null;
+        }
         return stats[index];
     }
 
