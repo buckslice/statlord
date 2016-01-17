@@ -30,7 +30,7 @@ GameObject:
   - 114: {fileID: 11481268}
   - 114: {fileID: 11428182}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Skeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
