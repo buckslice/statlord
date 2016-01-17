@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour {
 
-    public Rigidbody rb;
+    public Rigidbody rb { get; set; }
     public float damage { get; set; }
 
     private ProjectileManager manager;
