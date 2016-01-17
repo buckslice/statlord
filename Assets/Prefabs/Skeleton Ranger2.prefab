@@ -29,8 +29,9 @@ GameObject:
   - 195: {fileID: 19595748}
   - 114: {fileID: 11481268}
   - 114: {fileID: 11428182}
+  - 114: {fileID: 11430198}
   m_Layer: 0
-  m_Name: Skeleton Mage
+  m_Name: Skeleton Ranger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.9700904, y: -0.01, z: -4.1516237}
+  m_LocalPosition: {x: -247.45348, y: -1.5806336, z: -713.3427}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 478780}
@@ -93,7 +94,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155752}
-  m_Mesh: {fileID: 4300000, guid: 4e1e35831259f4c4f9840f2612121d7e, type: 3}
+  m_Mesh: {fileID: 4300000, guid: eae0aafd64a33904f83f2c8c6b498a1e, type: 3}
 --- !u!65 &6585572
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -118,6 +119,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 0
+--- !u!114 &11430198
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 168290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e61567248d071643a46bf107f38d961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11481268
 MonoBehaviour:
   m_ObjectHideFlags: 1
