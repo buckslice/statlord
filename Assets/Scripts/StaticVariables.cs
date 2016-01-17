@@ -11,4 +11,5 @@ public class Tags {
     public static string Enemy = "Enemy";
     public static string SpawnPoint = "SpawnPoint";
     public static string EnemyProjectile = "EnemyProjectile";
+    public static string Wall = "Wall";
 }

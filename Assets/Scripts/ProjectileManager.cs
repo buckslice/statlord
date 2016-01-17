@@ -1,76 +1,63 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+
 
 public class ProjectileManager : MonoBehaviour {
 
-    public GameObject arrow,fireball;
-    private List<Projectile> arrowPool, fireballPool;
+    public GameObject arrow, fireball;
+    private Dictionary<PType, List<Projectile>> poolLookup;
 
     void Awake() {
-        arrowPool = new List<Projectile>();
-        fireballPool = new List<Projectile>();
-
-        for (int i = 0; i < 100; i++) {
-            buildArrow();
-            buildFireball();
+        // build pools for each type
+        poolLookup = new Dictionary<PType, List<Projectile>>();
+        PType[] ptypes = (PType[])Enum.GetValues(typeof(PType));
+        for (int i = 0; i < ptypes.Length; ++i) {
+            poolLookup[ptypes[i]] = new List<Projectile>();
         }
+
     }
 
-    public void buildArrow() {
-        GameObject x = Instantiate(arrow, transform.position, Quaternion.identity) as GameObject;
+    public void buildProjectile(PType type) {
+        GameObject x;
+        switch (type) {
+            case PType.ARROW:
+                x = Instantiate(arrow, transform.position, Quaternion.identity) as GameObject;
+                break;
+            case PType.FIREBALL:
+                x = Instantiate(fireball, transform.position, Quaternion.identity) as GameObject;
+                break;
+            default:
+                x = Instantiate(arrow, transform.position, Quaternion.identity) as GameObject;
+                break;
+        }
+
         x.transform.parent = transform;
         x.SetActive(false);
         Projectile p = x.GetComponent<Projectile>();
-        p.initialize(this);
-        arrowPool.Add(p);
+        p.initialize(this, type);
+
+        poolLookup[type].Add(p);
     }
 
-    public void buildFireball()
-    {
-        GameObject x = Instantiate(fireball, transform.position, Quaternion.identity) as GameObject;
-        x.transform.parent = transform;
-        x.SetActive(false);
-        Projectile p = x.GetComponent<Projectile>();
-        p.initialize(this);
-        fireballPool.Add(p);
-    }
-
-    public Projectile getArrow() {
-        if (arrowPool.Count <= 0) {
-            buildArrow();
+    public Projectile getProjectile(PType type) {
+        List<Projectile> list = poolLookup[type];
+        if (list.Count <= 0) {
+            buildProjectile(type);
         }
-        int last = arrowPool.Count - 1;
-        Projectile p = arrowPool[last];
-        arrowPool.RemoveAt(last);
+
+        int last = list.Count - 1;
+        Projectile p = list[last];
+        list.RemoveAt(last);
         p.gameObject.SetActive(true);
         return p;
     }
 
-    public void returnArrow(Projectile p) {
+    public void returnProjectile(Projectile p) {
         p.reset();
         p.gameObject.SetActive(false);
-        arrowPool.Add(p);
-    }
-
-    public Projectile getFireball()
-    {
-        if (fireballPool.Count <= 0)
-        {
-            buildFireball();
-        }
-        int last = fireballPool.Count - 1;
-        Projectile p = fireballPool[last];
-        fireballPool.RemoveAt(last);
-        p.gameObject.SetActive(true);
-        return p;
-    }
-
-    public void returnFireball(Projectile p)
-    {
-        p.reset();
-        p.gameObject.SetActive(false);
-        fireballPool.Add(p);
+        poolLookup[p.type].Add(p);
     }
 
 }

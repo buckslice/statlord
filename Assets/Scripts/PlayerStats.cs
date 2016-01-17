@@ -47,8 +47,6 @@ public class PlayerStats : MonoBehaviour {
     //private StatTable stats;
     private Dictionary<string, int> lookup = new Dictionary<string, int>();
     private ProjectileManager projectileManager;
-    // timers
-    private float timeSinceAttack = 0.0f;
 
     void Awake() {
         // build lookup table from stats
@@ -75,16 +73,12 @@ public class PlayerStats : MonoBehaviour {
         return stats[index];
     }
 
-    public void fireProjectile(bool isArrow) {
+    public void fireProjectile(PType type) {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
 
         Projectile p;
-        if (isArrow) {
-            p = projectileManager.getArrow();
-        } else {
-            p = projectileManager.getFireball();
-        }
+        p = projectileManager.getProjectile(type);
         p.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
         p.transform.rotation = transform.rotation;
 
@@ -92,7 +86,7 @@ public class PlayerStats : MonoBehaviour {
 
         p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value);
 
-        p.gameObject.tag = "PlayerProjectile";
+        p.gameObject.tag = Tags.PlayerProjectile;
 
 
         //int multishot = Mathf.RoundToInt(get(Stats.multishot).value);
@@ -108,22 +102,4 @@ public class PlayerStats : MonoBehaviour {
         get(Stats.health).value += value;
     }
 
-    // Update is called once per frame
-    void Update() {
-        if (get(Stats.health).value <= 0.0f) {
-            // die
-        }
-
-        timeSinceAttack -= Time.deltaTime;
-        if (Input.GetMouseButton(0) && timeSinceAttack < 0.0f) {
-            timeSinceAttack = get(Stats.attackRate).value;
-            fireProjectile(true);
-        }
-        else if (Input.GetMouseButton(1) && timeSinceAttack < 0.0f)
-        {
-            timeSinceAttack = get(Stats.attackRate).value;
-            fireProjectile(false);
-        }
-
-    }
 }

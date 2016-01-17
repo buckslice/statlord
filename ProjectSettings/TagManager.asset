@@ -9,6 +9,7 @@ TagManager:
   - SpawnPoint
   - Fire
   - EnemyProjectile
+  - Wall
   layers:
   - Default
   - TransparentFX

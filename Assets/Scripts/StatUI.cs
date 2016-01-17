@@ -13,6 +13,9 @@ public class StatUI : MonoBehaviour {
     public Sprite buttonHightlightSprite;
     public Sprite buttonDisabled;
 
+    public Button undoButton;
+    public Button doneButton;
+
     private bool lastVisible = false;
 
     private PlayerStats stats;
@@ -25,8 +28,8 @@ public class StatUI : MonoBehaviour {
     private Text pointsLeftText;
     private int pointsLeft = 5;
 
-    public Stack<string> actions = new Stack<string>();
-    public Dictionary<string, Text> valueTable = new Dictionary<string, Text>();
+    private Stack<string> actions = new Stack<string>();
+    private Dictionary<string, Text> valueTable = new Dictionary<string, Text>();
 
     // Use this for initialization
     void Start() {
@@ -84,15 +87,29 @@ public class StatUI : MonoBehaviour {
 
         GameObject undoButtonGO = new GameObject("undo button");
         RectTransform ubt = undoButtonGO.AddComponent<RectTransform>();
-        ubt.SetParent(tpt, false);
+        ubt.SetParent(mpt, false);
         ubt.offsetMin = Vector2.zero;
         ubt.offsetMax = Vector2.zero;
-        ubt.anchorMin = new Vector2(0.85f, 0.0f);
+        ubt.anchorMin = new Vector2(0.8f, 0.8f);
         ubt.anchorMax = new Vector2(1.0f, 1.0f);
 
-        Button button = buildButton(undoButtonGO, "UNDO", Color.red);
+        undoButton = buildButton(undoButtonGO, "UNDO", Color.red);
         UnityAction ba = new UnityAction(() => undoLast());
-        button.onClick.AddListener(ba);
+        undoButton.onClick.AddListener(ba);
+        undoButton.interactable = false;
+
+        GameObject doneButtonGO = new GameObject("done button");
+        RectTransform dbt = doneButtonGO.AddComponent<RectTransform>();
+        dbt.SetParent(mpt, false);
+        dbt.offsetMin = Vector2.zero;
+        dbt.offsetMax = Vector2.zero;
+        dbt.anchorMin = new Vector2(0.8f, 0.6f);
+        dbt.anchorMax = new Vector2(1.0f, 0.8f);
+
+        doneButton = buildButton(doneButtonGO, "DONE", Color.green);
+        ba = new UnityAction(() => visible = false);
+        doneButton.onClick.AddListener(ba);
+        doneButton.interactable = false;
 
     }
 
@@ -119,7 +136,9 @@ public class StatUI : MonoBehaviour {
         lastVisible = visible;
     }
 
-    void buildUI(int level) {
+    public void buildUI(int level) {
+        pointsLeft = level;
+        visible = true;
         actions.Clear();
         valueTable.Clear();
         buttons.Clear();
@@ -127,7 +146,7 @@ public class StatUI : MonoBehaviour {
         for (int i = 0, len = level + 2; i < len; ++i) {
             Stat stat = stats.get(i);
             if (stat == null) {
-                Debug.Log("PROBLEM");
+                Debug.Log("OUT OF STATS!");
                 return;
             }
 
@@ -141,7 +160,7 @@ public class StatUI : MonoBehaviour {
             statPanel.AddComponent<Image>().color = Random.ColorHSV(0.6f, 0.7f, 1, 1, .1f, .2f, .5f, .5f);
             float fi = i;
             spt.anchorMin = new Vector2(0.0f, 1.0f - (fi + 1) / len);
-            spt.anchorMax = new Vector2(0.5f, 1.0f - fi / len);
+            spt.anchorMax = new Vector2(0.8f, 1.0f - fi / len);
 
             // add name of stat
             GameObject namePanel = new GameObject("name");
@@ -153,13 +172,13 @@ public class StatUI : MonoBehaviour {
             npt.offsetMax = Vector2.zero;
 
             Text text = namePanel.AddComponent<Text>();
-            text.text = stat.name.PadLeft(10);
+            text.text = stat.name;//.PadLeft(10);
             text.font = font;
             text.alignment = TextAnchor.MiddleCenter;
             //text.fontSize = 40;
             text.resizeTextForBestFit = true;
             text.resizeTextMinSize = 10;
-            text.resizeTextMaxSize = 100;
+            text.resizeTextMaxSize = 50;
             //text.horizontalOverflow = HorizontalWrapMode.Overflow;
 
             // add current stat value
@@ -178,7 +197,7 @@ public class StatUI : MonoBehaviour {
             text.alignment = TextAnchor.MiddleCenter;
             text.resizeTextForBestFit = true;
             text.resizeTextMinSize = 10;
-            text.resizeTextMaxSize = 100;
+            text.resizeTextMaxSize = 50;
             valueTable[stat.name] = text;
 
             // show increment and also make it a button???
@@ -257,7 +276,7 @@ public class StatUI : MonoBehaviour {
 
     public void addToList(string name) {
         if (pointsLeft > 0) {
-            Debug.Log(name + " " + Time.deltaTime);
+            //Debug.Log(name + " " + Time.deltaTime);
             Stat s = stats.get(name);
             s.value += s.increment;
             valueTable[s.name].text = s.value.ToString("F2");
@@ -267,8 +286,10 @@ public class StatUI : MonoBehaviour {
                 for (int i = 0; i < buttons.Count; ++i) {
                     buttons[i].interactable = false;
                 }
+                doneButton.interactable = true;
             }
         }
+        undoButton.interactable = true;
     }
 
     // add undo that call undo
@@ -283,11 +304,10 @@ public class StatUI : MonoBehaviour {
         for (int i = 0; i < buttons.Count; ++i) {
             buttons[i].interactable = true;
         }
+        if(actions.Count == 0) {
+            undoButton.interactable = false;
+        }
+        doneButton.interactable = false;
     }
 
-    void updateUI() {
-
-        // show UI until points are empty then have done button
-        // also have reset button to undo changes
-    }
 }

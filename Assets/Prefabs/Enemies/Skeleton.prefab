@@ -26,11 +26,10 @@ GameObject:
   m_Component:
   - 4: {fileID: 493164}
   - 195: {fileID: 19595748}
-  - 114: {fileID: 11481268}
   - 114: {fileID: 11428182}
-  - 136: {fileID: 13615690}
+  - 136: {fileID: 13657488}
   m_Layer: 0
-  m_Name: Orc
+  m_Name: Skeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,7 +54,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.0656753, y: 0.05, z: -2.0582223}
+  m_LocalPosition: {x: 2.81, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 478780}
@@ -68,7 +67,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155752}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 2
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: d1d28d919590c43448dbe22e9fefc2c0, type: 2}
@@ -93,7 +92,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155752}
-  m_Mesh: {fileID: 4300000, guid: 6f4c0a3f4d0150844917b7514e798f77, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
 --- !u!114 &11428182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -105,19 +104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373fd1463c4fbc64299a69311c6a4ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
---- !u!114 &11481268
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 168290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91064a91796483542828ec88af851d37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!136 &13615690
+  type: 0
+--- !u!136 &13657488
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -126,10 +114,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1
-  m_Height: 3.3000002
+  m_Radius: 0.5
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 1.6500001, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!195 &19595748
 NavMeshAgent:
   m_ObjectHideFlags: 1
@@ -137,16 +125,16 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168290}
   m_Enabled: 1
-  m_Radius: 1
+  m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 360
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 3.3
+  m_Height: 2.25
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -164,7 +152,15 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300000, guid: 6f4c0a3f4d0150844917b7514e798f77, type: 3}
+      objectReference: {fileID: 4300000, guid: 1e6007886c50d134fa4be6387ad63f72, type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_CastShadows
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_AngularSpeed
+      value: 360
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 168290}
