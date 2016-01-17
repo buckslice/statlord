@@ -314,7 +314,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 3
 --- !u!114 &407022854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,7 +331,7 @@ MonoBehaviour:
   hdr: 0
   sepBlurSpread: 2.5
   quality: 1
-  bloomIntensity: 0.5
+  bloomIntensity: 0.25
   bloomThreshold: 0.5
   bloomThresholdColor: {r: 1, g: 1, b: 1, a: 1}
   bloomBlurIterations: 2
@@ -418,7 +418,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f280da568a13284c9fcf883a1e1f1e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectile: {fileID: 156856, guid: cb11fb4cc9511bd42af0de0f95ae7a90, type: 2}
+  arrow: {fileID: 156856, guid: cb11fb4cc9511bd42af0de0f95ae7a90, type: 2}
+  fireball: {fileID: 188418, guid: 650148a5ca5ed6246a16926b3ff42c05, type: 2}
 --- !u!1 &811227471
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +735,7 @@ Transform:
   - {fileID: 811227472}
   - {fileID: 610032710}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!4 &1825947717 stripped
 Transform:
   m_PrefabParentObject: {fileID: 419760, guid: 2f9879801047dd740a8c263057f529f6, type: 2}
