@@ -314,7 +314,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!114 &407022854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,7 +419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 156856, guid: cb11fb4cc9511bd42af0de0f95ae7a90, type: 2}
-  fireball: {fileID: 188418, guid: 650148a5ca5ed6246a16926b3ff42c05, type: 2}
+  fireball: {fileID: 188418, guid: 69e6417279d20d34e9c1f1cc772b1c78, type: 2}
 --- !u!1 &811227471
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,7 +718,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6143a5810faa6f6488a79bde50f1ef6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 168290, guid: 254c90c7e6fd99c458e0134c1b51b5d4, type: 2}
+  Skeleton: {fileID: 168290, guid: 254c90c7e6fd99c458e0134c1b51b5d4, type: 2}
+  Ranger: {fileID: 168290, guid: da70b5367bc40fc4fbd14d696ed0f116, type: 2}
   startTime: 2
   spawnRate: 1
   maxEnemies: 100
