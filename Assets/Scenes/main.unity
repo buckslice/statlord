@@ -164,6 +164,14 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11420954, guid: 7e3c137cc46e3bf49804029cdc8c2b1e, type: 2}
+      propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11455314, guid: 7e3c137cc46e3bf49804029cdc8c2b1e, type: 2}
+      propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7e3c137cc46e3bf49804029cdc8c2b1e, type: 2}
   m_IsPrefabParent: 0
@@ -579,3 +587,25 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e254089bfd6d4e34f83bd383b9b49393, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1630052913 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 113904, guid: e254089bfd6d4e34f83bd383b9b49393, type: 2}
+  m_PrefabInternal: {fileID: 1630052912}
+--- !u!114 &1630052914 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11420954, guid: e254089bfd6d4e34f83bd383b9b49393,
+    type: 2}
+  m_PrefabInternal: {fileID: 1630052912}
+  m_Script: {fileID: 11500000, guid: 7fceaeb339b971b429c4cc600acabd13, type: 3}
+--- !u!114 &1630052915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1630052913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b960c816a62be945adda234b5bec27c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloom: {fileID: 1630052914}

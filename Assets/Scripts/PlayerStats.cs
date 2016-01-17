@@ -51,7 +51,7 @@ public class PlayerStats : MonoBehaviour {
     //array of stats
     private Stat[] stats = new Stat[] {
         //Core stats (Unlock in this order)
-        new Stat(Stats.attack, 1.0f, 1.0f ),
+        new Stat(Stats.attack, 1.0f, 1.0f),
         new Stat(Stats.health, 3.0f, 1.0f),
         new Stat(Stats.moveSpeed, 5.0f, 1.0f),
         new Stat(Stats.mana, 3.0f, 1.0f),
@@ -76,7 +76,7 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.playerSize, 1.0f, 0.1f),
         new Stat(Stats.cameraShake, 0.0f, 0.1f),
         new Stat(Stats.deleteTextures, 0.0f, 2.5f),
-        new Stat(Stats.increaseBloom, 0.0f, 0.05f),
+        new Stat(Stats.increaseBloom, 1.2f, 0.05f),
         new Stat(Stats.doorsPerMinute, 0.0f, 1.0f),
         new Stat(Stats.uiSize, 1.0f, 0.1f),
         new Stat(Stats.misclick, 0.0f, 2.5f)
