@@ -24,16 +24,12 @@ public class SpawnManager : MonoBehaviour {
 
     void BuildEnemy() {
         GameObject x;
-        if (Random.Range(0,10)<=5)
-        {
+        if (Random.Range(0, 10) <= 5) {
             x = Instantiate(Skeleton, Vector3.zero, Quaternion.identity) as GameObject;
+        } else {
+            x = Instantiate(Ranger, Vector3.zero, Quaternion.identity) as GameObject;
+        }
 
-        }
-        else
-        {
-             x = Instantiate(Ranger, Vector3.zero, Quaternion.identity) as GameObject;
-        }
-        
         x.GetComponent<EnemyBasicScript>().initialize(this);
         x.transform.parent = transform;
         x.SetActive(false);
@@ -54,13 +50,15 @@ public class SpawnManager : MonoBehaviour {
                 pool.RemoveAt(last);
 
                 enemy.SetActive(true);
-                enemy.GetComponent<EnemyBasicScript>().hp = player.level;
+                enemy.GetComponent<EnemyBasicScript>().hp = 2;
 
                 int rng = Random.Range(0, spawnLocations.Length);
                 enemy.transform.position = spawnLocations[rng].transform.position;
             }
         }
     }
+
+    //public EnemyBasicScript getEnemy()
 
     public void returnEnemy(GameObject deadEnemy) {
         deadEnemy.gameObject.SetActive(false);

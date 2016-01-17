@@ -101,7 +101,7 @@ public class StatUI : MonoBehaviour {
         if (visible && !lastVisible) {
             mainPanel.SetActive(true);
             topPanel.SetActive(true);
-            buildUI();
+            //buildUI();
         }
 
         if (!visible) {
@@ -119,12 +119,12 @@ public class StatUI : MonoBehaviour {
         lastVisible = visible;
     }
 
-    void buildUI() {
+    void buildUI(int level) {
         actions.Clear();
         valueTable.Clear();
         buttons.Clear();
 
-        for (int i = 0, len = stats.level + 2; i < len; ++i) {
+        for (int i = 0, len = level + 2; i < len; ++i) {
             Stat stat = stats.get(i);
             if (stat == null) {
                 Debug.Log("PROBLEM");
