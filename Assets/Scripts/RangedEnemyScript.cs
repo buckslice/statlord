@@ -21,10 +21,17 @@ public class RangedEnemyScript : MonoBehaviour
         timeBetweenShot -= Time.deltaTime;
         if (timeBetweenShot <= 0.0f)
         {
-            Projectile projectileType;
-            if (gameObject.name.Contains("Ranger"))
+            Projectile projectileType,projectileType2;
+            if (gameObject.name.Contains("CrossBowMan"))
             {
                 projectileType = projMan.getArrow();
+                projectileType2 = projMan.getArrow();
+                FireTwinArrow(projectileType, projectileType2);
+            }
+            else if (gameObject.name.Contains("Ranger"))
+            {
+                projectileType = projMan.getArrow();
+                
                 FireArrow(projectileType);
             }
             else
@@ -34,6 +41,25 @@ public class RangedEnemyScript : MonoBehaviour
             }
             timeBetweenShot = 3.0f;
         }
+    }
+
+    void FireTwinArrow(Projectile proj, Projectile proj2)
+    {
+
+        proj.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
+        proj.transform.rotation = transform.rotation;
+        proj.transform.position = transform.position + transform.right;
+        proj.damage = 4;
+
+        proj2.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
+        proj2.transform.rotation = transform.rotation;
+        proj2.transform.position = transform.position - transform.right;
+        proj2.damage = 4;
+
+
+        proj.rb.AddForce(transform.forward * 800);
+
+        //proj.gameObject.tag = "EnemyProjectile";
     }
 
     void FireArrow(Projectile proj)
