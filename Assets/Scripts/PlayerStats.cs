@@ -63,11 +63,9 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.multishot, 1.0f, 1.0f),
         new Stat(Stats.mitigation, 0.0f, 1.0f),
         new Stat(Stats.pierce, 0.0f, 1.0f),
-        new Stat(Stats.manaRegen, 0.0f, 0.2f),
         new Stat(Stats.healthRegen, 0.0f, 0.2f),
         new Stat(Stats.critChance, 0.0f, 1.0f),
         new Stat(Stats.roll, 0.0f, 1.0f),
-        new Stat(Stats.manaOnKill, 0.0f, 0.1f),
         new Stat(Stats.healthOnKill, 0.0f, 0.1f),
 
         //Joke stats (unlock at random)
@@ -109,6 +107,10 @@ public class PlayerStats : MonoBehaviour {
             return null;
         }
         return stats[index];
+    }
+
+    public int numStats() {
+        return stats.Length;
     }
 
     public void fireProjectile(PType type) {
