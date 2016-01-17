@@ -63,11 +63,9 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.multishot, 1.0f, 1.0f),
         new Stat(Stats.mitigation, 0.0f, 1.0f),
         new Stat(Stats.pierce, 0.0f, 1.0f),
-        new Stat(Stats.manaRegen, 0.0f, 0.2f),
         new Stat(Stats.healthRegen, 0.0f, 0.2f),
         new Stat(Stats.critChance, 0.0f, 1.0f),
         new Stat(Stats.roll, 0.0f, 1.0f),
-        new Stat(Stats.manaOnKill, 0.0f, 0.1f),
         new Stat(Stats.healthOnKill, 0.0f, 0.1f),
 
         //Joke stats (unlock at random)
@@ -111,7 +109,7 @@ public class PlayerStats : MonoBehaviour {
         return stats[index];
     }
 
-    public void fireProjectile(PType type) {
+    public void fireProjectile(PType type, float pierceAmount) {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
 
@@ -121,7 +119,7 @@ public class PlayerStats : MonoBehaviour {
         p.transform.rotation = transform.rotation;
 
         p.damage = damage;
-
+        p.SetPierceAmount(pierceAmount);
         p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value);
 
         p.gameObject.tag = Tags.PlayerProjectile;

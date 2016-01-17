@@ -24,6 +24,7 @@ public class ProjectileManager : MonoBehaviour {
         switch (type) {
             case PType.ARROW:
                 x = Instantiate(arrow, transform.position, Quaternion.identity) as GameObject;
+                
                 break;
             case PType.FIREBALL:
                 x = Instantiate(fireball, transform.position, Quaternion.identity) as GameObject;
