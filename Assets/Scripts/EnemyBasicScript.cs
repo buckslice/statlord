@@ -11,10 +11,11 @@ public enum EnemyType {
 
 public class EnemyBasicScript : MonoBehaviour {
     public EnemyType type;
-    public int hp { get; set; }
+    public float hp { get; set; }
     private SpawnManager manager;
     Transform player; // reference to the player position 
     NavMeshAgent nav; // reference to the  nav mesh agent used to move locate and move towards player 
+    private bool dying = false;
 
     // "animation" variables
     private Transform model;
@@ -22,16 +23,56 @@ public class EnemyBasicScript : MonoBehaviour {
     float timer = 0.0f;
     float xx = 0.0f;
 
+
+    public void Start ()
+    {
+        if (this.gameObject.name.Contains("Ranger"))
+        {
+            hp = 10.0f;
+        }
+        else if (this.gameObject.name.Contains("Mage"))
+        {
+            hp = 8.0f;
+        }
+        else if (this.gameObject.name.Contains("Ogre"))
+        {
+            hp = 15.0f;
+        }
+        else
+        {
+            hp = 5.0f;
+
+        }
+    }
     public void initialize(SpawnManager manager) {
         this.manager = manager;
         model = transform.Find("Model").transform;
         player = GameObject.Find("Player").transform;
         nav = GetComponent<NavMeshAgent>();
         reset();
+
+
+
     }
 
     public void reset() {
-        hp = 5;
+        if (this.gameObject.name.Contains("Ranger"))
+        {
+            hp = 10.0f;
+        }
+        else if (this.gameObject.name.Contains("Mage"))
+        {
+            hp = 8.0f;
+        }
+        else if (this.gameObject.name.Contains("Orc"))
+        {
+            hp = 15.0f;
+        }
+        else
+        {
+            hp = 5.0f;
+
+        }
     }
 
     // Update is called once per frame
@@ -76,13 +117,18 @@ public class EnemyBasicScript : MonoBehaviour {
         }
     }
 
-    private bool dying = false;
+    
     void OnTriggerEnter(Collider c) {
         if (c.gameObject.tag == Tags.PlayerProjectile) {
-            if (!dying) {
+            
+            
+            hp -= player.GetComponent<PlayerStats>().get(Stats.attack).value;
+            
+            if (dying) {
                 StartCoroutine(fallOverThenDie());
                 dying = true;
             }
+
             //manager.returnEnemy(gameObject);
         }
     }

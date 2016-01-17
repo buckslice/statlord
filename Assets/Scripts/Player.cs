@@ -88,7 +88,7 @@ public class Player : MonoBehaviour {
         // die if no health
         if (stats.get(Stats.health).value <= 0.0f) {
             // do something here eventually
-            Debug.Log("DED");
+
         }
 
     }
