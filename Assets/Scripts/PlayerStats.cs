@@ -6,9 +6,9 @@ public class Stats {
     public static string attack = "attack";
     public static string health = "health";
     public static string moveSpeed = "moveSpeed";
-    public static string mana = "mana";
     public static string attackRate = "attackRate";
 
+    public static string fireballChance = "fireballChance";
     public static string jumpSpeed = "jumpSpeed";
     public static string shotSpeed = "shotSpeed";
     public static string multishot = "multishot";
@@ -54,10 +54,10 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.attack, 1.0f, 1.0f),
         new Stat(Stats.health, 3.0f, 1.0f),
         new Stat(Stats.moveSpeed, 5.0f, 1.0f),
-        new Stat(Stats.mana, 3.0f, 1.0f),
         new Stat(Stats.attackRate, 1.0f, -.1f),
 
         //Additional stats (unlock at random)
+        new Stat(Stats.fireballChance, 0.0f, 2.0f),
         new Stat(Stats.jumpSpeed, 5.0f, 1.0f),
         new Stat(Stats.shotSpeed, 1000.0f, 100.0f),
         new Stat(Stats.multishot, 1.0f, 1.0f),
