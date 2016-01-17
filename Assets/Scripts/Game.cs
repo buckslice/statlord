@@ -26,6 +26,7 @@ public class Game : MonoBehaviour {
         frontInd = transform.Find("LevelIndicator").GetComponent<Text>();
         backInd = transform.Find("LevelIndicatorBack").GetComponent<Text>();
 
+        player.reset();
         spawnGuys();
         if (debug)
         {
@@ -101,7 +102,7 @@ public class Game : MonoBehaviour {
         backInd.text = "Level " + level;
         StartCoroutine(fadeOutText());
 
-        player.transform.position = Vector3.zero;
+        player.reset();
         player.freezeUpdate = false;
         betweenLevels = false;
         spawnGuys();

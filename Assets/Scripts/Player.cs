@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
 
     // timers
     private float timeSinceAttack = 0.0f;
+    private float curHealth = 1.0f;
 
     // Use this for initialization
     void Start() {
@@ -21,7 +22,7 @@ public class Player : MonoBehaviour {
         stats = GetComponent<PlayerStats>();
         cam = Camera.main.transform;
         camStart = cam.position;
-        Application.runInBackground=true;
+        Application.runInBackground = true;
     }
 
     // Update is called once per frame
@@ -29,7 +30,7 @@ public class Player : MonoBehaviour {
 
         // find where on ground plane your mouse is pointing and look there
         RaycastHit info;
-        if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out info, 1000.0f, 1 << 8)){
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out info, 1000.0f, 1 << 8)) {
             Vector3 fw = info.point - tform.position;
             fw.y = 0.0f;
             fw.Normalize();
@@ -70,15 +71,12 @@ public class Player : MonoBehaviour {
             timeSinceAttack = stats.get(Stats.attackRate).value;
             float chanceForFireball = stats.get(Stats.fireballChance).value;
             int chance = Random.Range(0, 100);
-            if (chance <=chanceForFireball)
-            {
+            if (chance <= chanceForFireball) {
                 stats.fireProjectile(PType.FIREBALL, stats.get(Stats.pierce).value);
-            }
-            else
-            {
+            } else {
                 stats.fireProjectile(PType.ARROW, stats.get(Stats.pierce).value);
             }
-            
+
         }
         //else if (Input.GetMouseButton(1) && timeSinceAttack < 0.0f) {
         //    timeSinceAttack = stats.get(Stats.attackRate).value;
@@ -86,18 +84,21 @@ public class Player : MonoBehaviour {
         //}
 
         // die if no health
-        if (stats.get(Stats.health).value <= 0.0f) {
+        if (curHealth <= 0.0f) {
             // do something here eventually
 
         }
 
     }
 
-    void OnTriggerEnter(Collider c)
-    {
-        if ((c.gameObject.tag == Tags.EnemyProjectile) || (c.gameObject.tag == Tags.Enemy))
-        {
-            stats.changeHealth(-1.0f);
+    public void reset() {
+        transform.position = Vector3.zero;
+        curHealth = stats.get(Stats.health).value;
+    }
+
+    void OnTriggerEnter(Collider c) {
+        if ((c.gameObject.tag == Tags.EnemyProjectile) || (c.gameObject.tag == Tags.Enemy)) {
+            curHealth -= 1.0f;
         }
     }
 
@@ -106,8 +107,8 @@ public class Player : MonoBehaviour {
         Vector3 castStart = tform.position + new Vector3(0.0f, 0.5f, 0.0f);
         RaycastHit info;
         grounded = Physics.SphereCast(castStart, 0.25f, Vector3.down, out info, 0.5f);
-        if(myRigidbody.velocity.y > 0.1f) { // prevent double jumping
-           grounded = false;
+        if (myRigidbody.velocity.y > 0.1f) { // prevent double jumping
+            grounded = false;
         }
     }
 

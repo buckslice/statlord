@@ -107,6 +107,10 @@ public class PlayerStats : MonoBehaviour {
         return stats[index];
     }
 
+    public int numStats() {
+        return stats.Length;
+    }
+
     public void fireProjectile(PType type, float pierceAmount) {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
@@ -133,11 +137,6 @@ public class PlayerStats : MonoBehaviour {
         //    // build and fire bullet        
 
         //}
-    }
-
-
-    public void changeHealth(float value) {
-        get(Stats.health).value += value;
     }
 
 }

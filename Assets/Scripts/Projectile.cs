@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour {
     private GameObject mesh;
     private Collider col;
     private ParticleSystem.EmissionModule psem;
-    private Light light;
+    private Light lightComp;
 
     // called my manager
     public void initialize(ProjectileManager manager, PType type) {
@@ -27,7 +27,7 @@ public class Projectile : MonoBehaviour {
         col = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
         psem = transform.Find("Particles").GetComponent<ParticleSystem>().emission;
-        light = GetComponent<Light>();
+        lightComp = GetComponent<Light>();
         this.manager = manager;
         this.type = type;
         reset();
@@ -37,8 +37,8 @@ public class Projectile : MonoBehaviour {
         mesh.SetActive(true);
         psem.enabled = true;
         col.enabled = true;
-        if (light) {
-            light.enabled = true;
+        if (lightComp) {
+            lightComp.enabled = true;
         }
         dying = false;
         life = 3.0f;
@@ -83,8 +83,8 @@ public class Projectile : MonoBehaviour {
         mesh.SetActive(false);
         psem.enabled = false;
         col.enabled = false;
-        if (light) {
-            light.enabled = false;
+        if (lightComp) {
+            lightComp.enabled = false;
         }
 
         yield return new WaitForSeconds(5.0f);

@@ -24,52 +24,37 @@ public class EnemyBasicScript : MonoBehaviour {
     float xx = 0.0f;
 
 
-    public void Start ()
-    {
-        if (this.gameObject.name.Contains("Ranger"))
-        {
-            hp = 10.0f;
-        }
-        else if (this.gameObject.name.Contains("Mage"))
-        {
-            hp = 8.0f;
-        }
-        else if (this.gameObject.name.Contains("Ogre"))
-        {
-            hp = 15.0f;
-        }
-        else
-        {
-            hp = 5.0f;
-
+    public void Start() {
+        switch (type) {
+            case EnemyType.ORC:
+                hp = 3.0f;
+                break;
+            case EnemyType.SKELETON:
+                hp = 2.0f;
+                break;
+            default:
+                hp = 1.0f;
+                break;
         }
     }
+
     public void initialize(SpawnManager manager) {
         this.manager = manager;
         model = transform.Find("Model").transform;
         player = GameObject.Find("Player").transform;
         nav = GetComponent<NavMeshAgent>();
         reset();
-
-
-
+        
     }
 
     public void reset() {
-        if (this.gameObject.name.Contains("Ranger"))
-        {
+        if (this.gameObject.name.Contains("Ranger")) {
             hp = 10.0f;
-        }
-        else if (this.gameObject.name.Contains("Mage"))
-        {
+        } else if (this.gameObject.name.Contains("Mage")) {
             hp = 8.0f;
-        }
-        else if (this.gameObject.name.Contains("Orc"))
-        {
+        } else if (this.gameObject.name.Contains("Orc")) {
             hp = 15.0f;
-        }
-        else
-        {
+        } else {
             hp = 5.0f;
 
         }
@@ -117,13 +102,13 @@ public class EnemyBasicScript : MonoBehaviour {
         }
     }
 
-    
+
     void OnTriggerEnter(Collider c) {
         if (c.gameObject.tag == Tags.PlayerProjectile) {
-            
-            
+
+
             hp -= player.GetComponent<PlayerStats>().get(Stats.attack).value;
-            
+
             if (dying) {
                 StartCoroutine(fallOverThenDie());
                 dying = true;
