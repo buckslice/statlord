@@ -21,6 +21,7 @@ public class Player : MonoBehaviour {
         stats = GetComponent<PlayerStats>();
         cam = Camera.main.transform;
         camStart = cam.position;
+        Application.runInBackground=true;
     }
 
     // Update is called once per frame
@@ -76,8 +77,17 @@ public class Player : MonoBehaviour {
         // die if no health
         if (stats.get(Stats.health).value <= 0.0f) {
             // do something here eventually
+            Debug.Log("DED");
         }
 
+    }
+
+    void OnTriggerEnter(Collider c)
+    {
+        if ((c.gameObject.tag == Tags.EnemyProjectile) || (c.gameObject.tag == Tags.Enemy))
+        {
+            stats.changeHealth(-1.0f);
+        }
     }
 
     void FixedUpdate() {

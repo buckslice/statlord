@@ -44,6 +44,11 @@ public class Projectile : MonoBehaviour {
             returnSelf();
         }
 
+        if (col.gameObject.tag == Tags.Player)
+        {
+            returnSelf();
+        }
+
         if (col.gameObject.tag == Tags.Wall) {
             returnSelf();
         }
