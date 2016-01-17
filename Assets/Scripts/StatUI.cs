@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class StatUI : MonoBehaviour {
 
-    public int level = 1;
     public bool visible = false;
     public Font font;
     public Sprite buttonSprite;
@@ -125,7 +124,7 @@ public class StatUI : MonoBehaviour {
         valueTable.Clear();
         buttons.Clear();
 
-        for (int i = 0, len = level + 2; i < len; ++i) {
+        for (int i = 0, len = stats.level + 2; i < len; ++i) {
             Stat stat = stats.get(i);
             if (stat == null) {
                 Debug.Log("PROBLEM");

@@ -8,9 +8,17 @@ public class Stats {
     public static string moveSpeed = "moveSpeed";
     public static string jumpSpeed = "jumpSpeed";
     public static string attackSpeed = "attackSpeed";
+    public static string attackForce = "attackForce";
     public static string multishot = "multishot";
+    // mitigation
+    // pierce amount = 1.0f
 
 }
+
+// these should be in player stats
+//public float shotForce = 1000f;
+//public float fireRate = 4f;
+//public float nextFire = 0.0f; 
 
 //public enum StatType {
 //    attack,
@@ -49,49 +57,65 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.moveSpeed, 5.0f, 1.0f),
 
         new Stat(Stats.jumpSpeed, 5.0f, 1.0f),
-        new Stat(Stats.attackSpeed, 2.0f, -.1f),
+        new Stat(Stats.attackSpeed, 1.0f, -.1f),
+        new Stat(Stats.attackForce, 1000.0f, 100.0f),
         new Stat(Stats.multishot, 1.0f, 1.0f),
 
     };
 
     //private StatTable stats;
     private Dictionary<string, int> lookup = new Dictionary<string, int>();
-    public int level = 1;   // determines how many stats are available
-
+    private ProjectileManager projectileManager;
+    public int level = 1;
+    // timers
+    private float timeSinceAttack = 0.0f;
 
     void Awake() {
         // build lookup table from stats
         for (int i = 0; i < stats.Length; i++) {
             lookup.Add(stats[i].name, i);
         }
+        projectileManager = GameObject.Find("ProjectileManager").GetComponent<ProjectileManager>();
     }
 
     // return current stat
     public Stat get(string name) {
-        int index = lookup[name];
+        int index;
+        if (lookup.TryGetValue(name, out index)) {
+            return stats[index];
+        }
+        return null;
+    }
+
+    // return current stat
+    public Stat get(int index) {
+        if (index < 0 || index >= stats.Length) {
+            return null;
+        }
         return stats[index];
     }
 
-    public void fireBullet(BulletCollider bullet, float shotForce) {
+    public void fireProjectile() {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
 
-        bullet.transform.position= transform.position + new Vector3(0, 2, 0) + (transform.forward*1.05f);
+        Projectile p = projectileManager.getProjectile();
+        p.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
+        p.transform.rotation = transform.rotation;
 
-        bullet.transform.rotation = transform.rotation;
-        bullet.setDamage(damage);
-        
+        p.damage = damage;
 
-        bullet.GetComponent<Rigidbody>().AddForce(transform.forward * shotForce);
-        //bullet.transform.rotation
+        p.rb.AddForce(transform.forward * get(Stats.attackForce).value);
 
-        bullet.gameObject.tag = "PlayerProjectile";
+        p.gameObject.tag = "PlayerProjectile";
 
-        int multishot = Mathf.RoundToInt(get(Stats.multishot).value);
-        for (int i = 0; i < multishot; ++i) {
-            // probably change angle for each bullet depending on multishot
-            // build and fire bullet        
-        }
+
+        //int multishot = Mathf.RoundToInt(get(Stats.multishot).value);
+        //for (int i = 0; i < multishot; ++i) {
+        //    // probably change angle for each bullet depending on multishot
+        //    // build and fire bullet        
+
+        //}
     }
 
     public void changeHealth(float value) {
@@ -102,6 +126,12 @@ public class PlayerStats : MonoBehaviour {
     void Update() {
         if (get(Stats.health).value <= 0.0f) {
             // die
+        }
+
+        timeSinceAttack -= Time.deltaTime;
+        if (Input.GetMouseButton(0) && timeSinceAttack < 0.0f) {
+            timeSinceAttack = get(Stats.attackSpeed).value;
+            fireProjectile();
         }
 
     }

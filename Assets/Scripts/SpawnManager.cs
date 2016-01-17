@@ -4,62 +4,56 @@ using System.Collections.Generic;
 
 public class SpawnManager : MonoBehaviour {
     public GameObject enemy;
-    private GameObject player;
+    private PlayerStats player;
     public float startTime, spawnRate;
-    public int numOfEnemies;
-    private int playerLevel;
-    private List<GameObject> enabledEnemies, disabledEnemies;
+    public int maxEnemies;
+    private List<GameObject> pool;
     private GameObject[] spawnLocations;
 
-    void Awake()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerLevel = player.GetComponent<PlayerStats>().level;
+    void Awake() {
+        player = GameObject.Find("Player").GetComponent<PlayerStats>();
         spawnLocations = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        disabledEnemies = new List<GameObject>();
-        enabledEnemies = new List<GameObject>();
+        pool = new List<GameObject>();
     }
-	// Use this for initialization
-	void Start () {
-        for (int i = 0; i <= numOfEnemies;i++ )
-        {
-            SpawnEnemy();
+    // Use this for initialization
+    void Start() {
+        for (int i = 0; i <= maxEnemies; i++) {
+            BuildEnemy();
         }
-        InvokeRepeating("EnableEnemy", startTime, spawnRate);
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
 
-	}
-
-    void SpawnEnemy()
-    {
-        int rng = Random.Range(0, spawnLocations.Length);
-        GameObject x = Instantiate(enemy, spawnLocations[rng].transform.position, Quaternion.identity) as GameObject;
-        
+    void BuildEnemy() {
+        GameObject x = Instantiate(enemy, Vector3.zero, Quaternion.identity) as GameObject;
+        x.GetComponent<EnemyBasicScript>().initialize(this);
+        x.transform.parent = transform;
         x.SetActive(false);
-        x.gameObject.tag = "Enemy";
-        disabledEnemies.Add(x);
+        x.gameObject.tag = Tags.Enemy;
+        pool.Add(x);
     }
-    void EnableEnemy()
-    {
-        try
-        {
-            disabledEnemies[0].SetActive(true);
-            disabledEnemies[0].GetComponent<EnemyBasicScript>().SetHP(playerLevel);
-            //enabledEnemies.Add(disabledEnemies[0]);
-            disabledEnemies.Remove(disabledEnemies[0]);
-            
-        }
-        catch
-        {
-            CancelInvoke();
+
+    float spawnTime = 0.0f;
+
+    // Update is called once per frame
+    void Update() {
+        spawnTime -= Time.deltaTime;
+        if (spawnTime < 0.0f) {
+            spawnTime = spawnRate;
+            if (pool.Count > 0) {
+                int last = pool.Count - 1;
+                GameObject enemy = pool[last];
+                pool.RemoveAt(last);
+
+                enemy.SetActive(true);
+                enemy.GetComponent<EnemyBasicScript>().hp = player.level;
+
+                int rng = Random.Range(0, spawnLocations.Length);
+                enemy.transform.position = spawnLocations[rng].transform.position;
+            }
         }
     }
 
-    public void addToEnemyPool(GameObject deadEnemy)
-    {
-        disabledEnemies.Add(deadEnemy);
+    public void returnEnemy(GameObject deadEnemy) {
+        deadEnemy.gameObject.SetActive(false);
+        pool.Add(deadEnemy);
     }
 }
