@@ -1,9 +1,0 @@
-newmtl B_ldm_RomeColosseum_T3:B_ldm_RomeColosseum_T3_L1
-illum 4
-Kd 0.00 0.00 0.00
-Ka 0.10 0.10 0.10
-Tf 1.00 1.00 1.00
-map_Kd B_ldm_RomeColosseum_T3_dif_L1.dds
-Ni 1.00
-Ks 0.00 0.00 0.00
-Ns 0.42

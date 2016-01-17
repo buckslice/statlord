@@ -11,13 +11,11 @@ public class SimpleMobNav : MonoBehaviour {
         player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
         nav = GetComponent<NavMeshAgent>();
 
-
-
     }
+
 
     void Update()
     {
         nav.SetDestination(player.position);
-
     }
 }

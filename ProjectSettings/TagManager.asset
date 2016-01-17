@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Projectile
+  - PlayerProjectile
   - Enemy
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

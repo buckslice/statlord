@@ -56,6 +56,8 @@ public class PlayerStats : MonoBehaviour {
 
     //private StatTable stats;
     private Dictionary<string, int> lookup = new Dictionary<string, int>();
+    public int level = 1;   // determines how many stats are available
+
 
     void Awake() {
         // build lookup table from stats
@@ -64,24 +66,26 @@ public class PlayerStats : MonoBehaviour {
         }
     }
 
-    // return current stat from string
+    // return current stat
     public Stat get(string name) {
         int index = lookup[name];
         return stats[index];
     }
 
-    // return stat from index
-    public Stat get(int index) {
-        if (index < 0 || index >= stats.Length) {
-            Debug.Log("invalid stat index");
-            return null;
-        }
-        return stats[index];
-    }
-
-    public void fireBullet() {
+    public void fireBullet(BulletCollider bullet, float shotForce) {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
+
+        bullet.transform.position= transform.position + new Vector3(0, 2, 0) + (transform.forward*1.05f);
+
+        bullet.transform.rotation = transform.rotation;
+        bullet.setDamage(damage);
+        
+
+        bullet.GetComponent<Rigidbody>().AddForce(transform.forward * shotForce);
+        //bullet.transform.rotation
+
+        bullet.gameObject.tag = "PlayerProjectile";
 
         int multishot = Mathf.RoundToInt(get(Stats.multishot).value);
         for (int i = 0; i < multishot; ++i) {

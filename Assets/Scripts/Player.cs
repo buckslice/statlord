@@ -9,12 +9,19 @@ public class Player : MonoBehaviour {
     private PlayerStats stats;
     private Transform cam;
     private Vector3 camStart;
+    private BulletManager bullMan;
+
+    public float shotForce = 1000f;
+    public float fireRate = 4f;
+    public float nextFire = 0.0f; 
+
 
     // Use this for initialization
     void Start() {
         tform = transform;
         myRigidbody = GetComponent<Rigidbody>();
         stats = GetComponent<PlayerStats>();
+        bullMan = GetComponent<BulletManager>();
         cam = Camera.main.transform;
         camStart = cam.position;
     }
@@ -50,6 +57,14 @@ public class Player : MonoBehaviour {
         myRigidbody.velocity = new Vector3(dir.x, newY, dir.z);
 
         cam.position = camStart + transform.position;
+
+        if (Input.GetMouseButton(0) && Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            stats.fireBullet(bullMan.EnableBullet(), shotForce);
+        }
+
+
     }
 
     void FixedUpdate() {
