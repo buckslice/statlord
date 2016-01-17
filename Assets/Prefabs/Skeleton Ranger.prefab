@@ -25,10 +25,10 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 493164}
-  - 65: {fileID: 6585572}
   - 195: {fileID: 19595748}
   - 114: {fileID: 11428182}
   - 114: {fileID: 11430198}
+  - 136: {fileID: 13604138}
   m_Layer: 0
   m_Name: Skeleton Ranger
   m_TagString: Untagged
@@ -43,7 +43,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155752}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.135}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 493164}
@@ -55,7 +55,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -247.45348, y: -1.5806336, z: -713.3427}
+  m_LocalPosition: {x: -1.99, y: 0, z: -2.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 478780}
@@ -94,18 +94,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155752}
   m_Mesh: {fileID: 4300000, guid: eae0aafd64a33904f83f2c8c6b498a1e, type: 3}
---- !u!65 &6585572
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 168290}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 2.25, z: 1}
-  m_Center: {x: 0, y: 1.125, z: 0}
 --- !u!114 &11428182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -129,6 +117,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e61567248d071643a46bf107f38d961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &13604138
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 168290}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2.2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.1, z: 0}
 --- !u!195 &19595748
 NavMeshAgent:
   m_ObjectHideFlags: 1
@@ -141,7 +142,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 18
+  m_StoppingDistance: 12
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -166,7 +167,7 @@ Prefab:
       objectReference: {fileID: 4300000, guid: eae0aafd64a33904f83f2c8c6b498a1e, type: 3}
     - target: {fileID: 0}
       propertyPath: m_StoppingDistance
-      value: 18
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SpawnManager : MonoBehaviour
-{
+public class SpawnManager : MonoBehaviour {
     public GameObject Skeleton, Ranger, Mage, CrossBowMan;
     private PlayerStats player;
     public float startTime, spawnRate;
@@ -11,40 +10,29 @@ public class SpawnManager : MonoBehaviour
     private List<GameObject> pool;
     private GameObject[] spawnLocations;
 
-    void Awake()
-    {
+    void Awake() {
         player = GameObject.Find("Player").GetComponent<PlayerStats>();
         spawnLocations = GameObject.FindGameObjectsWithTag("SpawnPoint");
         pool = new List<GameObject>();
     }
     // Use this for initialization
-    void Start()
-    {
-        for (int i = 0; i <= maxEnemies; i++)
-        {
+    void Start() {
+        for (int i = 0; i <= maxEnemies; i++) {
             BuildEnemy();
         }
     }
 
-    void BuildEnemy()
-    {
+    void BuildEnemy() {
         GameObject x;
         int rng = Random.Range(0, 25);
-        if (rng <= 5)
-        {
+        if (rng <= 5) {
             x = Instantiate(Skeleton, Vector3.zero, Quaternion.identity) as GameObject;
 
-        }
-        else if (rng <= 10)
-        {
+        } else if (rng <= 10) {
             x = Instantiate(Ranger, Vector3.zero, Quaternion.identity) as GameObject;
-        }
-        else if (rng <= 20)
-        {
+        } else if (rng <= 20) {
             x = Instantiate(Mage, Vector3.zero, Quaternion.identity) as GameObject;
-        }
-        else
-        {
+        } else {
             x = Instantiate(CrossBowMan, Vector3.zero, Quaternion.identity) as GameObject;
         }
 
@@ -58,14 +46,11 @@ public class SpawnManager : MonoBehaviour
     float spawnTime = 0.0f;
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         spawnTime -= Time.deltaTime;
-        if (spawnTime < 0.0f)
-        {
+        if (spawnTime < 0.0f) {
             spawnTime = spawnRate;
-            if (pool.Count > 0)
-            {
+            if (pool.Count > 0) {
                 int last = pool.Count - 1;
                 GameObject enemy = pool[last];
                 pool.RemoveAt(last);
@@ -79,8 +64,7 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    public void returnEnemy(GameObject deadEnemy)
-    {
+    public void returnEnemy(GameObject deadEnemy) {
         deadEnemy.gameObject.SetActive(false);
         pool.Add(deadEnemy);
     }

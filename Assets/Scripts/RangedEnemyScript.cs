@@ -50,8 +50,8 @@ public class RangedEnemyScript : MonoBehaviour {
         proj.rb.AddForce(transform.forward * 800);
         proj2.rb.AddForce(transform.forward * 800);
 
-        proj.gameObject.tag = "EnemyProjectile";
-        proj2.gameObject.tag = "EnemyProjectile";
+        proj.gameObject.tag = Tags.EnemyProjectile;
+        proj2.gameObject.tag = Tags.EnemyProjectile;
     }
 
     void FireArrow(Projectile proj) {
@@ -63,7 +63,7 @@ public class RangedEnemyScript : MonoBehaviour {
 
         proj.rb.AddForce(transform.forward * 800);
 
-        proj.gameObject.tag = "EnemyProjectile";
+        proj.gameObject.tag = Tags.EnemyProjectile;
     }
 
     void FireFireball(Projectile proj) {
@@ -75,6 +75,6 @@ public class RangedEnemyScript : MonoBehaviour {
 
         proj.rb.AddForce(transform.forward * 800);
 
-        proj.gameObject.tag = "EnemyProjectile";
+        proj.gameObject.tag = Tags.EnemyProjectile;
     }
 }
