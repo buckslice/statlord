@@ -17,6 +17,7 @@ public class Stats {
     public static string healthRegen = "healthRegen";
     public static string critChance = "critChance";
     public static string healthOnKill = "healthOnKill";
+    public static string dodge = "dodge";
 
     public static string bloom = "bloom";
     public static string cameraShake = "cameraShake";
@@ -56,22 +57,25 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.attackRate, 1.0f, -.05f, 0.1f),          //implemented
 
         //Additional stats (unlock at random)
-        new Stat(Stats.fireballChance, 0.0f, 0.05f, 1.0f),      //implemented
+        new Stat(Stats.fireballChance, 0.0f, 0.05f, 1.0f),      //implemented in Player.cs
         new Stat(Stats.jumpSpeed, 5.0f, 0.5f, 20.0f),           //implemented
         new Stat(Stats.shotSpeed, 8.0f, 1.0f, 20.0f),           //implemented
         new Stat(Stats.multishot, 1.0f, 0.25f, 5.0f),
-        new Stat(Stats.mitigation, 0.0f, 0.05f, 0.8f),
-        new Stat(Stats.pierce, 0.0f, 0.5f, 10.0f),              //implemented
-        new Stat(Stats.healthRegen, 0.0f, 0.2f, 2.0f),
-        new Stat(Stats.critChance, 0.0f, 0.05f, 1.0f),
-        new Stat(Stats.healthOnKill, 0.0f, 0.2f, 5.0f),
+        new Stat(Stats.mitigation, 0.0f, 0.05f, 0.8f),          //implemented in Player.cs in OnTriggerEnter
+        new Stat(Stats.pierce, 0.0f, 0.5f, 10.0f),              //implemented in Projectile.cs
+        new Stat(Stats.healthRegen, 0.0f, 0.2f, 2.0f),          //implemented in Player.cs
+        new Stat(Stats.critChance, 0.0f, 0.05f, 1.0f),          //implemented in PlayerStats.cs 
+        new Stat(Stats.healthOnKill, 0.0f, 0.2f, 5.0f),         //implemented in EnemyBasicScript.cs
+        new Stat(Stats.dodge, 0.0f, 1.0f, 0.5f),                //implemented in Player.cs in OnTriggerEnter
+
+
 
         //Joke stats (unlock at random)
-        new Stat(Stats.bloom, 1.25f, 2.0f, 30.0f),      //implemented
+        new Stat(Stats.bloom, 1.25f, 2.0f, 30.0f),              //implemented
         //new Stat(Stats.randomize, 0.0f, 1.0f),
         //new Stat(Stats.enemySize, 1.0f, 0.1f),
         //new Stat(Stats.playerSize, 1.0f, 0.1f),
-        new Stat(Stats.cameraShake, 1.0f, 0.5f,5.0f),
+        new Stat(Stats.cameraShake, 1.0f, 0.5f,5.0f),           //implemented
         //new Stat(Stats.deleteTextures, 0.0f, 2.5f),
         //new Stat(Stats.doorsPerMinute, 0.0f, 1.0f),
         //new Stat(Stats.uiSize, 1.0f, 0.1f),
@@ -120,6 +124,7 @@ public class PlayerStats : MonoBehaviour {
         p.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
         p.transform.rotation = transform.rotation;
 
+        //crit chance
         p.damage = damage;
         if (Random.value < get(Stats.critChance).value) {
             p.damage += damage;

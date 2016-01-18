@@ -8,10 +8,11 @@ public class Player : MonoBehaviour {
     public bool grounded = true;
     private PlayerStats stats;
     private CameraManager cam;
-
+    
     // timers
     private float timeSinceAttack = 0.0f;
-    private float curHealth = 1.0f;
+    public float curHealth = 1.0f;
+    private float timeSinceRegen = 10.0f;
 
     // Use this for initialization
     void Start() {
@@ -63,6 +64,8 @@ public class Player : MonoBehaviour {
         timeSinceAttack -= Time.deltaTime;
         if (Input.GetMouseButton(0) && timeSinceAttack < 0.0f) {
             timeSinceAttack = stats.get(Stats.attackRate).value;
+
+            //fireball chance
             if (Random.value < stats.get(Stats.fireballChance).value) {
                 stats.fireProjectile(PType.FIREBALL);
             } else {
@@ -74,6 +77,13 @@ public class Player : MonoBehaviour {
         //    timeSinceAttack = stats.get(Stats.attackRate).value;
         //    stats.fireProjectile(PType.FIREBALL);
         //}
+
+        timeSinceRegen -= Time.deltaTime;
+        if (timeSinceRegen <=0.0f)
+        {
+            curHealth += stats.get(Stats.healthRegen).value;
+        }
+
 
         // die if no health
         if (curHealth <= 0.0f) {
@@ -89,9 +99,25 @@ public class Player : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider c) {
+        float dodge = stats.get(Stats.dodge).value;
+        float rng = Random.value;
+        if (dodge < rng)
+        {
+            return;
+        }
+
         if ((c.gameObject.tag == Tags.EnemyProjectile) || (c.gameObject.tag == Tags.Enemy)) {
             float damage = c.gameObject.GetComponent<Projectile>().damage;
-            curHealth -= damage;
+            float mitigate = stats.get(Stats.mitigation).value;
+            if (mitigate >0)
+            {
+                damage = damage * mitigate;
+            }
+            else
+            {
+                curHealth -= damage;
+            }
+
             cam.addShake(damage);
         }
     }
