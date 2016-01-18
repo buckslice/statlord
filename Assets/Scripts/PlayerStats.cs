@@ -64,7 +64,7 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.critDamage, 1.0f, 0.2f, 3.0f ),
         new Stat(Stats.lifesteal, 0.0f, 0.2f, 2.0f),            //implemented in EnemyBasicScript.cs
         new Stat(Stats.dodge, 0.0f, 0.05f, 1.0f),                //implemented in Player.cs in OnTriggerEnter
-        new Stat(Stats.freeze, 0.0f, 0.05f, 1.0f),
+        new Stat(Stats.freeze, 0.0f, 0.1f, 1.0f),
         new Stat(Stats.bloom, 1.0f, 2.0f, 30.0f),              //implemented
         new Stat(Stats.cameraShake, 1.0f, 0.5f,5.0f),           //implemented
         

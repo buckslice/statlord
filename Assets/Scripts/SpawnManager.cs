@@ -58,7 +58,7 @@ public class SpawnManager : MonoBehaviour {
         }
         spawnTime -= Time.deltaTime;
         if (spawnTime < 0.0f) {
-            spawnTime = 1.0f;
+            spawnTime = 1.25f;
             if (pool.Count > 0) {
                 int last = pool.Count - 1;
                 GameObject enemy = pool[last];

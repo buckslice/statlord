@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public enum EnemyType {
@@ -12,6 +13,7 @@ public enum EnemyType {
 public class EnemyBasicScript : MonoBehaviour {
     public EnemyType type;
     public float hp { get; set; }
+    private float maxhp;
     private SpawnManager manager;
     Transform player; // reference to the player position 
     NavMeshAgent nav; // reference to the  nav mesh agent used to move locate and move towards player 
@@ -25,23 +27,42 @@ public class EnemyBasicScript : MonoBehaviour {
     float yoff = 0.0f;
     float timer = 0.0f;
     float xx = 0.0f;
-
+    private Image healthBar;
+    private Image backBar;
 
     public void Start() {
         canvas = GameObject.Find("StatUI").GetComponent<RectTransform>();
         game = canvas.GetComponent<Game>();
+
+        // healthbar
+        GameObject backGO = new GameObject("healthbarback");
+        backGO.transform.parent = canvas.Find("HealthBars").transform;
+        GameObject healthGO = new GameObject("healthbar");
+        healthGO.transform.parent = canvas.Find("HealthBars").transform;
+
+        healthBar = healthGO.AddComponent<Image>();
+        backBar = backGO.AddComponent<Image>();
+
+        healthBar.color = Color.red;
+        backBar.color = new Color(0.2f, 0.0f, 0.0f);
+
+        healthBar.rectTransform.sizeDelta = new Vector2(100, 5);
+        backBar.rectTransform.sizeDelta = new Vector2(100, 5);
+
+        backBar.rectTransform.pivot = Vector2.zero;
+        healthBar.rectTransform.pivot = Vector2.zero;
+
         switch (type) {
             case EnemyType.ORC:
                 hp = 2.0f + game.level;
                 damage = 2.0f + game.level;
-                
                 break;
             case EnemyType.SKELETON:
                 hp = 1.0f;
                 damage = 1.0f + (game.level) / 5.0f;
                 break;
             case EnemyType.MAGE:
-                hp = 1.0f + game.level / 2.0f;
+                hp = 1.0f + game.level / 5.0f;
                 damage = 3.0f + game.level / 2.0f;
                 break;
             case EnemyType.RANGER:
@@ -49,7 +70,7 @@ public class EnemyBasicScript : MonoBehaviour {
                 damage = 1.0f + game.level / 2.0f;
                 break;
             case EnemyType.CROSSBOW:
-                hp = 1.0f + game.level / 2.0f;
+                hp = 1.0f + game.level / 4.0f;
                 damage = 1.0f + game.level / 2.0f;
                 break;
             default:
@@ -57,10 +78,11 @@ public class EnemyBasicScript : MonoBehaviour {
                 damage = 1.0f + game.level / 2.0f;
                 break;
         }
+
+        maxhp = hp;
     }
 
-    public void Awake()
-    {
+    public void Awake() {
         frozen = false;
         this.GetComponent<NavMeshAgent>().speed = Random.Range(3, 6);
     }
@@ -72,8 +94,27 @@ public class EnemyBasicScript : MonoBehaviour {
         nav = GetComponent<NavMeshAgent>();
     }
 
+    private float curbw = 100.0f;
     private void setBars() {
-        //Vector2 screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+        Vector3 sptd = Camera.main.WorldToViewportPoint(transform.position);
+        Vector2 screenPoint = new Vector2(sptd.x, sptd.y);
+        float h = Camera.main.pixelHeight;
+        float w = Camera.main.pixelWidth;
+        screenPoint.x *= w;
+        screenPoint.y *= h;
+        screenPoint.x -= w / 2.0f;
+        screenPoint.y -= h / 2.0f;
+
+        screenPoint.x -= 50f;
+        screenPoint.y -= 100.0f / Camera.main.orthographicSize;
+
+        healthBar.rectTransform.anchoredPosition = screenPoint;
+        backBar.rectTransform.anchoredPosition = screenPoint;
+
+        curbw = Mathf.Lerp(curbw, hp / maxhp * 100.0f, Time.deltaTime * 2.0f);
+
+        healthBar.rectTransform.sizeDelta = new Vector2(curbw, 5f);
+
     }
 
     // Update is called once per frame
@@ -109,20 +150,19 @@ public class EnemyBasicScript : MonoBehaviour {
         // side to side
         Vector3 newup = Vector3.up + Vector3.right * xx * .25f;
         model.localRotation = Quaternion.LookRotation(Vector3.forward, newup);
-        if (frozen)
-        {
+        if (frozen) {
             nav.ResetPath();
-        }
-        else
-        {
+        } else {
             nav.SetDestination(player.position);
         }
-        
+
         if (hp <= 0) {
             StartCoroutine(fallOverThenDie());
             dying = true;
             //manager.returnEnemy(gameObject);
         }
+
+        setBars();
     }
 
 
@@ -146,6 +186,8 @@ public class EnemyBasicScript : MonoBehaviour {
     // fall over then die coroutine
     private IEnumerator fallOverThenDie() {
         manager.notifyDeath();
+        Destroy(healthBar.gameObject);
+        Destroy(backBar.gameObject);
 
         // destroy logic processes
         Destroy(nav);
