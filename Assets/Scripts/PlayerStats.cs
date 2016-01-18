@@ -58,17 +58,17 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.attackRate, 1.0f, -.05f, 0.1f),          //implemented
 
         //Additional stats (unlock at random)
-        new Stat(Stats.fireballChance, 0.0f, 0.05f, 1.0f),      //implemented in Player.cs
+        new Stat(Stats.fireballChance, 0.5f, 0.05f, 1.0f),      //implemented in Player.cs
         new Stat(Stats.jumpSpeed, 5.0f, 0.5f, 20.0f),           //implemented
         new Stat(Stats.shotSpeed, 8.0f, 1.0f, 20.0f),           //implemented
-        new Stat(Stats.multishot, 1.0f, 0.25f, 3.0f),            //implemented in PlayerStats.cs as multishot
-        new Stat(Stats.scattershot, 3.0f, 0.25f, 5.0f),
+        new Stat(Stats.multishot, 3.0f, 0.25f, 3.0f),            //implemented in PlayerStats.cs as multishot
+        new Stat(Stats.scattershot, 0.0f, 0.25f, 5.0f),
         new Stat(Stats.mitigation, 0.0f, 0.05f, 0.8f),          //implemented in Player.cs in OnTriggerEnter
         new Stat(Stats.pierce, 0.0f, 0.5f, 10.0f),              //implemented in Projectile.cs
         new Stat(Stats.healthRegen, 0.0f, 0.2f, 2.0f),          //implemented in Player.cs
         new Stat(Stats.critChance, 0.0f, 0.05f, 1.0f),          //implemented in PlayerStats.cs 
         new Stat(Stats.healthOnKill, 0.0f, 0.2f, 5.0f),         //implemented in EnemyBasicScript.cs
-        new Stat(Stats.dodge, 0.0f, 1.0f, 0.5f),                //implemented in Player.cs in OnTriggerEnter
+        new Stat(Stats.dodge, 0.0f, 0.05f, 1.0f),                //implemented in Player.cs in OnTriggerEnter
 
 
 
@@ -122,7 +122,10 @@ public class PlayerStats : MonoBehaviour {
         for (int i =0; i<num;i++)
         {
             float damage = get(Stats.attack).value;
-
+            if (get(Stats.fireballChance).value>= Random.value)
+            {
+                type = PType.FIREBALL;
+            }
             Projectile p;
             p = projectileManager.getProjectile(type);
             p.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
