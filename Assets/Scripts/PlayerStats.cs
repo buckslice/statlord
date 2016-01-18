@@ -56,7 +56,7 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.attackRate, 1.0f, -.05f, 0.1f),          //implemented
 
         //Additional stats (unlock at random)
-        new Stat(Stats.fireballChance, 0.0f, 0.02f, 1.0f),      //implemented
+        new Stat(Stats.fireballChance, 0.0f, 0.05f, 1.0f),      //implemented
         new Stat(Stats.jumpSpeed, 5.0f, 0.5f, 20.0f),           //implemented
         new Stat(Stats.shotSpeed, 8.0f, 1.0f, 20.0f),           //implemented
         new Stat(Stats.multishot, 1.0f, 0.25f, 5.0f),
