@@ -23,13 +23,7 @@ public class Stats {
     public static string freeze = "freeze";
     public static string bloom = "bloom";
     public static string cameraShake = "cameraShake";
-    //public static string randomize = "randomize";
-    //public static string enemySize = "enemySize";
-    //public static string playerSize = "playerSize";
-    //public static string deleteTextures = "deleteTextures";
-    //public static string doorsPerMinute = "doorsPerMinute";
-    //public static string uiSize = "uiSize";
-    //public static string misclick = "misclick";
+    
 }
 
 // class instead of struct so it is passed by reference rather than value
@@ -56,7 +50,7 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.attack, 1.0f, 1.0f, 15.0f),               //implemented
         new Stat(Stats.health, 8.0f, 1.0f, 30.0f),              //implemented
         new Stat(Stats.moveSpeed, 5.0f, 0.5f, 10.0f),           //implemented
-        new Stat(Stats.attackRate, 1.0f, -.05f, 0.1f),          //implemented
+        new Stat(Stats.attackRate, 1.0f, -.05f, 0.3f),          //implemented
 
         //Additional stats (unlock at random)
         new Stat(Stats.fireballChance, 0.0f, 0.05f, 1.0f),      //implemented in Player.cs
@@ -70,19 +64,10 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.critDamage, 1.0f, 0.2f, 3.0f ),
         new Stat(Stats.lifesteal, 0.0f, 0.2f, 2.0f),            //implemented in EnemyBasicScript.cs
         new Stat(Stats.dodge, 0.0f, 0.05f, 1.0f),                //implemented in Player.cs in OnTriggerEnter
-        new Stat(Stats.freeze, 1.0f, 0.05f, 1.0f),
-
-
-        //Joke stats (unlock at random)
+        new Stat(Stats.freeze, 0.0f, 0.05f, 1.0f),
         new Stat(Stats.bloom, 1.0f, 2.0f, 30.0f),              //implemented
-        //new Stat(Stats.randomize, 0.0f, 1.0f),
-        //new Stat(Stats.enemySize, 1.0f, 0.1f),
-        //new Stat(Stats.playerSize, 1.0f, 0.1f),
         new Stat(Stats.cameraShake, 1.0f, 0.5f,5.0f),           //implemented
-        //new Stat(Stats.deleteTextures, 0.0f, 2.5f),
-        //new Stat(Stats.doorsPerMinute, 0.0f, 1.0f),
-        //new Stat(Stats.uiSize, 1.0f, 0.1f),
-        //new Stat(Stats.misclick, 0.0f, 2.5f)
+        
     };
 
     //private StatTable stats;

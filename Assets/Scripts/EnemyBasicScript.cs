@@ -34,6 +34,7 @@ public class EnemyBasicScript : MonoBehaviour {
             case EnemyType.ORC:
                 hp = 2.0f + game.level;
                 damage = 2.0f + game.level;
+                
                 break;
             case EnemyType.SKELETON:
                 hp = 1.0f;
@@ -61,6 +62,7 @@ public class EnemyBasicScript : MonoBehaviour {
     public void Awake()
     {
         frozen = false;
+        this.GetComponent<NavMeshAgent>().speed = Random.Range(3, 6);
     }
 
     public void initialize(SpawnManager manager) {

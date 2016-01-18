@@ -44,17 +44,15 @@ public class Projectile : MonoBehaviour {
         }
         dying = false;
         life = 3.0f;
-        pierce = 0.0f;
+        pierce = 1.0f;
         rb.velocity = Vector3.zero;
     }
 
     void OnTriggerEnter(Collider col) {
         if (type == PType.ARROW && gameObject.tag == Tags.PlayerProjectile && col.gameObject.tag == Tags.Enemy) {
-            if (freeze) {
+            if (freeze)
+            {
                 StartCoroutine(Freeze(col));
-            }
-            if(gameObject.tag == Tags.PlayerProjectile) {
-                manager.player.projectileHit(damage);
             }
             returnSelf();
         }
@@ -75,19 +73,23 @@ public class Projectile : MonoBehaviour {
         }
     }
 
-    IEnumerator Freeze(Collider col) {
+    IEnumerator Freeze(Collider col)
+    {
 
         Color orig = col.GetComponentInChildren<MeshRenderer>().material.color;
         col.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
         col.GetComponent<EnemyBasicScript>().frozen = true;
         yield return new WaitForSeconds(1.0f);
-        try {
+        try
+        {
             col.GetComponent<EnemyBasicScript>().frozen = false;
             col.GetComponentInChildren<MeshRenderer>().material.color = orig;
-        } catch {
+        }
+        catch
+        {
 
         }
-
+        
     }
 
     private IEnumerator dieLater() {
@@ -105,7 +107,7 @@ public class Projectile : MonoBehaviour {
     }
 
     private void returnSelf() {
-        if (pierce >= 1.0f) {
+        if(pierce >= 1.0f) {
             pierce -= 1.0f;
             return;
         }
