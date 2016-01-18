@@ -61,8 +61,8 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.fireballChance, 0.0f, 0.05f, 1.0f),      //implemented in Player.cs
         new Stat(Stats.jumpSpeed, 5.0f, 0.5f, 20.0f),           //implemented
         new Stat(Stats.shotSpeed, 8.0f, 1.0f, 20.0f),           //implemented
-        new Stat(Stats.multishot, 3.0f, 1.0f, 5.0f),            //implemented in PlayerStats.cs as multishot
-        new Stat(Stats.scattershot, 0.0f, 1.0f, 5.0f),
+        new Stat(Stats.multishot, 1.0f, 0.25f, 3.0f),            //implemented in PlayerStats.cs as multishot
+        new Stat(Stats.scattershot, 1.0f, 0.25f, 5.0f),
         new Stat(Stats.mitigation, 0.0f, 0.05f, 0.8f),          //implemented in Player.cs in OnTriggerEnter
         new Stat(Stats.pierce, 0.0f, 0.5f, 10.0f),              //implemented in Projectile.cs
         new Stat(Stats.healthRegen, 0.0f, 0.2f, 2.0f),          //implemented in Player.cs
@@ -167,6 +167,81 @@ public class PlayerStats : MonoBehaviour {
         //    // build and fire bullet        
 
         //}
+    }
+
+    public IEnumerator multiScatterShot(PType type)
+    {
+        for (int i = 0; i < get(Stats.multishot).value;i++ )
+        {
+
+            scatterShot(type);
+            yield return new WaitForSeconds(0.1f);
+        }
+            
+    }
+
+    public void scatterShot(PType type)
+    {
+        float damage = get(Stats.attack).value;
+
+        if (get(Stats.scattershot).value==2.0)
+        {
+            Projectile proj = projectileManager.getProjectile(PType.ARROW);
+            proj.gameObject.tag = Tags.EnemyProjectile;
+            proj.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
+            proj.transform.rotation = transform.rotation;
+            proj.transform.position += transform.right * 0.7f;
+                       
+
+            Projectile proj2 = projectileManager.getProjectile(PType.ARROW);
+            proj2.gameObject.tag = Tags.EnemyProjectile;
+            proj2.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
+            proj2.transform.rotation = transform.rotation;
+            proj2.transform.position -= transform.right * 0.7f;
+
+            proj.damage = damage;
+            proj2.damage = damage;
+
+            proj.rb.AddForce(proj.transform.forward * 800);
+            proj2.rb.AddForce(proj2.transform.forward * 800);
+            proj.tag = Tags.PlayerProjectile;
+            proj2.tag = Tags.PlayerProjectile;
+        }
+        else if (get(Stats.scattershot).value == 3.0)
+        {
+            Projectile proj = projectileManager.getProjectile(PType.ARROW);
+            proj.gameObject.tag = Tags.EnemyProjectile;
+            proj.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
+            proj.transform.rotation = transform.rotation;
+            proj.transform.RotateAround(transform.position, transform.up, 300f);
+            //proj.transform.rotation = Quaternion.Euler(new Vector3(0.0f, 2.0f, 0.0f));
+            //proj.transform.position += transform.right * 0.7f;
+
+
+            Projectile proj2 = projectileManager.getProjectile(PType.ARROW);
+            proj2.gameObject.tag = Tags.EnemyProjectile;
+            proj2.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
+            proj2.transform.rotation = transform.rotation;
+            proj.transform.RotateAround(transform.position, transform.up, 180f);
+
+            Projectile proj3 = projectileManager.getProjectile(PType.ARROW);
+            proj3.gameObject.tag = Tags.EnemyProjectile;
+            proj3.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
+            proj3.transform.rotation = transform.rotation;
+            //proj.transform.RotateAround(transform.position, transform.up, -45f);
+
+            proj.damage = damage;
+            proj2.damage = damage;
+            proj3.damage = damage;
+
+            proj.rb.AddForce(proj.transform.forward * 800);
+            proj2.rb.AddForce(proj2.transform.forward * 800);
+            proj3.rb.AddForce(proj3.transform.forward * 800);
+
+            proj.tag = Tags.PlayerProjectile;
+            proj2.tag = Tags.PlayerProjectile;
+            proj3.tag = Tags.PlayerProjectile;
+        }
     }
 
     public void fireProjectile(PType type, int num)

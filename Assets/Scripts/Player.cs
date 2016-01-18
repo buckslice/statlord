@@ -67,27 +67,48 @@ public class Player : MonoBehaviour {
 
             //fireball chance
             if (Random.value < stats.get(Stats.fireballChance).value) {
-                if (stats.get(Stats.multishot).value > 0)
+                if ((stats.get(Stats.multishot).value >=2.0) && (stats.get(Stats.scattershot).value>=2.0))
                 {
-                    StartCoroutine(stats.multiShot(PType.FIREBALL, (int)stats.get(Stats.multishot).value));
-                    
+                    //multiscattershot
+                    StartCoroutine(stats.multiScatterShot(PType.FIREBALL));
                 }
+                else if (stats.get(Stats.multishot).value >=2.0)
+                {
+                    //multishot
+                    StartCoroutine(stats.multiShot(PType.FIREBALL, (int)stats.get(Stats.multishot).value));
+                }
+                else if (stats.get(Stats.scattershot).value >= 2.0)
+                { 
+                    //scatter shot
+                    stats.scatterShot(PType.FIREBALL);
+                }
+
                 else
                 {
                     stats.fireProjectile(PType.FIREBALL);
                 }
                 
             } else {
-                if (stats.get(Stats.multishot).value > 0)
+                if ((stats.get(Stats.multishot).value >= 2.0) && (stats.get(Stats.scattershot).value >= 2.0))
                 {
-                    StartCoroutine(stats.multiShot(PType.ARROW, (int)stats.get(Stats.multishot).value));
-                    
+                    //multiscattershot
+                    StartCoroutine(stats.multiScatterShot(PType.ARROW));
                 }
+                else if (stats.get(Stats.multishot).value >= 2.0)
+                {
+                    //multishot
+                    StartCoroutine(stats.multiShot(PType.ARROW, (int)stats.get(Stats.multishot).value));
+                }
+                else if (stats.get(Stats.scattershot).value >= 2.0)
+                {
+                    //scatter shot
+                    stats.scatterShot(PType.ARROW);
+                }
+
                 else
                 {
                     stats.fireProjectile(PType.ARROW);
                 }
-                
             }
 
         }
