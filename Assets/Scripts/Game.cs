@@ -72,22 +72,17 @@ public class Game : MonoBehaviour {
 
     private void spawnGuys() {
         float levelf = (float)level;
-        int number = 10* level;
-     
+        int number = 10 * level;
 
         for (int i = 0; i < number; i++) {
             float rnd = Random.value;
-            if (rnd < Mathf.Min(levelf / 90 ,0.5f)) {
+            if (rnd < Mathf.Min(levelf / 90, 0.5f)) {
                 spawner.BuildEnemy(EnemyType.ORC);
-            } else if (rnd <  Mathf.Min(levelf / 30 ,0.6f)) {
+            } else if (rnd < Mathf.Min(levelf / 30, 0.6f)) {
                 spawner.BuildEnemy(EnemyType.MAGE);
-            }
-            else if (rnd < Mathf.Min(levelf / 50, 0.7f))
-            {
+            } else if (rnd < Mathf.Min(levelf / 50, 0.7f)) {
                 spawner.BuildEnemy(EnemyType.CROSSBOW);
-            }
-            else if (rnd < Mathf.Min(levelf / 90, 0.8f))
-            {
+            } else if (rnd < Mathf.Min(levelf / 90, 0.8f)) {
                 spawner.BuildEnemy(EnemyType.RANGER);
             } else {
                 spawner.BuildEnemy(EnemyType.SKELETON);

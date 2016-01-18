@@ -25,7 +25,7 @@ public class EnemyBasicScript : MonoBehaviour {
     float yoff = 0.0f;
     float timer = 0.0f;
     float xx = 0.0f;
-    
+
 
     public void Start() {
         canvas = GameObject.Find("StatUI").GetComponent<RectTransform>();
@@ -33,14 +33,14 @@ public class EnemyBasicScript : MonoBehaviour {
         switch (type) {
             case EnemyType.ORC:
                 hp = 2.0f + game.level;
-                damage = 2.0f+(game.level)/90;
+                damage = 2.0f + (game.level) / 90;
                 break;
             case EnemyType.SKELETON:
                 hp = 1.0f + game.level;
-                damage = 2.0f+(game.level) / 50;
+                damage = 2.0f + (game.level) / 50;
                 break;
             default:
-                hp = 1.0f+ game.level;
+                hp = 1.0f + game.level;
                 damage = 1.0f;
                 break;
         }
@@ -51,12 +51,6 @@ public class EnemyBasicScript : MonoBehaviour {
         model = transform.Find("Model").transform;
         player = GameObject.Find("Player").transform;
         nav = GetComponent<NavMeshAgent>();
-        reset();
-        
-    }
-
-    public void reset() {
-        
     }
 
     // Update is called once per frame

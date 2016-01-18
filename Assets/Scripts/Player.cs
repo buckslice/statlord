@@ -13,7 +13,7 @@ public class Player : MonoBehaviour {
     private Game game;
     private Image healthBar;
     private Image backBar;
-    private float timeSinceDamageTaken = 3.0f;
+    private float timeSinceMeleed = 3.0f;
     // timers
     private float timeSinceAttack = 0.0f;
     public float curHealth = 1.0f;
@@ -29,20 +29,15 @@ public class Player : MonoBehaviour {
         canvas = GameObject.Find("StatUI").GetComponent<RectTransform>();
         game = canvas.GetComponent<Game>();
 
-        GameObject playerHealthGO = new GameObject("player health bar");
-        //playerHealthGO.transform.SetParent(canvas, false);
-        playerHealthGO.transform.parent = canvas;
-        GameObject healthFront = new GameObject("health");
+        GameObject healthFront = new GameObject("healthBar");
         healthBar = healthFront.AddComponent<Image>();
-        healthBar.rectTransform.SetParent(canvas, false);
+        healthBar.rectTransform.SetParent(canvas.transform, false);
         healthBar.color = Color.red;
-        healthFront.transform.SetParent(playerHealthGO.transform, false);
 
-        GameObject healthBack = new GameObject("back");
+        GameObject healthBack = new GameObject("healthBarBack");
         backBar = healthBack.AddComponent<Image>();
-        backBar.rectTransform.SetParent(canvas, false);
+        backBar.rectTransform.SetParent(canvas.transform, false);
         backBar.color = new Color(0.0f, 0.0f, 0.0f);
-        healthBack.transform.SetParent(playerHealthGO.transform, false);
 
         Application.runInBackground = true;
     }
@@ -68,7 +63,7 @@ public class Player : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         updateHealth();
-        timeSinceDamageTaken -= Time.deltaTime;
+        timeSinceMeleed -= Time.deltaTime;
         // find where on ground plane your mouse is pointing and look there
         RaycastHit info;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out info, 1000.0f, 1 << 8)) {
@@ -140,7 +135,6 @@ public class Player : MonoBehaviour {
 
         // die if no health
         if (curHealth <= 0.0f) {
-            // do something here eventually
             game.restartLevel();
         }
 
@@ -152,28 +146,30 @@ public class Player : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision c) {
-        if ((c.gameObject.tag == Tags.Enemy) && (timeSinceDamageTaken < 0.0f)) {
+        if ((c.gameObject.tag == Tags.Enemy) && (timeSinceMeleed < 0.0f)) {
             float damage = c.gameObject.GetComponent<EnemyBasicScript>().damage;
-            curHealth -= damage * (1.0f - stats.get(Stats.mitigation).value);
-
-            cam.addShake(damage);
+            applyDamage(damage);
+            timeSinceMeleed = 2.0f;
         }
     }
 
     void OnTriggerEnter(Collider c) {
-        if (Random.value < stats.get(Stats.dodge).value) {
-            return;
-        }
-
-
-
         if (c.gameObject.tag == Tags.EnemyProjectile) {
             float damage = c.gameObject.GetComponent<Projectile>().damage;
 
-            curHealth -= damage * (1.0f - stats.get(Stats.mitigation).value);
-
-            cam.addShake(damage);
+            if (applyDamage(damage)) {
+                cam.addShake(damage);
+            }
         }
+    }
+
+    private bool applyDamage(float damage) {
+        if (Random.value < stats.get(Stats.dodge).value) {
+            return false;
+        }
+
+        curHealth -= damage * (1.0f - stats.get(Stats.mitigation).value);
+        return true;
     }
 
     void FixedUpdate() {
