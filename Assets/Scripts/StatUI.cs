@@ -192,7 +192,7 @@ public class StatUI : MonoBehaviour {
 
             float wid = 0.8f / cols;
             int newl = len / cols;
-            if(len %2== 1) {
+            if (len % 2 == 1) {
                 newl++;
             }
 
@@ -312,6 +312,32 @@ public class StatUI : MonoBehaviour {
         return button;
     }
 
+    private void checkButtonsInteractible() {
+        doneButton.interactable = pointsLeft == 0;
+        undoButton.interactable = actions.Count != 0;
+
+
+        for (int i = 0; i < buttons.Count; ++i) {
+            if (pointsLeft == 0) {
+                buttons[i].interactable = false;
+            } else {
+                Stat s = stats.get(i);
+                if (s == null) {
+                    Debug.Log("wtfack stats");
+                    return;
+                }
+
+                if ((s.value >= s.cap && s.increment > 0.0f) ||
+                    (s.value < s.cap && s.increment < 0.0f)) {
+                    buttons[i].interactable = false;
+                    valueTable[s.name].color = Color.red;
+                } else {
+                    buttons[i].interactable = true;
+                    valueTable[s.name].color = Color.yellow;
+                }
+            }
+        }
+    }
 
     public void addToList(string name) {
         if (pointsLeft > 0) {
@@ -321,14 +347,9 @@ public class StatUI : MonoBehaviour {
             valueTable[s.name].text = s.value.ToString("F2");
             actions.Push(name);
             pointsLeft--;
-            if (pointsLeft == 0) {
-                for (int i = 0; i < buttons.Count; ++i) {
-                    buttons[i].interactable = false;
-                }
-                doneButton.interactable = true;
-            }
         }
-        undoButton.interactable = true;
+        checkButtonsInteractible();
+
     }
 
     // add undo that call undo
@@ -340,13 +361,7 @@ public class StatUI : MonoBehaviour {
             valueTable[s.name].text = s.value.ToString("F2");
             pointsLeft++;
         }
-        for (int i = 0; i < buttons.Count; ++i) {
-            buttons[i].interactable = true;
-        }
-        if (actions.Count == 0) {
-            undoButton.interactable = false;
-        }
-        doneButton.interactable = false;
+        checkButtonsInteractible();
     }
 
 }

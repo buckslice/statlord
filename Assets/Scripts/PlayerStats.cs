@@ -16,18 +16,17 @@ public class Stats {
     public static string pierce = "pierce";
     public static string healthRegen = "healthRegen";
     public static string critChance = "critChance";
-    public static string roll = "roll";
     public static string healthOnKill = "healthOnKill";
 
-    public static string randomize = "randomize";
-    public static string enemySize = "enemySize";
-    public static string cameraShake = "cameraShake";
-    public static string playerSize = "playerSize";
-    public static string deleteTextures = "deleteTextures";
-    public static string increaseBloom = "increaseBloom";
-    public static string doorsPerMinute = "doorsPerMinute";
-    public static string uiSize = "uiSize";
-    public static string misclick = "misclick";
+    public static string bloom = "bloom";
+    //public static string randomize = "randomize";
+    //public static string enemySize = "enemySize";
+    //public static string cameraShake = "cameraShake";
+    //public static string playerSize = "playerSize";
+    //public static string deleteTextures = "deleteTextures";
+    //public static string doorsPerMinute = "doorsPerMinute";
+    //public static string uiSize = "uiSize";
+    //public static string misclick = "misclick";
 }
 
 // class instead of struct so it is passed by reference rather than value
@@ -62,13 +61,13 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.shotSpeed, 8.0f, 1.0f, 20.0f),           //implemented
         new Stat(Stats.multishot, 1.0f, 0.25f, 5.0f),
         new Stat(Stats.mitigation, 0.0f, 0.05f, 0.8f),
-        new Stat(Stats.pierce, 0.0f, 0.5f, 10.0f),
+        new Stat(Stats.pierce, 0.0f, 0.5f, 10.0f),              //implemented
         new Stat(Stats.healthRegen, 0.0f, 0.2f, 2.0f),
         new Stat(Stats.critChance, 0.0f, 0.05f, 1.0f),
         new Stat(Stats.healthOnKill, 0.0f, 0.2f, 5.0f),
 
         //Joke stats (unlock at random)
-        new Stat(Stats.increaseBloom, 1.25f, 2.0f, 30.0f),      //implemented
+        new Stat(Stats.bloom, 1.25f, 2.0f, 30.0f),      //implemented
         //new Stat(Stats.randomize, 0.0f, 1.0f),
         //new Stat(Stats.enemySize, 1.0f, 0.1f),
         //new Stat(Stats.playerSize, 1.0f, 0.1f),
@@ -122,7 +121,7 @@ public class PlayerStats : MonoBehaviour {
         p.transform.rotation = transform.rotation;
 
         p.damage = damage;
-        if (get(Stats.critChance).value < Random.Range(0, 100)) {
+        if (Random.value < get(Stats.critChance).value) {
             p.damage += damage;
         }
         p.pierce = get(Stats.pierce).value;

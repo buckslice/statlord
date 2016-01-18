@@ -21,6 +21,6 @@ public class CameraManager : MonoBehaviour
 
     public void setBloom()
     {
-        bloom.bloomIntensity = stats.get(Stats.increaseBloom).value;
+        bloom.bloomIntensity = stats.get(Stats.bloom).value;
     }
 }
