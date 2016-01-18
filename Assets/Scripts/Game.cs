@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -67,6 +68,11 @@ public class Game : MonoBehaviour {
         if (spawner.activeEnemies <= 0 && !betweenLevels && !spawner.spawning) {
             betweenLevels = true;
             StartCoroutine(loadLevelSequence());
+        }
+
+        if (!betweenLevels && Input.GetKeyDown(KeyCode.Escape)) {
+            betweenLevels = true;
+            StartCoroutine(quitToMenu());
         }
     }
 
@@ -221,5 +227,10 @@ public class Game : MonoBehaviour {
         }
         frontInd.enabled = false;
         backInd.enabled = false;
+    }
+
+    private IEnumerator quitToMenu() {
+        yield return fade(false);
+        SceneManager.LoadScene(0);
     }
 }

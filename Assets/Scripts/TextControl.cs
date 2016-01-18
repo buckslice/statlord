@@ -17,6 +17,12 @@ public class TextControl : MonoBehaviour {
         StartCoroutine(fade(true));
     }
 
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            Application.Quit();
+        }
+    }
+
     void OnMouseEnter() { 
         mat.color = Color.magenta;
     }

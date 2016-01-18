@@ -160,7 +160,8 @@ Prefab:
       propertyPath: bloomIntensity
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8104358, guid: 532f77f1666765a4f9e4efa860646092, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 532f77f1666765a4f9e4efa860646092, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &210012142
@@ -499,38 +500,6 @@ Prefab:
     - target: {fileID: 445304, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
       propertyPath: m_RootOrder
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 431640, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0.088798255
-      objectReference: {fileID: 0}
-    - target: {fileID: 431640, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 0.99604964
-      objectReference: {fileID: 0}
-    - target: {fileID: 431640, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 431640, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0.106
-      objectReference: {fileID: 0}
-    - target: {fileID: 431640, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0.49
-      objectReference: {fileID: 0}
-    - target: {fileID: 431640, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 431640, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 431640, guid: 31974052f62316f49b7a7535fa270f24, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 31974052f62316f49b7a7535fa270f24, type: 2}

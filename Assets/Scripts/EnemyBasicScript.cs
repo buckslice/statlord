@@ -70,9 +70,12 @@ public class EnemyBasicScript : MonoBehaviour {
         nav = GetComponent<NavMeshAgent>();
     }
 
+    private void setBars() {
+        //Vector2 screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+    }
+
     // Update is called once per frame
     void Update() {
-
         if (dying) {
             return;
         }
