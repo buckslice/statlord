@@ -67,9 +67,27 @@ public class Player : MonoBehaviour {
 
             //fireball chance
             if (Random.value < stats.get(Stats.fireballChance).value) {
-                stats.fireProjectile(PType.FIREBALL);
+                if (stats.get(Stats.multishot).value > 0)
+                {
+                    StartCoroutine(stats.multiShot(PType.FIREBALL, (int)stats.get(Stats.multishot).value));
+                    
+                }
+                else
+                {
+                    stats.fireProjectile(PType.FIREBALL);
+                }
+                
             } else {
-                stats.fireProjectile(PType.ARROW);
+                if (stats.get(Stats.multishot).value > 0)
+                {
+                    StartCoroutine(stats.multiShot(PType.ARROW, (int)stats.get(Stats.multishot).value));
+                    
+                }
+                else
+                {
+                    stats.fireProjectile(PType.ARROW);
+                }
+                
             }
 
         }

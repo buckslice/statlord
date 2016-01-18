@@ -12,6 +12,7 @@ public class Stats {
     public static string jumpSpeed = "jumpSpeed";
     public static string shotSpeed = "shotSpeed";
     public static string multishot = "multishot";
+    public static string scattershot = "scattershot";
     public static string mitigation = "mitigation";
     public static string pierce = "pierce";
     public static string healthRegen = "healthRegen";
@@ -60,7 +61,8 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.fireballChance, 0.0f, 0.05f, 1.0f),      //implemented in Player.cs
         new Stat(Stats.jumpSpeed, 5.0f, 0.5f, 20.0f),           //implemented
         new Stat(Stats.shotSpeed, 8.0f, 1.0f, 20.0f),           //implemented
-        new Stat(Stats.multishot, 1.0f, 0.25f, 5.0f),
+        new Stat(Stats.multishot, 3.0f, 1.0f, 5.0f),            //implemented in PlayerStats.cs as multishot
+        new Stat(Stats.scattershot, 0.0f, 1.0f, 5.0f),
         new Stat(Stats.mitigation, 0.0f, 0.05f, 0.8f),          //implemented in Player.cs in OnTriggerEnter
         new Stat(Stats.pierce, 0.0f, 0.5f, 10.0f),              //implemented in Projectile.cs
         new Stat(Stats.healthRegen, 0.0f, 0.2f, 2.0f),          //implemented in Player.cs
@@ -115,6 +117,30 @@ public class PlayerStats : MonoBehaviour {
         return stats.Length;
     }
 
+    public IEnumerator multiShot(PType type, int num)
+    {
+        for (int i =0; i<num;i++)
+        {
+            float damage = get(Stats.attack).value;
+
+            Projectile p;
+            p = projectileManager.getProjectile(type);
+            p.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
+            p.transform.rotation = transform.rotation;
+
+            //crit chance
+            p.damage = damage;
+            if (Random.value < get(Stats.critChance).value)
+            {
+                p.damage += damage;
+            }
+            p.pierce = get(Stats.pierce).value;
+            p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value * 100.0f);
+
+            p.gameObject.tag = Tags.PlayerProjectile;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
     public void fireProjectile(PType type) {
         // calculate damage dealt
         float damage = get(Stats.attack).value;
@@ -141,6 +167,35 @@ public class PlayerStats : MonoBehaviour {
         //    // build and fire bullet        
 
         //}
+    }
+
+    public void fireProjectile(PType type, int num)
+    {
+        // calculate damage dealt
+        for (int i =0; i< num;i++)
+        {
+            float damage = get(Stats.attack).value;
+
+            Projectile p;
+            p = projectileManager.getProjectile(type);
+            p.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
+            p.transform.rotation = transform.rotation;
+
+            //crit chance
+            p.damage = damage;
+            if (Random.value < get(Stats.critChance).value)
+            {
+                p.damage += damage;
+            }
+            p.pierce = get(Stats.pierce).value;
+            p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value * 100.0f);
+
+            p.gameObject.tag = Tags.PlayerProjectile;
+            
+        }
+        
+
+
     }
 
 }
