@@ -19,9 +19,9 @@ public class Stats {
     public static string healthOnKill = "healthOnKill";
 
     public static string bloom = "bloom";
+    public static string cameraShake = "cameraShake";
     //public static string randomize = "randomize";
     //public static string enemySize = "enemySize";
-    //public static string cameraShake = "cameraShake";
     //public static string playerSize = "playerSize";
     //public static string deleteTextures = "deleteTextures";
     //public static string doorsPerMinute = "doorsPerMinute";
