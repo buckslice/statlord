@@ -72,7 +72,7 @@ public class PlayerStats : MonoBehaviour {
         //new Stat(Stats.randomize, 0.0f, 1.0f),
         //new Stat(Stats.enemySize, 1.0f, 0.1f),
         //new Stat(Stats.playerSize, 1.0f, 0.1f),
-        //new Stat(Stats.cameraShake, 0.0f, 0.1f),
+        new Stat(Stats.cameraShake, 1.0f, 0.1f,5.0f),
         //new Stat(Stats.deleteTextures, 0.0f, 2.5f),
         //new Stat(Stats.doorsPerMinute, 0.0f, 1.0f),
         //new Stat(Stats.uiSize, 1.0f, 0.1f),
