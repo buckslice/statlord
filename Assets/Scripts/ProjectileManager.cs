@@ -63,7 +63,7 @@ public class ProjectileManager : MonoBehaviour {
     public void destroyAll() {
         int childs = transform.childCount;
         for (int i = childs - 1; i > 0; i--) {
-            Destroy(transform.GetChild(i).gameObject);
+            returnProjectile(transform.GetChild(i).GetComponent<Projectile>());
         }
     }
 

@@ -41,7 +41,7 @@ public class Player : MonoBehaviour {
         healthBack.transform.parent = playerHealthGO.transform;
         backBar = healthBack.AddComponent<Image>();
         backBar.rectTransform.SetParent(canvas, false);
-        backBar.color = new Color(0.2f, 0.0f, 0.0f);
+        backBar.color = new Color(0.0f, 0.0f, 0.0f);
 
         Application.runInBackground = true;
     }

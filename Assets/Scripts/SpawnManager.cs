@@ -76,9 +76,14 @@ public class SpawnManager : MonoBehaviour {
     }
 
     public void killAll() {
+        spawning = false;
         activeEnemies = 0;
-        int childs = transform.childCount;
-        for (int i = childs - 1; i > 0; i--) {
+        while(pool.Count > 0) {
+            GameObject go = pool[pool.Count - 1];
+            pool.RemoveAt(pool.Count - 1);
+            Destroy(go);
+        }
+        for (int i = transform.childCount - 1; i >= 0; i--) {
             Destroy(transform.GetChild(i).gameObject);
         }
     }

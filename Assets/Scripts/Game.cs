@@ -38,6 +38,9 @@ public class Game : MonoBehaviour {
     float fadeTime = 2.0f;
     // fades in from whatever color the image is at
     private IEnumerator fade(bool fadein) {
+        if (!fadein) {
+            overlay.SetActive(true);
+        }
         float t = fadeTime;
         while (t > 0.0f) {
             Color c = fadeImage.color;
@@ -53,6 +56,9 @@ public class Game : MonoBehaviour {
         // reset fade variables back to defaults
         fadeImage.color = Color.black;
         fadeTime = 2.0f;
+        if (fadein) {
+            overlay.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -114,7 +120,7 @@ public class Game : MonoBehaviour {
         frontInd.color = Color.white;
         backInd.enabled = true;
         backInd.text = "Level " + level;
-        StartCoroutine(fadeOutText());
+        StartCoroutine(fadeOutText(2.0f, 3.0f));
 
         player.reset();
         player.freezeUpdate = false;
@@ -144,23 +150,28 @@ public class Game : MonoBehaviour {
         yield return fade(false);
         frontInd.enabled = false;
         backInd.enabled = false;
-
-        StartCoroutine(fade(true));
-
-        //StartCoroutine(fadeOutText());
+        yield return new WaitForSeconds(1.0f);
         spawner.killAll();
         shooter.destroyAll();
         player.reset();
         player.freezeUpdate = false;
-        betweenLevels = false;
-        spawnGuys();
+        frontInd.enabled = true;
+        frontInd.text = "Level " + level;
+        frontInd.color = Color.white;
+        backInd.enabled = true;
+        backInd.text = "Level " + level;
+        yield return fade(true);
+
+        StartCoroutine(fadeOutText(0.1f, 2.0f));
 
         betweenLevels = false;
+
+        spawnGuys();
     }
 
-    private IEnumerator fadeOutText() {
-        yield return new WaitForSeconds(2.0f);
-        float t = 3.0f;
+    private IEnumerator fadeOutText(float delay, float speed) {
+        yield return new WaitForSeconds(delay);
+        float t = speed;
         while (t > 0.0f) {
             t -= Time.deltaTime;
             frontInd.color = new Color(1.0f, 1.0f, 1.0f, t / 2.0f);
