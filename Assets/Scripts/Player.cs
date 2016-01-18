@@ -6,10 +6,8 @@ public class Player : MonoBehaviour {
     private Rigidbody myRigidbody;
     public bool freezeUpdate = false;
     public bool grounded = true;
-    //private float timeSinceJump = 0.0f;
     private PlayerStats stats;
-    private Transform cam;
-    private Vector3 camStart;
+    private CameraManager cam;
 
     // timers
     private float timeSinceAttack = 0.0f;
@@ -20,8 +18,7 @@ public class Player : MonoBehaviour {
         tform = transform;
         myRigidbody = GetComponent<Rigidbody>();
         stats = GetComponent<PlayerStats>();
-        cam = Camera.main.transform;
-        camStart = cam.position;
+        cam = Camera.main.GetComponent<CameraManager>();
         Application.runInBackground = true;
     }
 
@@ -37,9 +34,6 @@ public class Player : MonoBehaviour {
             transform.rotation = Quaternion.LookRotation(fw);
         }
 
-        // set camera to follow player
-        cam.position = camStart + transform.position;
-
         // so you can still look around at least
         if (freezeUpdate) {
             myRigidbody.velocity = Vector3.zero;
@@ -51,7 +45,7 @@ public class Player : MonoBehaviour {
         float inputY = Input.GetAxisRaw("Vertical");
         Vector3 dir = Vector3.zero;
         if (inputX != 0.0f || inputY != 0.0f) {
-            dir = cam.TransformDirection(new Vector3(inputX, 0.0f, inputY));
+            dir = cam.transform.TransformDirection(new Vector3(inputX, 0.0f, inputY));
             dir.y = 0.0f;
             dir.Normalize();
         }
@@ -97,6 +91,7 @@ public class Player : MonoBehaviour {
     void OnTriggerEnter(Collider c) {
         if ((c.gameObject.tag == Tags.EnemyProjectile) || (c.gameObject.tag == Tags.Enemy)) {
             curHealth -= 1.0f;
+            cam.addShake();
         }
     }
 
