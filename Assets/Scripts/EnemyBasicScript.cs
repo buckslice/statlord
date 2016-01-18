@@ -106,10 +106,11 @@ public class EnemyBasicScript : MonoBehaviour {
     void OnTriggerEnter(Collider c) {
         if (c.gameObject.tag == Tags.PlayerProjectile) {
 
-
             hp -= player.GetComponent<PlayerStats>().get(Stats.attack).value;
 
             if (dying) {
+                //health gain on enemy kills
+                player.GetComponent<Player>().curHealth += player.GetComponent<PlayerStats>().get(Stats.healthOnKill).value;
                 StartCoroutine(fallOverThenDie());
                 dying = true;
             }
