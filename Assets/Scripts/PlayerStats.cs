@@ -52,8 +52,8 @@ public class PlayerStats : MonoBehaviour {
     //array of stats
     private Stat[] stats = new Stat[] {
         //Core stats (Unlock in this order)
-        new Stat(Stats.attack, 1.0f, 1.0f, 3.0f),               //implemented
-        new Stat(Stats.health, 10.0f, 1.0f, 20.0f),              //implemented
+        new Stat(Stats.attack, 1.0f, 1.0f, 15.0f),               //implemented
+        new Stat(Stats.health, 8.0f, 1.0f, 30.0f),              //implemented
         new Stat(Stats.moveSpeed, 5.0f, 0.5f, 10.0f),           //implemented
         new Stat(Stats.attackRate, 1.0f, -.05f, 0.1f),          //implemented
 
@@ -89,10 +89,28 @@ public class PlayerStats : MonoBehaviour {
 
     void Awake() {
         // build lookup table from stats
+        Shuffle();
         for (int i = 0; i < stats.Length; i++) {
             lookup.Add(stats[i].name, i);
         }
         projectileManager = GameObject.Find("ProjectileManager").GetComponent<ProjectileManager>();
+        
+    }
+
+    void Shuffle()
+    {
+        
+        int n = stats.Length-1;
+        
+        while (n>3)
+        {
+            n--;
+            int k = Random.Range(4, n);
+            Stat x = stats[k];
+            stats[k] = stats[n];
+            stats[n] = x;
+        }
+
     }
 
     // return current stat

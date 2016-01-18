@@ -71,20 +71,26 @@ public class Game : MonoBehaviour {
     }
 
     private void spawnGuys() {
-        int number = level * 10;
+        float levelf = (float)level;
+        int number = 10* level;
+     
 
         for (int i = 0; i < number; i++) {
             float rnd = Random.value;
-            if (rnd < 0.3f) {
-                spawner.BuildEnemy(EnemyType.SKELETON);
-            } else if (rnd < 0.5f) {
-                spawner.BuildEnemy(EnemyType.RANGER);
-            } else if (rnd < 0.70f) {
-                spawner.BuildEnemy(EnemyType.CROSSBOW);
-            } else if (rnd < 0.90f) {
-                spawner.BuildEnemy(EnemyType.MAGE);
-            } else {
+            if (rnd < Mathf.Min(levelf / 90 ,0.5f)) {
                 spawner.BuildEnemy(EnemyType.ORC);
+            } else if (rnd <  Mathf.Min(levelf / 30 ,0.6f)) {
+                spawner.BuildEnemy(EnemyType.MAGE);
+            }
+            else if (rnd < Mathf.Min(levelf / 50, 0.7f))
+            {
+                spawner.BuildEnemy(EnemyType.CROSSBOW);
+            }
+            else if (rnd < Mathf.Min(levelf / 90, 0.8f))
+            {
+                spawner.BuildEnemy(EnemyType.RANGER);
+            } else {
+                spawner.BuildEnemy(EnemyType.SKELETON);
             }
         }
 

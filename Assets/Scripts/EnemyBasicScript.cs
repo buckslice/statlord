@@ -16,6 +16,8 @@ public class EnemyBasicScript : MonoBehaviour {
     Transform player; // reference to the player position 
     NavMeshAgent nav; // reference to the  nav mesh agent used to move locate and move towards player 
     private bool dying = false;
+    private Game game;
+    private RectTransform canvas;
 
     public float damage;
     // "animation" variables
@@ -26,17 +28,19 @@ public class EnemyBasicScript : MonoBehaviour {
     
 
     public void Start() {
+        canvas = GameObject.Find("StatUI").GetComponent<RectTransform>();
+        game = canvas.GetComponent<Game>();
         switch (type) {
             case EnemyType.ORC:
-                hp = 3.0f;
-                damage = 4.0f;
+                hp = 2.0f + game.level;
+                damage = 2.0f+(game.level)/90;
                 break;
             case EnemyType.SKELETON:
-                hp = 2.0f;
-                damage = 2.0f;
+                hp = 1.0f + game.level;
+                damage = 2.0f+(game.level) / 50;
                 break;
             default:
-                hp = 1.0f;
+                hp = 1.0f+ game.level;
                 damage = 1.0f;
                 break;
         }
