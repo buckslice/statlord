@@ -15,6 +15,7 @@ public class Projectile : MonoBehaviour {
     private float life;
     public PType type;
     private bool dying = false;
+    public bool freeze;
     public float pierce;
     private GameObject mesh;
     private Collider col;
@@ -30,6 +31,7 @@ public class Projectile : MonoBehaviour {
         lightComp = GetComponent<Light>();
         this.manager = manager;
         this.type = type;
+        freeze = false;
         reset();
     }
 
@@ -48,6 +50,10 @@ public class Projectile : MonoBehaviour {
 
     void OnTriggerEnter(Collider col) {
         if (type == PType.ARROW && gameObject.tag == Tags.PlayerProjectile && col.gameObject.tag == Tags.Enemy) {
+            if (freeze)
+            {
+                StartCoroutine(Freeze(col));
+            }
             returnSelf();
         }
 
@@ -65,6 +71,25 @@ public class Projectile : MonoBehaviour {
         if (life <= 0.0f) {
             returnSelf();
         }
+    }
+
+    IEnumerator Freeze(Collider col)
+    {
+
+        Color orig = col.GetComponentInChildren<MeshRenderer>().material.color;
+        col.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
+        col.GetComponent<EnemyBasicScript>().frozen = true;
+        yield return new WaitForSeconds(1.0f);
+        try
+        {
+            col.GetComponent<EnemyBasicScript>().frozen = false;
+            col.GetComponentInChildren<MeshRenderer>().material.color = orig;
+        }
+        catch
+        {
+
+        }
+        
     }
 
     private IEnumerator dieLater() {
