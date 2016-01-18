@@ -9,13 +9,11 @@ public class SpawnManager : MonoBehaviour {
     public int activeEnemies = 0;
     private List<GameObject> pool;
     private GameObject[] spawnLocations;
-    public bool spawning { get; set; }
 
     void Awake() {
         //player = GameObject.Find("Player").GetComponent<PlayerStats>();
         spawnLocations = GameObject.FindGameObjectsWithTag("SpawnPoint");
         pool = new List<GameObject>();
-        spawning = true;
     }
 
     public void BuildEnemy(EnemyType type) {
@@ -53,9 +51,6 @@ public class SpawnManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (!spawning) {
-            return;
-        }
         spawnTime -= Time.deltaTime;
         if (spawnTime < 0.0f) {
             spawnTime = 1.25f;
@@ -69,8 +64,6 @@ public class SpawnManager : MonoBehaviour {
 
                 int rng = Random.Range(0, spawnLocations.Length);
                 enemy.transform.position = spawnLocations[rng].transform.position;
-            } else {
-                spawning = false;
             }
         }
     }
@@ -80,7 +73,6 @@ public class SpawnManager : MonoBehaviour {
     }
 
     public void killAll() {
-        spawning = false;
         activeEnemies = 0;
         while(pool.Count > 0) {
             GameObject go = pool[pool.Count - 1];

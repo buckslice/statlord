@@ -19,6 +19,7 @@ public class Game : MonoBehaviour {
     private RawImage fadeImage;
 
     private bool betweenLevels = false;
+    private bool loadedSpawner = false;
 
     // Use this for initialization
     void Start() {
@@ -34,6 +35,7 @@ public class Game : MonoBehaviour {
         player.reset();
 
         betweenLevels = true;
+
         StartCoroutine(startSequence());
     }
 
@@ -65,7 +67,7 @@ public class Game : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (spawner.activeEnemies <= 0 && !betweenLevels && spawner.listEmpty()) {
+        if (spawner.activeEnemies <= 0 && !betweenLevels && loadedSpawner) {
             betweenLevels = true;
             StartCoroutine(loadLevelSequence());
         }
@@ -124,7 +126,8 @@ public class Game : MonoBehaviour {
 
         }
 
-        spawner.spawning = true;
+        loadedSpawner = true;
+
     }
 
     private IEnumerator loadLevelSequence() {
