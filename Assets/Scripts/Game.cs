@@ -76,10 +76,6 @@ public class Game : MonoBehaviour {
             betweenLevels = true;
             StartCoroutine(quitToMenu());
         }
-        if (level>10)
-        {
-            SceneManager.LoadScene("Victor");
-        }
     }
 
     private void spawnGuys() {
@@ -146,6 +142,12 @@ public class Game : MonoBehaviour {
         frontInd.enabled = false;
         backInd.enabled = false;
         player.setHealthBar(false);
+
+        if (level + 1 >= 10) {
+            SceneManager.LoadScene(2);
+            yield break;
+        }
+
         ui.buildUI(level);
 
         // wait for ui stat upgrading to finish

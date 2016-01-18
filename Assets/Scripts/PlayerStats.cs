@@ -23,7 +23,7 @@ public class Stats {
     public static string freeze = "freeze";
     public static string bloom = "bloom";
     public static string cameraShake = "cameraShake";
-    
+
 }
 
 // class instead of struct so it is passed by reference rather than value
@@ -34,6 +34,10 @@ public class Stat {
         this.value = value;
         this.increment = increment;
         this.cap = cap;
+    }
+
+    public float roundedValue() {
+        return (float)System.Math.Round(value, 2);
     }
 
     public string name;

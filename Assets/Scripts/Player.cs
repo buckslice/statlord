@@ -107,7 +107,7 @@ public class Player : MonoBehaviour {
         if (Input.GetMouseButton(0) && timeSinceAttack < 0.0f) {
             timeSinceAttack = stats.get(Stats.attackRate).value;
 
-            if (stats.get(Stats.multishot).value > 2.0f) {
+            if (stats.get(Stats.multishot).value >= 2.0f) {
                 StartCoroutine(stats.multiShot());
             } else {
                 if (Random.value < stats.get(Stats.fireballChance).value) {
