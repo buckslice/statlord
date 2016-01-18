@@ -30,18 +30,19 @@ public class Player : MonoBehaviour {
         game = canvas.GetComponent<Game>();
 
         GameObject playerHealthGO = new GameObject("player health bar");
-        playerHealthGO.transform.SetParent(canvas, false);
+        //playerHealthGO.transform.SetParent(canvas, false);
+        playerHealthGO.transform.parent = canvas;
         GameObject healthFront = new GameObject("health");
-        healthFront.transform.parent = playerHealthGO.transform;
         healthBar = healthFront.AddComponent<Image>();
         healthBar.rectTransform.SetParent(canvas, false);
         healthBar.color = Color.red;
+        healthFront.transform.SetParent(playerHealthGO.transform, false);
 
         GameObject healthBack = new GameObject("back");
-        healthBack.transform.parent = playerHealthGO.transform;
         backBar = healthBack.AddComponent<Image>();
         backBar.rectTransform.SetParent(canvas, false);
         backBar.color = new Color(0.0f, 0.0f, 0.0f);
+        healthBack.transform.SetParent(playerHealthGO.transform, false);
 
         Application.runInBackground = true;
     }
@@ -109,7 +110,7 @@ public class Player : MonoBehaviour {
 
             //fireball chance
             if (Random.value < stats.get(Stats.fireballChance).value) {
-               if (stats.get(Stats.multishot).value >= 2.0) {
+                if (stats.get(Stats.multishot).value >= 2.0) {
                     //multishot
                     StartCoroutine(stats.multiShot(PType.FIREBALL, (int)stats.get(Stats.multishot).value));
                 } else {
@@ -117,11 +118,10 @@ public class Player : MonoBehaviour {
                 }
 
             } else {
-               if (stats.get(Stats.multishot).value >= 2.0) {
+                if (stats.get(Stats.multishot).value >= 2.0) {
                     //multishot
                     StartCoroutine(stats.multiShot(PType.ARROW, (int)stats.get(Stats.multishot).value));
-                } 
-               else {
+                } else {
                     stats.fireProjectile(PType.ARROW);
                 }
             }
@@ -150,12 +150,9 @@ public class Player : MonoBehaviour {
         transform.position = Vector3.zero;
         curHealth = stats.get(Stats.health).value;
     }
-    
-    void OnCollisionEnter(Collision c)
-    {
-        if ((c.gameObject.tag == Tags.Enemy)&& (timeSinceDamageTaken<0.0f))
-        {
-            Debug.Log("got hit");
+
+    void OnCollisionEnter(Collision c) {
+        if ((c.gameObject.tag == Tags.Enemy) && (timeSinceDamageTaken < 0.0f)) {
             float damage = c.gameObject.GetComponent<EnemyBasicScript>().damage;
             curHealth -= damage * (1.0f - stats.get(Stats.mitigation).value);
 
@@ -168,7 +165,7 @@ public class Player : MonoBehaviour {
             return;
         }
 
-      
+
 
         if (c.gameObject.tag == Tags.EnemyProjectile) {
             float damage = c.gameObject.GetComponent<Projectile>().damage;

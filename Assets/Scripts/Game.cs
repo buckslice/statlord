@@ -28,11 +28,12 @@ public class Game : MonoBehaviour {
         frontInd = transform.Find("LevelIndicator").GetComponent<Text>();
         backInd = transform.Find("LevelIndicatorBack").GetComponent<Text>();
         overlay = transform.Find("Overlay").gameObject;
-
         fadeImage = overlay.GetComponent<RawImage>();
 
         player.reset();
-        spawnGuys();
+
+        betweenLevels = true;
+        StartCoroutine(startSequence());
     }
 
     float fadeTime = 2.0f;
@@ -167,6 +168,19 @@ public class Game : MonoBehaviour {
         betweenLevels = false;
 
         spawnGuys();
+    }
+
+    // played once at game start
+    private IEnumerator startSequence() {
+        frontInd.enabled = true;
+        frontInd.text = "Level " + level;
+        frontInd.color = Color.white;
+        backInd.enabled = true;
+        backInd.text = "Level " + level;
+        yield return fade(true);
+        StartCoroutine(fadeOutText(0.0f, 2.0f));
+        spawnGuys();
+        betweenLevels = false;
     }
 
     private IEnumerator fadeOutText(float delay, float speed) {

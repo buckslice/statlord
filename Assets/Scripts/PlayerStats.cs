@@ -72,7 +72,7 @@ public class PlayerStats : MonoBehaviour {
 
 
         //Joke stats (unlock at random)
-        new Stat(Stats.bloom, 1.25f, 2.0f, 30.0f),              //implemented
+        new Stat(Stats.bloom, 1.0f, 2.0f, 30.0f),              //implemented
         //new Stat(Stats.randomize, 0.0f, 1.0f),
         //new Stat(Stats.enemySize, 1.0f, 0.1f),
         //new Stat(Stats.playerSize, 1.0f, 0.1f),

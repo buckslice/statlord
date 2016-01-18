@@ -15,11 +15,11 @@ public class HellFire : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Time.time > nextFire)
-        {
-            nextFire = Time.time + fireRate;
-            Instantiate(fireBall,spawner.transform.position , Quaternion.identity);
-        }
+        //if (Time.time > nextFire)
+        //{
+        //    nextFire = Time.time + fireRate;
+        //    Instantiate(fireBall,spawner.transform.position , Quaternion.identity);
+        //}
 
     }
 }
