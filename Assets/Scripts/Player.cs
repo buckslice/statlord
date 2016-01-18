@@ -90,8 +90,9 @@ public class Player : MonoBehaviour {
 
     void OnTriggerEnter(Collider c) {
         if ((c.gameObject.tag == Tags.EnemyProjectile) || (c.gameObject.tag == Tags.Enemy)) {
-            curHealth -= 1.0f;
-            cam.addShake();
+            float damage = c.gameObject.GetComponent<Projectile>().damage;
+            curHealth -= damage;
+            cam.addShake(damage);
         }
     }
 

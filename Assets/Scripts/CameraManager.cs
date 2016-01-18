@@ -28,8 +28,6 @@ public class CameraManager : MonoBehaviour
         // set camera to follow player
         transform.parent.position = camStart + player.transform.position;
 
-        Debug.Log(player.transform.position);
-
         // camera shake
         if (shake > 0)
         {
@@ -43,9 +41,9 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    public void addShake()
+    public void addShake(float scale)
     {
-        shake += stats.get(Stats.cameraShake).value;
+        shake += stats.get(Stats.cameraShake).value * scale * 0.25f;
     }
 
     public void setBloom()
