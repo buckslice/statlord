@@ -74,6 +74,10 @@ public class Game : MonoBehaviour {
             betweenLevels = true;
             StartCoroutine(quitToMenu());
         }
+        if (level>10)
+        {
+            SceneManager.LoadScene("Victor");
+        }
     }
 
     private void spawnGuys() {
