@@ -70,7 +70,7 @@ public class Player : MonoBehaviour {
                 if ((stats.get(Stats.multishot).value >=2.0) && (stats.get(Stats.scattershot).value>=2.0))
                 {
                     //multiscattershot
-                    StartCoroutine(stats.multiScatterShot(PType.FIREBALL));
+                    //StartCoroutine(stats.multiScatterShot(PType.FIREBALL));
                 }
                 else if (stats.get(Stats.multishot).value >=2.0)
                 {
@@ -80,7 +80,7 @@ public class Player : MonoBehaviour {
                 else if (stats.get(Stats.scattershot).value >= 2.0)
                 { 
                     //scatter shot
-                    stats.scatterShot(PType.FIREBALL);
+                    //stats.scatterShot(PType.FIREBALL);
                 }
 
                 else
@@ -92,7 +92,7 @@ public class Player : MonoBehaviour {
                 if ((stats.get(Stats.multishot).value >= 2.0) && (stats.get(Stats.scattershot).value >= 2.0))
                 {
                     //multiscattershot
-                    StartCoroutine(stats.multiScatterShot(PType.ARROW));
+                    //StartCoroutine(stats.multiScatterShot(PType.ARROW));
                 }
                 else if (stats.get(Stats.multishot).value >= 2.0)
                 {
@@ -102,7 +102,7 @@ public class Player : MonoBehaviour {
                 else if (stats.get(Stats.scattershot).value >= 2.0)
                 {
                     //scatter shot
-                    stats.scatterShot(PType.ARROW);
+                   // stats.scatterShot(PType.ARROW);
                 }
 
                 else
