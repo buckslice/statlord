@@ -151,7 +151,7 @@ public class StatUI : MonoBehaviour {
         valueTable.Clear();
         buttons.Clear();
 
-        int len = Mathf.Min(stats.numStats(), level + 2);
+        int len = Mathf.Min(stats.numStats(), level + 3);
 
         int cols = 1;
         if (len < 8) {
@@ -165,7 +165,7 @@ public class StatUI : MonoBehaviour {
         for (int i = 0; i < len; ++i) {
             Stat stat = stats.get(i);
             if (stat == null) {
-                Debug.Log("OUT OF STATS!");
+                //Debug.Log("OUT OF STATS!");
                 return;
             }
 

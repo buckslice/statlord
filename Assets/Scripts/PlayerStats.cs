@@ -187,11 +187,7 @@ public class PlayerStats : MonoBehaviour {
         //    // build and fire bullet        
 
         //}
-    }
-
-   
-
-    
+    }    
 
     public void fireProjectile(PType type, int num)
     {

@@ -72,21 +72,46 @@ public class Game : MonoBehaviour {
 
     private void spawnGuys() {
         float levelf = (float)level;
-        int number = 10 * level;
+        int number = 10 + (level - 1) * 5;
 
         for (int i = 0; i < number; i++) {
+            //float rnd = Random.value;
+            //if (rnd < Mathf.Min(levelf / 90, 0.5f)) {
+            //    spawner.BuildEnemy(EnemyType.ORC);
+            //} else if (rnd < Mathf.Min(levelf / 30, 0.6f)) {
+            //    spawner.BuildEnemy(EnemyType.MAGE);
+            //} else if (rnd < Mathf.Min(levelf / 50, 0.7f)) {
+            //    spawner.BuildEnemy(EnemyType.CROSSBOW);
+            //} else if (rnd < Mathf.Min(levelf / 90, 0.8f)) {
+            //    spawner.BuildEnemy(EnemyType.RANGER);
+            //} else {
+            //    spawner.BuildEnemy(EnemyType.SKELETON);
+            //}
+
             float rnd = Random.value;
-            if (rnd < Mathf.Min(levelf / 90, 0.5f)) {
+
+            float chance = Mathf.Min(levelf * 0.02f, 0.1f);
+            if (chance > rnd) {
                 spawner.BuildEnemy(EnemyType.ORC);
-            } else if (rnd < Mathf.Min(levelf / 30, 0.6f)) {
-                spawner.BuildEnemy(EnemyType.MAGE);
-            } else if (rnd < Mathf.Min(levelf / 50, 0.7f)) {
-                spawner.BuildEnemy(EnemyType.CROSSBOW);
-            } else if (rnd < Mathf.Min(levelf / 90, 0.8f)) {
-                spawner.BuildEnemy(EnemyType.RANGER);
-            } else {
-                spawner.BuildEnemy(EnemyType.SKELETON);
+                continue;
             }
+            chance += Mathf.Min(levelf * 0.04f, 0.2f);
+            if (chance > rnd) {
+                spawner.BuildEnemy(EnemyType.MAGE);
+                continue;
+            }
+            chance += Mathf.Min(levelf * 0.05f, 0.2f);
+            if (chance > rnd) {
+                spawner.BuildEnemy(EnemyType.RANGER);
+                continue;
+            }
+            chance += Mathf.Min(levelf * 0.02f, 0.2f);
+            if (chance > rnd) {
+                spawner.BuildEnemy(EnemyType.CROSSBOW);
+                continue;
+            }
+            spawner.BuildEnemy(EnemyType.SKELETON);
+
         }
 
         spawner.spawning = true;
@@ -107,7 +132,7 @@ public class Game : MonoBehaviour {
 
         frontInd.enabled = false;
         backInd.enabled = false;
-
+        player.setHealthBar(false);
         ui.buildUI(level);
 
         // wait for ui stat upgrading to finish
@@ -124,6 +149,7 @@ public class Game : MonoBehaviour {
         backInd.text = "Level " + level;
         StartCoroutine(fadeOutText(2.0f, 3.0f));
 
+        player.setHealthBar(true);
         player.reset();
         player.freezeUpdate = false;
         betweenLevels = false;

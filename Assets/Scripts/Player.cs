@@ -42,6 +42,11 @@ public class Player : MonoBehaviour {
         Application.runInBackground = true;
     }
 
+    public void setHealthBar(bool visible) {
+        healthBar.gameObject.SetActive(visible);
+        backBar.gameObject.SetActive(visible);
+    }
+
     float xbar = 0.0f;
     private void updateHealth() {
 
@@ -146,30 +151,35 @@ public class Player : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision c) {
+        checkMeleed(c);
+    }
+    void OnCollisionStay(Collision c) {
+        checkMeleed(c);
+    }
+
+    private void checkMeleed(Collision c) {
         if ((c.gameObject.tag == Tags.Enemy) && (timeSinceMeleed < 0.0f)) {
             float damage = c.gameObject.GetComponent<EnemyBasicScript>().damage;
             applyDamage(damage);
-            timeSinceMeleed = 2.0f;
+            timeSinceMeleed = 1.0f;
         }
     }
 
     void OnTriggerEnter(Collider c) {
         if (c.gameObject.tag == Tags.EnemyProjectile) {
             float damage = c.gameObject.GetComponent<Projectile>().damage;
-
-            if (applyDamage(damage)) {
-                cam.addShake(damage);
-            }
+            applyDamage(damage);
         }
     }
 
-    private bool applyDamage(float damage) {
+    private void applyDamage(float damage) {
         if (Random.value < stats.get(Stats.dodge).value) {
-            return false;
+            return;
         }
 
+        cam.addShake(damage);
+
         curHealth -= damage * (1.0f - stats.get(Stats.mitigation).value);
-        return true;
     }
 
     void FixedUpdate() {

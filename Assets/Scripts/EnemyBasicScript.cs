@@ -33,15 +33,27 @@ public class EnemyBasicScript : MonoBehaviour {
         switch (type) {
             case EnemyType.ORC:
                 hp = 2.0f + game.level;
-                damage = 2.0f + (game.level) / 90;
+                damage = 2.0f + game.level;
                 break;
             case EnemyType.SKELETON:
-                hp = 1.0f + game.level;
-                damage = 2.0f + (game.level) / 50;
+                hp = 1.0f;
+                damage = 1.0f + (game.level) / 5.0f;
+                break;
+            case EnemyType.MAGE:
+                hp = 1.0f + game.level / 2.0f;
+                damage = 3.0f + game.level / 2.0f;
+                break;
+            case EnemyType.RANGER:
+                hp = 1.0f + game.level / 2.0f;
+                damage = 1.0f + game.level / 2.0f;
+                break;
+            case EnemyType.CROSSBOW:
+                hp = 1.0f + game.level / 2.0f;
+                damage = 1.0f + game.level / 2.0f;
                 break;
             default:
-                hp = 1.0f + game.level;
-                damage = 1.0f;
+                hp = 1.0f + game.level / 2.0f;
+                damage = 1.0f + game.level / 2.0f;
                 break;
         }
     }

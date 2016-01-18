@@ -42,7 +42,7 @@ public class Projectile : MonoBehaviour {
         }
         dying = false;
         life = 3.0f;
-        pierce = 1.0f;
+        pierce = 0.0f;
         rb.velocity = Vector3.zero;
     }
 
