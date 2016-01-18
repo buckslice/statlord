@@ -17,7 +17,6 @@ public class Player : MonoBehaviour {
     // timers
     private float timeSinceAttack = 0.0f;
     public float curHealth = 1.0f;
-    private float timeSinceRegen = 10.0f;
 
     // Use this for initialization
     void Start() {
@@ -108,36 +107,23 @@ public class Player : MonoBehaviour {
         if (Input.GetMouseButton(0) && timeSinceAttack < 0.0f) {
             timeSinceAttack = stats.get(Stats.attackRate).value;
 
-            //fireball chance
-            if (Random.value < stats.get(Stats.fireballChance).value) {
-                if (stats.get(Stats.multishot).value >= 2.0) {
-                    //multishot
-                    StartCoroutine(stats.multiShot(PType.FIREBALL, (int)stats.get(Stats.multishot).value));
-                } else {
-                    stats.fireProjectile(PType.FIREBALL);
-                }
-
+            if (stats.get(Stats.multishot).value > 2.0f) {
+                StartCoroutine(stats.multiShot());
             } else {
-                if (stats.get(Stats.multishot).value >= 2.0) {
-                    //multishot
-                    StartCoroutine(stats.multiShot(PType.ARROW, (int)stats.get(Stats.multishot).value));
+                if (Random.value < stats.get(Stats.fireballChance).value) {
+                    stats.fireProjectile(PType.FIREBALL);
                 } else {
                     stats.fireProjectile(PType.ARROW);
                 }
             }
-
         }
         //else if (Input.GetMouseButton(1) && timeSinceAttack < 0.0f) {
         //    timeSinceAttack = stats.get(Stats.attackRate).value;
         //    stats.fireProjectile(PType.FIREBALL);
         //}
 
-        timeSinceRegen -= Time.deltaTime;
-        if (timeSinceRegen <= 0.0f) {
-            curHealth += stats.get(Stats.healthRegen).value;
-        }
-
-
+        curHealth += stats.get(Stats.healthpersec).value * Time.deltaTime;
+        curHealth = Mathf.Clamp(curHealth, 0.0f, stats.get(Stats.health).value);
         // die if no health
         if (curHealth <= 0.0f) {
             game.restartLevel();
@@ -170,6 +156,10 @@ public class Player : MonoBehaviour {
             float damage = c.gameObject.GetComponent<Projectile>().damage;
             applyDamage(damage);
         }
+    }
+
+    public void projectileHit(float damage) {
+        curHealth += damage * stats.get(Stats.lifesteal).value;
     }
 
     private void applyDamage(float damage) {

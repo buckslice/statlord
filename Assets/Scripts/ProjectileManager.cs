@@ -8,6 +8,7 @@ public class ProjectileManager : MonoBehaviour {
 
     public GameObject arrow, fireball;
     private Dictionary<PType, List<Projectile>> poolLookup;
+    public Player player;
 
     void Awake() {
         // build pools for each type
@@ -16,7 +17,7 @@ public class ProjectileManager : MonoBehaviour {
         for (int i = 0; i < ptypes.Length; ++i) {
             poolLookup[ptypes[i]] = new List<Projectile>();
         }
-
+        player = GameObject.Find("Player").GetComponent<Player>();
     }
 
     public void buildProjectile(PType type) {

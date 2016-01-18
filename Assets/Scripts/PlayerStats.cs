@@ -12,12 +12,13 @@ public class Stats {
     public static string jumpSpeed = "jumpSpeed";
     public static string shotSpeed = "shotSpeed";
     public static string multishot = "multishot";
-    
+
     public static string mitigation = "mitigation";
     public static string pierce = "pierce";
-    public static string healthRegen = "healthRegen";
+    public static string healthpersec = "hp/second";
     public static string critChance = "critChance";
-    public static string healthOnKill = "healthOnKill";
+    public static string critDamage = "critDamage";
+    public static string lifesteal = "lifesteal";
     public static string dodge = "dodge";
     public static string freeze = "freeze";
     public static string bloom = "bloom";
@@ -61,12 +62,13 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.fireballChance, 0.0f, 0.05f, 1.0f),      //implemented in Player.cs
         new Stat(Stats.jumpSpeed, 5.0f, 0.5f, 20.0f),           //implemented
         new Stat(Stats.shotSpeed, 8.0f, 1.0f, 20.0f),           //implemented
-        new Stat(Stats.multishot, 3.0f, 0.25f, 3.0f),            //implemented in PlayerStats.cs as multishot
+        new Stat(Stats.multishot, 1.0f, 0.25f, 3.0f),            //implemented in PlayerStats.cs as multishot
         new Stat(Stats.mitigation, 0.0f, 0.05f, 0.8f),          //implemented in Player.cs in OnTriggerEnter
-        new Stat(Stats.pierce, 10.0f, 0.5f, 10.0f),              //implemented in Projectile.cs
-        new Stat(Stats.healthRegen, 0.0f, 0.2f, 2.0f),          //implemented in Player.cs
-        new Stat(Stats.critChance, 0.0f, 0.05f, 1.0f),          //implemented in PlayerStats.cs 
-        new Stat(Stats.healthOnKill, 0.0f, 0.2f, 5.0f),         //implemented in EnemyBasicScript.cs
+        new Stat(Stats.pierce, 0.0f, 0.5f, 10.0f),              //implemented in Projectile.cs
+        new Stat(Stats.healthpersec, 0.0f, 0.2f, 2.0f),          //implemented in Player.cs
+        new Stat(Stats.critChance, 0.1f, 0.1f, 1.0f),          //implemented in PlayerStats.cs 
+        new Stat(Stats.critDamage, 1.0f, 0.2f, 3.0f ),
+        new Stat(Stats.lifesteal, 0.0f, 0.2f, 2.0f),            //implemented in EnemyBasicScript.cs
         new Stat(Stats.dodge, 0.0f, 0.05f, 1.0f),                //implemented in Player.cs in OnTriggerEnter
         new Stat(Stats.freeze, 1.0f, 0.05f, 1.0f),
 
@@ -94,16 +96,14 @@ public class PlayerStats : MonoBehaviour {
             lookup.Add(stats[i].name, i);
         }
         projectileManager = GameObject.Find("ProjectileManager").GetComponent<ProjectileManager>();
-        
+
     }
 
-    void Shuffle()
-    {
-        
-        int n = stats.Length-1;
-        
-        while (n>4)
-        {
+    void Shuffle() {
+
+        int n = stats.Length - 1;
+
+        while (n > 4) {
             n--;
             int k = Random.Range(4, n);
             Stat x = stats[k];
@@ -134,30 +134,13 @@ public class PlayerStats : MonoBehaviour {
         return stats.Length;
     }
 
-    public IEnumerator multiShot(PType type, int num)
-    {
-        for (int i =0; i<num;i++)
-        {
-            float damage = get(Stats.attack).value;
-            if (get(Stats.fireballChance).value>= Random.value)
-            {
-                type = PType.FIREBALL;
+    public IEnumerator multiShot() {
+        for (int i = 0; i < get(Stats.multishot).value; i++) {
+            if (Random.value < get(Stats.fireballChance).value) {
+                fireProjectile(PType.FIREBALL);
+            } else {
+                fireProjectile(PType.ARROW);
             }
-            Projectile p;
-            p = projectileManager.getProjectile(type);
-            p.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
-            p.transform.rotation = transform.rotation;
-
-            //crit chance
-            p.damage = damage;
-            if (Random.value < get(Stats.critChance).value)
-            {
-                p.damage += damage;
-            }
-            p.pierce = get(Stats.pierce).value;
-            p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value * 100.0f);
-
-            p.gameObject.tag = Tags.PlayerProjectile;
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -173,58 +156,15 @@ public class PlayerStats : MonoBehaviour {
         //crit chance
         p.damage = damage;
         if (Random.value < get(Stats.critChance).value) {
-            p.damage += damage;
+            p.damage += damage * get(Stats.critDamage).value;
         }
         p.pierce = get(Stats.pierce).value;
-        if (get(Stats.freeze).value > Random.value)
-        {
+        if (get(Stats.freeze).value > Random.value) {
             p.freeze = true;
         }
         p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value * 100.0f);
 
         p.gameObject.tag = Tags.PlayerProjectile;
-
-
-        //int multishot = Mathf.RoundToInt(get(Stats.multishot).value);
-        //for (int i = 0; i < multishot; ++i) {
-        //    // probably change angle for each bullet depending on multishot
-        //    // build and fire bullet        
-
-        //}
-    }    
-
-    public void fireProjectile(PType type, int num)
-    {
-        // calculate damage dealt
-        for (int i =0; i< num;i++)
-        {
-            float damage = get(Stats.attack).value;
-
-            Projectile p;
-            p = projectileManager.getProjectile(type);
-            p.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
-            p.transform.rotation = transform.rotation;
-
-            //crit chance
-            p.damage = damage;
-            if (Random.value < get(Stats.critChance).value)
-            {
-                p.damage += damage;
-            }
-            if (get(Stats.freeze).value > Random.value)
-            {
-                Debug.Log("freeze effect");
-                p.freeze = true;
-            }
-
-            p.pierce = get(Stats.pierce).value;
-            p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value * 100.0f);
-
-            p.gameObject.tag = Tags.PlayerProjectile;
-            
-        }
-        
-
 
     }
 

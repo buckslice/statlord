@@ -128,7 +128,7 @@ public class EnemyBasicScript : MonoBehaviour {
 
             if (dying) {
                 //health gain on enemy kills
-                player.GetComponent<Player>().curHealth += player.GetComponent<PlayerStats>().get(Stats.healthOnKill).value;
+                //player.GetComponent<Player>().curHealth += player.GetComponent<PlayerStats>().get(Stats.healthOnKill).value;
                 StartCoroutine(fallOverThenDie());
                 dying = true;
             }
