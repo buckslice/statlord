@@ -155,7 +155,6 @@ public class Player : MonoBehaviour {
     {
         if ((c.gameObject.tag == Tags.Enemy)&& (timeSinceDamageTaken<0.0f))
         {
-            Debug.Log("got hit");
             float damage = c.gameObject.GetComponent<EnemyBasicScript>().damage;
             curHealth -= damage * (1.0f - stats.get(Stats.mitigation).value);
 

@@ -51,14 +51,14 @@ public class RangedEnemyScript : MonoBehaviour {
         proj.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
         proj.transform.position += transform.right * 0.7f;
         proj.transform.rotation = getPoorlyAimedRotation();
-        proj.damage = 4;
+        proj.damage = Mathf.Max(4,ebs.damage);
 
         Projectile proj2 = projMan.getProjectile(PType.ARROW);
         proj2.gameObject.tag = Tags.EnemyProjectile;
         proj2.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
         proj2.transform.position -= transform.right * 0.7f;
         proj2.transform.rotation = getPoorlyAimedRotation();
-        proj2.damage = 4;
+        proj2.damage = proj.damage = Mathf.Max(4, ebs.damage); ;
 
 
         proj.rb.AddForce(proj.transform.forward * 800);
@@ -73,7 +73,7 @@ public class RangedEnemyScript : MonoBehaviour {
         proj.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
         proj.transform.rotation = getPoorlyAimedRotation();
 
-        proj.damage = 5;
+        proj.damage = Mathf.Max(5, ebs.damage);
 
         proj.rb.AddForce(proj.transform.forward * 800);
 
@@ -86,7 +86,7 @@ public class RangedEnemyScript : MonoBehaviour {
         proj.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
         proj.transform.rotation = getPoorlyAimedRotation();
 
-        proj.damage = 10;
+        proj.damage = Mathf.Max(10, ebs.damage);
 
         proj.rb.AddForce(proj.transform.forward * 800);
         proj.tag = Tags.EnemyProjectile;
