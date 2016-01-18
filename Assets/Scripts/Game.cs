@@ -7,14 +7,15 @@ public class Game : MonoBehaviour {
 
     public int level = 1;
 
-    public bool debug = false;
-
     private StatUI ui;
     private SpawnManager spawner;
+    private ProjectileManager shooter;
     private Player player;
     private Text frontInd;
     private Text backInd;
 
+    private GameObject overlay;
+    private RawImage fadeImage;
 
     private bool betweenLevels = false;
 
@@ -22,16 +23,36 @@ public class Game : MonoBehaviour {
     void Start() {
         ui = GameObject.Find("StatUI").GetComponent<StatUI>();
         spawner = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        shooter = GameObject.Find("ProjectileManager").GetComponent<ProjectileManager>();
         player = GameObject.Find("Player").GetComponent<Player>();
         frontInd = transform.Find("LevelIndicator").GetComponent<Text>();
         backInd = transform.Find("LevelIndicatorBack").GetComponent<Text>();
+        overlay = transform.Find("Overlay").gameObject;
+
+        fadeImage = overlay.GetComponent<RawImage>();
 
         player.reset();
         spawnGuys();
-        if (debug)
-        {
-            StartCoroutine(loadLevelSequence());
+    }
+
+    float fadeTime = 2.0f;
+    // fades in from whatever color the image is at
+    private IEnumerator fade(bool fadein) {
+        float t = fadeTime;
+        while (t > 0.0f) {
+            Color c = fadeImage.color;
+            if (fadein) {
+                c.a = t / fadeTime;
+            } else {
+                c.a = 1.0f - t / fadeTime;
+            }
+            fadeImage.color = c;
+            t -= Time.deltaTime;
+            yield return null;
         }
+        // reset fade variables back to defaults
+        fadeImage.color = Color.black;
+        fadeTime = 2.0f;
     }
 
     // Update is called once per frame
@@ -74,14 +95,7 @@ public class Game : MonoBehaviour {
         backInd.color = Color.black;
         // play sound or something?
 
-        if (!debug)
-        {
-            yield return new WaitForSeconds(3.0f);
-        }
-        else
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
+        yield return new WaitForSeconds(3.0f);
 
         frontInd.enabled = false;
         backInd.enabled = false;
@@ -106,6 +120,42 @@ public class Game : MonoBehaviour {
         player.freezeUpdate = false;
         betweenLevels = false;
         spawnGuys();
+    }
+
+    public void restartLevel() {
+        if (betweenLevels) {
+            return;
+        }
+        betweenLevels = true;
+        StartCoroutine(restartSequence());
+    }
+
+    private IEnumerator restartSequence() {
+        player.freezeUpdate = true;
+
+        frontInd.enabled = true;
+        frontInd.text = "A GLORIOUS DEATH!";
+        frontInd.color = Color.red;
+        backInd.enabled = true;
+        backInd.text = "A GLORIOUS DEATH!";
+        backInd.color = Color.black;
+
+        yield return new WaitForSeconds(1.0f);
+        yield return fade(false);
+        frontInd.enabled = false;
+        backInd.enabled = false;
+
+        StartCoroutine(fade(true));
+
+        //StartCoroutine(fadeOutText());
+        spawner.killAll();
+        shooter.destroyAll();
+        player.reset();
+        player.freezeUpdate = false;
+        betweenLevels = false;
+        spawnGuys();
+
+        betweenLevels = false;
     }
 
     private IEnumerator fadeOutText() {

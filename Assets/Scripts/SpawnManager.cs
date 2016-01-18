@@ -75,6 +75,14 @@ public class SpawnManager : MonoBehaviour {
         }
     }
 
+    public void killAll() {
+        activeEnemies = 0;
+        int childs = transform.childCount;
+        for (int i = childs - 1; i > 0; i--) {
+            Destroy(transform.GetChild(i).gameObject);
+        }
+    }
+
     public void notifyDeath() {
         activeEnemies--;
     }
