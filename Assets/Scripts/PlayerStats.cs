@@ -53,7 +53,7 @@ public class PlayerStats : MonoBehaviour {
     private Stat[] stats = new Stat[] {
         //Core stats (Unlock in this order)
         new Stat(Stats.attack, 1.0f, 1.0f, 3.0f),               //implemented
-        new Stat(Stats.health, 3.0f, 1.0f, 20.0f),              //implemented
+        new Stat(Stats.health, 10.0f, 1.0f, 20.0f),              //implemented
         new Stat(Stats.moveSpeed, 5.0f, 0.5f, 10.0f),           //implemented
         new Stat(Stats.attackRate, 1.0f, -.05f, 0.1f),          //implemented
 

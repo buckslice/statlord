@@ -13,7 +13,7 @@ public class Player : MonoBehaviour {
     private Game game;
     private Image healthBar;
     private Image backBar;
-
+    private float timeSinceDamageTaken = 3.0f;
     // timers
     private float timeSinceAttack = 0.0f;
     public float curHealth = 1.0f;
@@ -67,6 +67,7 @@ public class Player : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         updateHealth();
+        timeSinceDamageTaken -= Time.deltaTime;
         // find where on ground plane your mouse is pointing and look there
         RaycastHit info;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out info, 1000.0f, 1 << 8)) {
@@ -149,13 +150,27 @@ public class Player : MonoBehaviour {
         transform.position = Vector3.zero;
         curHealth = stats.get(Stats.health).value;
     }
+    
+    void OnCollisionEnter(Collision c)
+    {
+        if ((c.gameObject.tag == Tags.Enemy)&& (timeSinceDamageTaken<0.0f))
+        {
+            Debug.Log("got hit");
+            float damage = c.gameObject.GetComponent<EnemyBasicScript>().damage;
+            curHealth -= damage * (1.0f - stats.get(Stats.mitigation).value);
+
+            cam.addShake(damage);
+        }
+    }
 
     void OnTriggerEnter(Collider c) {
         if (Random.value < stats.get(Stats.dodge).value) {
             return;
         }
 
-        if ((c.gameObject.tag == Tags.EnemyProjectile) || (c.gameObject.tag == Tags.Enemy)) {
+      
+
+        if (c.gameObject.tag == Tags.EnemyProjectile) {
             float damage = c.gameObject.GetComponent<Projectile>().damage;
 
             curHealth -= damage * (1.0f - stats.get(Stats.mitigation).value);

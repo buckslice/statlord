@@ -17,23 +17,27 @@ public class EnemyBasicScript : MonoBehaviour {
     NavMeshAgent nav; // reference to the  nav mesh agent used to move locate and move towards player 
     private bool dying = false;
 
+    public float damage;
     // "animation" variables
     private Transform model;
     float yoff = 0.0f;
     float timer = 0.0f;
     float xx = 0.0f;
-
+    
 
     public void Start() {
         switch (type) {
             case EnemyType.ORC:
                 hp = 3.0f;
+                damage = 4.0f;
                 break;
             case EnemyType.SKELETON:
                 hp = 2.0f;
+                damage = 2.0f;
                 break;
             default:
                 hp = 1.0f;
+                damage = 1.0f;
                 break;
         }
     }
@@ -48,20 +52,12 @@ public class EnemyBasicScript : MonoBehaviour {
     }
 
     public void reset() {
-        if (this.gameObject.name.Contains("Ranger")) {
-            hp = 10.0f;
-        } else if (this.gameObject.name.Contains("Mage")) {
-            hp = 8.0f;
-        } else if (this.gameObject.name.Contains("Orc")) {
-            hp = 15.0f;
-        } else {
-            hp = 5.0f;
-
-        }
+        
     }
 
     // Update is called once per frame
     void Update() {
+
         if (dying) {
             return;
         }
@@ -117,6 +113,7 @@ public class EnemyBasicScript : MonoBehaviour {
 
             //manager.returnEnemy(gameObject);
         }
+
     }
 
     // fall over then die coroutine

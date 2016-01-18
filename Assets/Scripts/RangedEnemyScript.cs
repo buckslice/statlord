@@ -73,7 +73,7 @@ public class RangedEnemyScript : MonoBehaviour {
         proj.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
         proj.transform.rotation = getPoorlyAimedRotation();
 
-        proj.damage = 4;
+        proj.damage = 5;
 
         proj.rb.AddForce(proj.transform.forward * 800);
 
@@ -86,7 +86,7 @@ public class RangedEnemyScript : MonoBehaviour {
         proj.transform.position = transform.position + new Vector3(0, 1.0f, 0) + (transform.forward * 1.25f);
         proj.transform.rotation = getPoorlyAimedRotation();
 
-        proj.damage = 4;
+        proj.damage = 10;
 
         proj.rb.AddForce(proj.transform.forward * 800);
         proj.tag = Tags.EnemyProjectile;
