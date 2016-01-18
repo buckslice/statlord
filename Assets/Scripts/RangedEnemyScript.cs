@@ -18,7 +18,7 @@ public class RangedEnemyScript : MonoBehaviour {
     void Update() {
         timeBetweenShot -= Time.deltaTime;
 
-        if (timeBetweenShot <= 0.0f) {
+        if ((timeBetweenShot <= 0.0f) && (!ebs.frozen)) {
 
             switch (ebs.type) {
                 case EnemyType.RANGER:

@@ -18,7 +18,7 @@ public class EnemyBasicScript : MonoBehaviour {
     private bool dying = false;
     private Game game;
     private RectTransform canvas;
-
+    public bool frozen;
     public float damage;
     // "animation" variables
     private Transform model;
@@ -44,6 +44,11 @@ public class EnemyBasicScript : MonoBehaviour {
                 damage = 1.0f;
                 break;
         }
+    }
+
+    public void Awake()
+    {
+        frozen = false;
     }
 
     public void initialize(SpawnManager manager) {
@@ -87,8 +92,15 @@ public class EnemyBasicScript : MonoBehaviour {
         // side to side
         Vector3 newup = Vector3.up + Vector3.right * xx * .25f;
         model.localRotation = Quaternion.LookRotation(Vector3.forward, newup);
-
-        nav.SetDestination(player.position);
+        if (frozen)
+        {
+            nav.ResetPath();
+        }
+        else
+        {
+            nav.SetDestination(player.position);
+        }
+        
         if (hp <= 0) {
             StartCoroutine(fallOverThenDie());
             dying = true;

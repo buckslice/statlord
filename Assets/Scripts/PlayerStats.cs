@@ -19,7 +19,7 @@ public class Stats {
     public static string critChance = "critChance";
     public static string healthOnKill = "healthOnKill";
     public static string dodge = "dodge";
-
+    public static string freeze = "freeze";
     public static string bloom = "bloom";
     public static string cameraShake = "cameraShake";
     //public static string randomize = "randomize";
@@ -61,14 +61,14 @@ public class PlayerStats : MonoBehaviour {
         new Stat(Stats.fireballChance, 0.0f, 0.05f, 1.0f),      //implemented in Player.cs
         new Stat(Stats.jumpSpeed, 5.0f, 0.5f, 20.0f),           //implemented
         new Stat(Stats.shotSpeed, 8.0f, 1.0f, 20.0f),           //implemented
-        new Stat(Stats.multishot, 1.0f, 0.25f, 3.0f),            //implemented in PlayerStats.cs as multishot
+        new Stat(Stats.multishot, 3.0f, 0.25f, 3.0f),            //implemented in PlayerStats.cs as multishot
         new Stat(Stats.mitigation, 0.0f, 0.05f, 0.8f),          //implemented in Player.cs in OnTriggerEnter
-        new Stat(Stats.pierce, 0.0f, 0.5f, 10.0f),              //implemented in Projectile.cs
+        new Stat(Stats.pierce, 10.0f, 0.5f, 10.0f),              //implemented in Projectile.cs
         new Stat(Stats.healthRegen, 0.0f, 0.2f, 2.0f),          //implemented in Player.cs
         new Stat(Stats.critChance, 0.0f, 0.05f, 1.0f),          //implemented in PlayerStats.cs 
         new Stat(Stats.healthOnKill, 0.0f, 0.2f, 5.0f),         //implemented in EnemyBasicScript.cs
         new Stat(Stats.dodge, 0.0f, 0.05f, 1.0f),                //implemented in Player.cs in OnTriggerEnter
-
+        new Stat(Stats.freeze, 1.0f, 0.05f, 1.0f),
 
 
         //Joke stats (unlock at random)
@@ -102,7 +102,7 @@ public class PlayerStats : MonoBehaviour {
         
         int n = stats.Length-1;
         
-        while (n>3)
+        while (n>4)
         {
             n--;
             int k = Random.Range(4, n);
@@ -176,6 +176,10 @@ public class PlayerStats : MonoBehaviour {
             p.damage += damage;
         }
         p.pierce = get(Stats.pierce).value;
+        if (get(Stats.freeze).value > Random.value)
+        {
+            p.freeze = true;
+        }
         p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value * 100.0f);
 
         p.gameObject.tag = Tags.PlayerProjectile;
@@ -211,6 +215,12 @@ public class PlayerStats : MonoBehaviour {
             {
                 p.damage += damage;
             }
+            if (get(Stats.freeze).value > Random.value)
+            {
+                Debug.Log("freeze effect");
+                p.freeze = true;
+            }
+
             p.pierce = get(Stats.pierce).value;
             p.rb.AddForce(transform.forward * get(Stats.shotSpeed).value * 100.0f);
 
