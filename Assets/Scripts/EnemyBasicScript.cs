@@ -183,6 +183,15 @@ public class EnemyBasicScript : MonoBehaviour {
 
     }
 
+    void OnDestroy() {
+        if (healthBar) {
+            Destroy(healthBar.gameObject);
+        }
+        if (backBar) {
+            Destroy(backBar.gameObject);
+        }
+    }
+
     // fall over then die coroutine
     private IEnumerator fallOverThenDie() {
         manager.notifyDeath();

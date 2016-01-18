@@ -14,7 +14,7 @@ public class Stats {
     public static string multishot = "multishot";
 
     public static string mitigation = "mitigation";
-    public static string pierce = "pierce";
+    public static string pierce = "piercing";
     public static string healthpersec = "hp/second";
     public static string critChance = "critChance";
     public static string critDamage = "critDamage";
@@ -47,12 +47,12 @@ public class PlayerStats : MonoBehaviour {
     //array of stats
     private Stat[] stats = new Stat[] {
         //Core stats (Unlock in this order)
-        new Stat(Stats.attack, 1.0f, 1.0f, 15.0f),               //implemented
+        new Stat(Stats.attack, 1.0f, 0.25f, 10.0f),               //implemented
         new Stat(Stats.health, 8.0f, 1.0f, 30.0f),              //implemented
         new Stat(Stats.moveSpeed, 5.0f, 0.5f, 10.0f),           //implemented
-        new Stat(Stats.attackRate, 1.0f, -.05f, 0.3f),          //implemented
 
         //Additional stats (unlock at random)
+        new Stat(Stats.attackRate, 1.0f, -.05f, 0.3f),          //implemented
         new Stat(Stats.fireballChance, 0.0f, 0.05f, 1.0f),      //implemented in Player.cs
         new Stat(Stats.jumpSpeed, 5.0f, 0.5f, 20.0f),           //implemented
         new Stat(Stats.shotSpeed, 8.0f, 1.0f, 20.0f),           //implemented
@@ -88,9 +88,9 @@ public class PlayerStats : MonoBehaviour {
 
         int n = stats.Length - 1;
 
-        while (n > 4) {
+        while (n > 3) {
             n--;
-            int k = Random.Range(4, n);
+            int k = Random.Range(3, n);
             Stat x = stats[k];
             stats[k] = stats[n];
             stats[n] = x;

@@ -15,7 +15,7 @@ public class SpawnManager : MonoBehaviour {
         //player = GameObject.Find("Player").GetComponent<PlayerStats>();
         spawnLocations = GameObject.FindGameObjectsWithTag("SpawnPoint");
         pool = new List<GameObject>();
-        spawning = false;
+        spawning = true;
     }
 
     public void BuildEnemy(EnemyType type) {
@@ -73,6 +73,10 @@ public class SpawnManager : MonoBehaviour {
                 spawning = false;
             }
         }
+    }
+
+    public bool listEmpty() {
+        return pool.Count <= 0;
     }
 
     public void killAll() {

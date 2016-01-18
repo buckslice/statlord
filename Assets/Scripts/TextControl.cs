@@ -10,10 +10,11 @@ public class TextControl : MonoBehaviour {
     private Material mat;
     void Start() {
         mat = gameObject.GetComponent<Renderer>().material;
-        mat.color = Color.blue;
+        mat.color = Color.black;
         overlay = GameObject.Find("Canvas").transform.Find("Overlay").gameObject;
         fadeImage = overlay.GetComponent<RawImage>();
 
+        loading = true;
         StartCoroutine(fade(true));
     }
 
@@ -24,11 +25,11 @@ public class TextControl : MonoBehaviour {
     }
 
     void OnMouseEnter() { 
-        mat.color = Color.magenta;
+        mat.color = Color.red;
     }
 
     void OnMouseExit() {
-        mat.color = Color.blue;
+        mat.color = Color.black;
     }
 
     private bool loading = false;
@@ -68,6 +69,8 @@ public class TextControl : MonoBehaviour {
         if (fadein) {
             overlay.SetActive(false);
         }
+
+        loading = false;
     }
 
 }

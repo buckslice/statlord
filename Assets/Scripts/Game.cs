@@ -65,7 +65,7 @@ public class Game : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (spawner.activeEnemies <= 0 && !betweenLevels && !spawner.spawning) {
+        if (spawner.activeEnemies <= 0 && !betweenLevels && spawner.listEmpty()) {
             betweenLevels = true;
             StartCoroutine(loadLevelSequence());
         }
