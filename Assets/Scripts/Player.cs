@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Player : MonoBehaviour {
@@ -8,7 +9,11 @@ public class Player : MonoBehaviour {
     public bool grounded = true;
     private PlayerStats stats;
     private CameraManager cam;
-    
+    private RectTransform canvas;
+    private Game game;
+    private Image healthBar;
+    private Image backBar;
+
     // timers
     private float timeSinceAttack = 0.0f;
     public float curHealth = 1.0f;
@@ -20,12 +25,48 @@ public class Player : MonoBehaviour {
         myRigidbody = GetComponent<Rigidbody>();
         stats = GetComponent<PlayerStats>();
         cam = Camera.main.GetComponent<CameraManager>();
+
+        canvas = GameObject.Find("StatUI").GetComponent<RectTransform>();
+        game = canvas.GetComponent<Game>();
+
+        GameObject playerHealthGO = new GameObject("player health bar");
+        playerHealthGO.transform.SetParent(canvas, false);
+        GameObject healthFront = new GameObject("health");
+        healthFront.transform.parent = playerHealthGO.transform;
+        healthBar = healthFront.AddComponent<Image>();
+        healthBar.rectTransform.SetParent(canvas, false);
+        healthBar.color = Color.red;
+
+        GameObject healthBack = new GameObject("back");
+        healthBack.transform.parent = playerHealthGO.transform;
+        backBar = healthBack.AddComponent<Image>();
+        backBar.rectTransform.SetParent(canvas, false);
+        backBar.color = new Color(0.2f, 0.0f, 0.0f);
+
         Application.runInBackground = true;
     }
 
+    float xbar = 0.0f;
+    private void updateHealth() {
+
+        float targetX = curHealth / stats.get(Stats.health).value;
+        xbar = Mathf.Lerp(xbar, targetX, Time.deltaTime * 2.0f);
+
+        healthBar.rectTransform.offsetMin = Vector2.zero;
+        healthBar.rectTransform.offsetMax = Vector2.zero;
+        healthBar.rectTransform.anchorMin = new Vector2(0.0f, 0.0f);
+        healthBar.rectTransform.anchorMax = new Vector2(xbar, 0.05f);
+
+        backBar.rectTransform.offsetMin = Vector2.zero;
+        backBar.rectTransform.offsetMax = Vector2.zero;
+        backBar.rectTransform.anchorMin = new Vector2(xbar, 0.0f);
+        backBar.rectTransform.anchorMax = new Vector2(1.0f, 0.05f);
+    }
+
+
     // Update is called once per frame
     void Update() {
-
+        updateHealth();
         // find where on ground plane your mouse is pointing and look there
         RaycastHit info;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out info, 1000.0f, 1 << 8)) {
@@ -67,46 +108,30 @@ public class Player : MonoBehaviour {
 
             //fireball chance
             if (Random.value < stats.get(Stats.fireballChance).value) {
-                if ((stats.get(Stats.multishot).value >=2.0) && (stats.get(Stats.scattershot).value>=2.0))
-                {
+                if ((stats.get(Stats.multishot).value >= 2.0) && (stats.get(Stats.scattershot).value >= 2.0)) {
                     //multiscattershot
                     //StartCoroutine(stats.multiScatterShot(PType.FIREBALL));
-                }
-                else if (stats.get(Stats.multishot).value >=2.0)
-                {
+                } else if (stats.get(Stats.multishot).value >= 2.0) {
                     //multishot
                     StartCoroutine(stats.multiShot(PType.FIREBALL, (int)stats.get(Stats.multishot).value));
-                }
-                else if (stats.get(Stats.scattershot).value >= 2.0)
-                { 
+                } else if (stats.get(Stats.scattershot).value >= 2.0) {
                     //scatter shot
                     //stats.scatterShot(PType.FIREBALL);
-                }
-
-                else
-                {
+                } else {
                     stats.fireProjectile(PType.FIREBALL);
                 }
-                
+
             } else {
-                if ((stats.get(Stats.multishot).value >= 2.0) && (stats.get(Stats.scattershot).value >= 2.0))
-                {
+                if ((stats.get(Stats.multishot).value >= 2.0) && (stats.get(Stats.scattershot).value >= 2.0)) {
                     //multiscattershot
                     //StartCoroutine(stats.multiScatterShot(PType.ARROW));
-                }
-                else if (stats.get(Stats.multishot).value >= 2.0)
-                {
+                } else if (stats.get(Stats.multishot).value >= 2.0) {
                     //multishot
                     StartCoroutine(stats.multiShot(PType.ARROW, (int)stats.get(Stats.multishot).value));
-                }
-                else if (stats.get(Stats.scattershot).value >= 2.0)
-                {
+                } else if (stats.get(Stats.scattershot).value >= 2.0) {
                     //scatter shot
-                   // stats.scatterShot(PType.ARROW);
-                }
-
-                else
-                {
+                    // stats.scatterShot(PType.ARROW);
+                } else {
                     stats.fireProjectile(PType.ARROW);
                 }
             }
@@ -118,8 +143,7 @@ public class Player : MonoBehaviour {
         //}
 
         timeSinceRegen -= Time.deltaTime;
-        if (timeSinceRegen <=0.0f)
-        {
+        if (timeSinceRegen <= 0.0f) {
             curHealth += stats.get(Stats.healthRegen).value;
         }
 
@@ -127,7 +151,7 @@ public class Player : MonoBehaviour {
         // die if no health
         if (curHealth <= 0.0f) {
             // do something here eventually
-
+            game.restartLevel();
         }
 
     }
@@ -138,24 +162,14 @@ public class Player : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider c) {
-        float dodge = stats.get(Stats.dodge).value;
-        float rng = Random.value;
-        if (dodge < rng)
-        {
+        if (Random.value < stats.get(Stats.dodge).value) {
             return;
         }
 
         if ((c.gameObject.tag == Tags.EnemyProjectile) || (c.gameObject.tag == Tags.Enemy)) {
             float damage = c.gameObject.GetComponent<Projectile>().damage;
-            float mitigate = stats.get(Stats.mitigation).value;
-            if (mitigate >0)
-            {
-                damage = damage * mitigate;
-            }
-            else
-            {
-                curHealth -= damage;
-            }
+
+            curHealth -= damage * (1.0f - stats.get(Stats.mitigation).value);
 
             cam.addShake(damage);
         }
