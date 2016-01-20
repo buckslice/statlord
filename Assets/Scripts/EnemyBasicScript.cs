@@ -18,9 +18,9 @@ public class EnemyBasicScript : MonoBehaviour {
     Transform player; // reference to the player position 
     NavMeshAgent nav; // reference to the  nav mesh agent used to move locate and move towards player 
     private bool dying = false;
+    public bool frozen = false;
     private Game game;
     private RectTransform canvas;
-    public bool frozen;
     public float damage;
     // "animation" variables
     private Transform model;
@@ -31,10 +31,15 @@ public class EnemyBasicScript : MonoBehaviour {
     private Image backBar;
 
     public void Start() {
+        // get components
         canvas = GameObject.Find("StatUI").GetComponent<RectTransform>();
         game = canvas.GetComponent<Game>();
+        model = transform.Find("Model").transform;
+        player = GameObject.Find("Player").transform;
+        nav = GetComponent<NavMeshAgent>();
+        nav.speed = Random.Range(2.0f, 5.5f);
 
-        // healthbar
+        // build healthbar
         GameObject backGO = new GameObject("healthbarback");
         backGO.transform.parent = canvas.Find("HealthBars").transform;
         GameObject healthGO = new GameObject("healthbar");
@@ -58,19 +63,19 @@ public class EnemyBasicScript : MonoBehaviour {
                 damage = 2.0f + game.level;
                 break;
             case EnemyType.SKELETON:
-                hp = 1.0f;
-                damage = 1.0f + (game.level) / 5.0f;
+                hp = 0.5f + game.level / 3.0f;
+                damage = 1.0f + (game.level) / 3.0f;
                 break;
             case EnemyType.MAGE:
-                hp = 1.0f + game.level / 5.0f;
-                damage = 3.0f + game.level / 2.0f;
+                hp = 1.0f + game.level / 3.0f;
+                damage = 2.5f + game.level / 2.0f;
                 break;
             case EnemyType.RANGER:
                 hp = 1.0f + game.level / 2.0f;
                 damage = 1.0f + game.level / 2.0f;
                 break;
             case EnemyType.CROSSBOW:
-                hp = 1.0f + game.level / 4.0f;
+                hp = 1.0f + game.level / 1.5f;
                 damage = 1.0f + game.level / 2.0f;
                 break;
             default:
@@ -82,20 +87,16 @@ public class EnemyBasicScript : MonoBehaviour {
         maxhp = hp;
     }
 
-    public void Awake() {
-        frozen = false;
-        this.GetComponent<NavMeshAgent>().speed = Random.Range(3, 6);
-    }
-
     public void initialize(SpawnManager manager) {
         this.manager = manager;
-        model = transform.Find("Model").transform;
-        player = GameObject.Find("Player").transform;
-        nav = GetComponent<NavMeshAgent>();
     }
 
     private float curbw = 100.0f;
     private void setBars() {
+        if(!healthBar || !backBar) {
+            return;
+        }
+
         Vector3 sptd = Camera.main.WorldToViewportPoint(transform.position);
         Vector2 screenPoint = new Vector2(sptd.x, sptd.y);
         float h = Camera.main.pixelHeight;
@@ -111,7 +112,7 @@ public class EnemyBasicScript : MonoBehaviour {
         healthBar.rectTransform.anchoredPosition = screenPoint;
         backBar.rectTransform.anchoredPosition = screenPoint;
 
-        curbw = Mathf.Lerp(curbw, hp / maxhp * 100.0f, Time.deltaTime * 2.0f);
+        curbw = Mathf.Lerp(curbw, hp / maxhp * 100.0f, Time.deltaTime * 8.0f);
 
         healthBar.rectTransform.sizeDelta = new Vector2(curbw, 5f);
 
@@ -131,7 +132,7 @@ public class EnemyBasicScript : MonoBehaviour {
         }
 
         // bob up and down and side to side
-        if (nav.velocity.sqrMagnitude < 5.0f) {
+        if (nav.velocity.sqrMagnitude < 4.0f) {
             timer = -3.14159f / 2.0f;  // sin of this is -1
             yoff -= Time.deltaTime * 2.0f;
             if (yoff < 0.0f) {
@@ -169,21 +170,16 @@ public class EnemyBasicScript : MonoBehaviour {
     void OnTriggerEnter(Collider c) {
         if (c.gameObject.tag == Tags.PlayerProjectile) {
 
-            hp -= player.GetComponent<PlayerStats>().get(Stats.attack).value;
-
-            if (dying) {
-                //health gain on enemy kills
-                //player.GetComponent<Player>().curHealth += player.GetComponent<PlayerStats>().get(Stats.healthOnKill).value;
-                StartCoroutine(fallOverThenDie());
-                dying = true;
-            }
-
-            //manager.returnEnemy(gameObject);
+            hp -= c.GetComponent<Projectile>().damage;
         }
 
     }
 
     void OnDestroy() {
+        destroyHealthBars();
+    }
+
+    public void destroyHealthBars() {
         if (healthBar) {
             Destroy(healthBar.gameObject);
         }
@@ -192,11 +188,11 @@ public class EnemyBasicScript : MonoBehaviour {
         }
     }
 
+
     // fall over then die coroutine
     private IEnumerator fallOverThenDie() {
         manager.notifyDeath();
-        Destroy(healthBar.gameObject);
-        Destroy(backBar.gameObject);
+        destroyHealthBars();
 
         // destroy logic processes
         Destroy(nav);

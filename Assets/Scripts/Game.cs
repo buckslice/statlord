@@ -18,8 +18,7 @@ public class Game : MonoBehaviour {
     private GameObject overlay;
     private RawImage fadeImage;
 
-    private bool betweenLevels = false;
-    private bool loadedSpawner = false;
+    private bool loading = true;
 
     // Use this for initialization
     void Start() {
@@ -34,95 +33,69 @@ public class Game : MonoBehaviour {
 
         player.reset();
 
-        betweenLevels = true;
-
         StartCoroutine(startSequence());
-    }
-
-    float fadeTime = 2.0f;
-    // fades in from whatever color the image is at
-    private IEnumerator fade(bool fadein) {
-        if (!fadein) {
-            overlay.SetActive(true);
-        }
-        float t = fadeTime;
-        while (t > 0.0f) {
-            Color c = fadeImage.color;
-            if (fadein) {
-                c.a = t / fadeTime;
-            } else {
-                c.a = 1.0f - t / fadeTime;
-            }
-            fadeImage.color = c;
-            t -= Time.deltaTime;
-            yield return null;
-        }
-        // reset fade variables back to defaults
-        fadeImage.color = Color.black;
-        fadeTime = 2.0f;
-        if (fadein) {
-            overlay.SetActive(false);
-        }
     }
 
     // Update is called once per frame
     void Update() {
-        if (spawner.activeEnemies <= 0 && !betweenLevels && loadedSpawner) {
-            betweenLevels = true;
+        if (loading) {
+            return;
+        }
+
+        if (spawner.enemies <= 0) {
+            loading = true;
             StartCoroutine(loadLevelSequence());
         }
 
-        if (!betweenLevels && Input.GetKeyDown(KeyCode.Escape)) {
-            betweenLevels = true;
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            loading = true;
             StartCoroutine(quitToMenu());
         }
     }
 
-    private void spawnGuys() {
-        float levelf = (float)level;
-        int number = 10 + (level - 1) * 5;
+    private float[] spawnGrowth = { 0.01f, 0.04f, 0.05f, 0.03f };
+    private float[] spawnMax = { 0.1f, 0.2f, 0.15f, 0.2f };
+
+    private void loadSpawner() {
+        float levelf = level;
+        int number = 10 + (level - 1) * 3;
+        spawner.spawnInterval = 1.5f - levelf * 0.02f;
+
+        //int number = 100;
+        //spawner.spawnInterval = 0.2f;
 
         for (int i = 0; i < number; i++) {
-            //float rnd = Random.value;
-            //if (rnd < Mathf.Min(levelf / 90, 0.5f)) {
-            //    spawner.BuildEnemy(EnemyType.ORC);
-            //} else if (rnd < Mathf.Min(levelf / 30, 0.6f)) {
-            //    spawner.BuildEnemy(EnemyType.MAGE);
-            //} else if (rnd < Mathf.Min(levelf / 50, 0.7f)) {
-            //    spawner.BuildEnemy(EnemyType.CROSSBOW);
-            //} else if (rnd < Mathf.Min(levelf / 90, 0.8f)) {
-            //    spawner.BuildEnemy(EnemyType.RANGER);
-            //} else {
-            //    spawner.BuildEnemy(EnemyType.SKELETON);
-            //}
-
             float rnd = Random.value;
 
-            float chance = Mathf.Min(levelf * 0.02f, 0.1f);
-            if (chance > rnd) {
-                spawner.BuildEnemy(EnemyType.ORC);
-                continue;
+            float bas = 0.0f;
+            for (int j = 0; j < 5; j++) {
+                if(j == 4) {
+                    spawner.BuildEnemy(EnemyType.SKELETON);
+                    break;
+                }
+                float chance = Mathf.Min(levelf * spawnGrowth[j], spawnMax[j]);
+                if (chance + bas > rnd) {
+                    switch (j) {
+                        case 0:
+                            spawner.BuildEnemy(EnemyType.ORC);
+                            break;
+                        case 1:
+                            spawner.BuildEnemy(EnemyType.MAGE);
+                            break;
+                        case 2:
+                            spawner.BuildEnemy(EnemyType.RANGER);
+                            break;
+                        case 3:
+                            spawner.BuildEnemy(EnemyType.CROSSBOW);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                }
+                bas += chance;
             }
-            chance += Mathf.Min(levelf * 0.04f, 0.2f);
-            if (chance > rnd) {
-                spawner.BuildEnemy(EnemyType.MAGE);
-                continue;
-            }
-            chance += Mathf.Min(levelf * 0.05f, 0.2f);
-            if (chance > rnd) {
-                spawner.BuildEnemy(EnemyType.RANGER);
-                continue;
-            }
-            chance += Mathf.Min(levelf * 0.02f, 0.2f);
-            if (chance > rnd) {
-                spawner.BuildEnemy(EnemyType.CROSSBOW);
-                continue;
-            }
-            spawner.BuildEnemy(EnemyType.SKELETON);
-
         }
-
-        loadedSpawner = true;
 
     }
 
@@ -130,10 +103,10 @@ public class Game : MonoBehaviour {
         player.freezeUpdate = true;
 
         frontInd.enabled = true;
-        frontInd.text = "Level " + level + " defeated!";
-        frontInd.color = Color.red;
         backInd.enabled = true;
-        backInd.text = "Level " + level + " defeated!";
+        frontInd.text = "Level " + level + " Defeated!";
+        backInd.text = "Level " + level + " Defeated!";
+        frontInd.color = Color.green;
         backInd.color = Color.black;
         // play sound or something?
 
@@ -143,7 +116,9 @@ public class Game : MonoBehaviour {
         backInd.enabled = false;
         player.setHealthBar(false);
 
-        if (level + 1 >= 10) {
+        // if just beat level 16 then you win
+        // 16 is the first level with all stats unlocked
+        if (level > 15) {
             SceneManager.LoadScene(2);
             yield break;
         }
@@ -157,81 +132,94 @@ public class Game : MonoBehaviour {
 
         // next level!
         level++;
-        frontInd.enabled = true;
-        frontInd.text = "Level " + level;
-        frontInd.color = Color.white;
-        backInd.enabled = true;
-        backInd.text = "Level " + level;
-        StartCoroutine(fadeOutText(2.0f, 3.0f));
 
         player.setHealthBar(true);
         player.reset();
         player.freezeUpdate = false;
-        betweenLevels = false;
-        spawnGuys();
+
+        yield return startSequence();
     }
 
     public void restartLevel() {
-        if (betweenLevels) {
+        if (loading) {
             return;
         }
-        betweenLevels = true;
-        StartCoroutine(restartSequence());
+        loading = true;
+        StartCoroutine(deathSequence());
     }
 
-    private IEnumerator restartSequence() {
+    private IEnumerator deathSequence() {
         player.freezeUpdate = true;
 
         frontInd.enabled = true;
-        frontInd.text = "A GLORIOUS DEATH!";
-        frontInd.color = Color.red;
         backInd.enabled = true;
+        frontInd.text = "A GLORIOUS DEATH!";
         backInd.text = "A GLORIOUS DEATH!";
+        frontInd.color = Color.red;
         backInd.color = Color.black;
+        StartCoroutine(fadeOutText(2.0f, 1.0f));
+        spawner.destroyHealthbars();
 
-        yield return new WaitForSeconds(1.0f);
-        yield return fade(false);
+        yield return fade(false, 3.0f);
         frontInd.enabled = false;
         backInd.enabled = false;
-        yield return new WaitForSeconds(1.0f);
         spawner.killAll();
-        shooter.destroyAll();
+        shooter.returnAll();
+        yield return new WaitForSeconds(1.0f);
+
         player.reset();
         player.freezeUpdate = false;
-        frontInd.enabled = true;
-        frontInd.text = "Level " + level;
-        frontInd.color = Color.white;
-        backInd.enabled = true;
-        backInd.text = "Level " + level;
-        yield return fade(true);
 
-        StartCoroutine(fadeOutText(0.1f, 2.0f));
-
-        betweenLevels = false;
-
-        spawnGuys();
+        yield return startSequence();
     }
 
-    // played once at game start
+    // loads level
     private IEnumerator startSequence() {
         frontInd.enabled = true;
-        frontInd.text = "Level " + level;
-        frontInd.color = Color.white;
         backInd.enabled = true;
+        frontInd.text = "Level " + level;
         backInd.text = "Level " + level;
-        yield return fade(true);
-        StartCoroutine(fadeOutText(0.0f, 2.0f));
-        spawnGuys();
-        betweenLevels = false;
+        frontInd.color = Color.white;
+        backInd.color = Color.black;
+        yield return fade(true, 1.0f);
+        StartCoroutine(fadeOutText(1.0f, 2.0f));
+        loadSpawner();
+        loading = false;
+    }
+
+    // fades in from whatever color the image is at
+    private IEnumerator fade(bool fadein, float time) {
+        if (!fadein) {
+            overlay.SetActive(true);
+        }
+        float t = time;
+        while (t > 0.0f) {
+            Color c = fadeImage.color;
+            if (fadein) {
+                c.a = t / time;
+            } else {
+                c.a = 1.0f - t / time;
+            }
+            fadeImage.color = c;
+            t -= Time.deltaTime;
+            yield return null;
+        }
+        // reset fade variables back to defaults
+        fadeImage.color = Color.black;
+        if (fadein) {
+            overlay.SetActive(false);
+        }
     }
 
     private IEnumerator fadeOutText(float delay, float speed) {
         yield return new WaitForSeconds(delay);
+        Color cf = frontInd.color;
+        Color cb = backInd.color;
         float t = speed;
         while (t > 0.0f) {
             t -= Time.deltaTime;
-            frontInd.color = new Color(1.0f, 1.0f, 1.0f, t / 2.0f);
-            backInd.color = new Color(0.0f, 0.0f, 0.0f, t / 2.0f);
+            frontInd.color = new Color(cf.r, cf.g, cf.b, t / speed);
+            backInd.color = new Color(cb.r, cb.g, cb.b, t / speed);
             yield return null;
         }
         frontInd.enabled = false;
@@ -239,7 +227,7 @@ public class Game : MonoBehaviour {
     }
 
     private IEnumerator quitToMenu() {
-        yield return fade(false);
+        yield return fade(false, 1.0f);
         SceneManager.LoadScene(0);
     }
 }

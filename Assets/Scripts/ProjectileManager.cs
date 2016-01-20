@@ -20,7 +20,7 @@ public class ProjectileManager : MonoBehaviour {
         player = GameObject.Find("Player").GetComponent<Player>();
     }
 
-    public void buildProjectile(PType type) {
+    private void buildProjectile(PType type) {
         GameObject x;
         switch (type) {
             case PType.ARROW:
@@ -61,7 +61,7 @@ public class ProjectileManager : MonoBehaviour {
         poolLookup[p.type].Add(p);
     }
 
-    public void destroyAll() {
+    public void returnAll() {
         int childs = transform.childCount;
         for (int i = childs - 1; i > 0; i--) {
             returnProjectile(transform.GetChild(i).GetComponent<Projectile>());

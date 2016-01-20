@@ -6,7 +6,8 @@ using System.Collections.Generic;
 public class SpawnManager : MonoBehaviour {
     public GameObject Skeleton, Ranger, Mage, CrossBow, Orc;
     //private PlayerStats player;
-    public int activeEnemies = 0;
+    public int enemies { get; private set; }
+    public float spawnInterval { get; set; }
     private List<GameObject> pool;
     private GameObject[] spawnLocations;
 
@@ -14,6 +15,8 @@ public class SpawnManager : MonoBehaviour {
         //player = GameObject.Find("Player").GetComponent<PlayerStats>();
         spawnLocations = GameObject.FindGameObjectsWithTag("SpawnPoint");
         pool = new List<GameObject>();
+        spawnInterval = 1.0f;
+        enemies = 0;
     }
 
     public void BuildEnemy(EnemyType type) {
@@ -44,7 +47,7 @@ public class SpawnManager : MonoBehaviour {
         x.gameObject.tag = Tags.Enemy;
         x.SetActive(false);
         pool.Add(x);
-        activeEnemies++;
+        enemies++;
     }
 
     float spawnTime = 0.0f;
@@ -53,7 +56,7 @@ public class SpawnManager : MonoBehaviour {
     void Update() {
         spawnTime -= Time.deltaTime;
         if (spawnTime < 0.0f) {
-            spawnTime = 1.25f;
+            spawnTime = spawnInterval;
             if (pool.Count > 0) {
                 int last = pool.Count - 1;
                 GameObject enemy = pool[last];
@@ -62,19 +65,26 @@ public class SpawnManager : MonoBehaviour {
                 enemy.SetActive(true);
                 enemy.GetComponent<EnemyBasicScript>().hp = 3;
 
-                int rng = Random.Range(0, spawnLocations.Length);
-                enemy.transform.position = spawnLocations[rng].transform.position;
+                Vector3 spawnPoint = spawnLocations[Random.Range(0, spawnLocations.Length)].transform.position;
+                Vector2 rnd = Random.insideUnitCircle * 5.0f;
+                spawnPoint.x += rnd.x;
+                spawnPoint.z += rnd.y;
+                spawnPoint.y = 0.01f;
+                enemy.transform.position = spawnPoint;
             }
         }
     }
 
-    public bool listEmpty() {
-        return pool.Count <= 0;
+    public void destroyHealthbars() {
+        pool.Clear();   // dont spawn anymore dudes either
+        for (int i = transform.childCount - 1; i >= 0; i--) {
+            transform.GetChild(i).GetComponent<EnemyBasicScript>().destroyHealthBars();
+        }
     }
 
     public void killAll() {
-        activeEnemies = 0;
-        while(pool.Count > 0) {
+        enemies = 0;
+        while (pool.Count > 0) {
             GameObject go = pool[pool.Count - 1];
             pool.RemoveAt(pool.Count - 1);
             Destroy(go);
@@ -85,12 +95,7 @@ public class SpawnManager : MonoBehaviour {
     }
 
     public void notifyDeath() {
-        activeEnemies--;
+        enemies--;
     }
 
-    //public void returnEnemy(GameObject deadEnemy) {
-
-    //    deadEnemy.gameObject.SetActive(false);
-    //    pool.Add(deadEnemy);
-    //}
 }

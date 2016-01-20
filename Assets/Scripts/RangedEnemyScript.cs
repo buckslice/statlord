@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class RangedEnemyScript : MonoBehaviour {
-    private float timeBetweenShot = 3.0f;
+    private float timeBetweenShot = 2.0f;
     private Transform player;
     private ProjectileManager projMan;
     private EnemyBasicScript ebs;
@@ -18,7 +18,7 @@ public class RangedEnemyScript : MonoBehaviour {
     void Update() {
         timeBetweenShot -= Time.deltaTime;
 
-        if ((timeBetweenShot <= 0.0f) && (!ebs.frozen)) {
+        if (timeBetweenShot <= 0.0f && !ebs.frozen) {
 
             switch (ebs.type) {
                 case EnemyType.RANGER:
@@ -34,7 +34,7 @@ public class RangedEnemyScript : MonoBehaviour {
                     break;
             }
 
-            timeBetweenShot = 3.0f;
+            timeBetweenShot = Random.Range(2.5f, 3.5f);
         }
     }
 

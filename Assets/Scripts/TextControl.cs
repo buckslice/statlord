@@ -15,7 +15,7 @@ public class TextControl : MonoBehaviour {
         fadeImage = overlay.GetComponent<RawImage>();
 
         loading = true;
-        StartCoroutine(fade(true));
+        StartCoroutine(fade(true, 1.0f));
     }
 
     void Update() {
@@ -24,7 +24,10 @@ public class TextControl : MonoBehaviour {
         }
     }
 
-    void OnMouseEnter() { 
+    void OnMouseOver() {
+        if (loading) {
+            return;
+        }
         mat.color = Color.red;
     }
 
@@ -41,23 +44,22 @@ public class TextControl : MonoBehaviour {
     }
 
     private IEnumerator fadeGo() {
-        yield return fade(false);
+        yield return fade(false, 1.0f);
         SceneManager.LoadScene(1);
     }
 
-    float fadeTime = 2.0f;
     // fades in from whatever color the image is at
-    private IEnumerator fade(bool fadein) {
+    private IEnumerator fade(bool fadein, float time) {
         if (!fadein) {
             overlay.SetActive(true);
         }
-        float t = fadeTime;
+        float t = time;
         while (t > 0.0f) {
             Color c = fadeImage.color;
             if (fadein) {
-                c.a = t / fadeTime;
+                c.a = t / time;
             } else {
-                c.a = 1.0f - t / fadeTime;
+                c.a = 1.0f - t / time;
             }
             fadeImage.color = c;
             t -= Time.deltaTime;
@@ -65,11 +67,9 @@ public class TextControl : MonoBehaviour {
         }
         // reset fade variables back to defaults
         fadeImage.color = Color.black;
-        fadeTime = 2.0f;
         if (fadein) {
             overlay.SetActive(false);
         }
-
         loading = false;
     }
 

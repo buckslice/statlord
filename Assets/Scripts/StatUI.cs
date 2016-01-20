@@ -16,8 +16,6 @@ public class StatUI : MonoBehaviour {
     public Button undoButton;
     public Button doneButton;
 
-    public bool debug = false;
-
     private bool lastVisible = false;
 
     private PlayerStats stats;
@@ -55,35 +53,58 @@ public class StatUI : MonoBehaviour {
         topPanel.AddComponent<Image>().color = new Color(0, 0, 0, 0.5f);
 
         GameObject titlePanel = new GameObject("title panel");
-        RectTransform ttpt = titlePanel.AddComponent<RectTransform>();
-        ttpt.SetParent(tpt, false);
-        ttpt.offsetMin = Vector2.zero;
-        ttpt.offsetMax = Vector2.zero;
-        ttpt.anchorMin = new Vector2(0.0f, 0.0f);
-        ttpt.anchorMax = new Vector2(0.75f, 1.0f);
-        Text titleText = titlePanel.AddComponent<Text>();
-        titleText.text = "UPGRADE! Points left:";
-        titleText.font = font;
-        //pointsLeftText.fontSize = 40;
-        titleText.resizeTextForBestFit = true;
-        titleText.resizeTextMinSize = 10;
-        titleText.resizeTextMaxSize = 100;
-        titleText.color = Color.yellow;
-        titleText.alignment = TextAnchor.MiddleCenter;
+        RectTransform rt = titlePanel.AddComponent<RectTransform>();
+        rt.SetParent(tpt, false);
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        rt.anchorMin = new Vector2(0.05f, 0.0f);
+        rt.anchorMax = new Vector2(0.95f, 1.0f);
+        Text t1 = titlePanel.AddComponent<Text>();
+        t1.text = "UPGRADE STATS!";
+        t1.font = font;
+        t1.resizeTextForBestFit = true;
+        t1.resizeTextMinSize = 10;
+        t1.resizeTextMaxSize = 200;
+        t1.color = Color.yellow;
+        t1.alignment = TextAnchor.MiddleCenter;
 
-        GameObject pointPanel = new GameObject("point panel");
-        RectTransform ppt = pointPanel.AddComponent<RectTransform>();
-        ppt.SetParent(tpt, false);
-        ppt.offsetMin = Vector2.zero;
-        ppt.offsetMax = Vector2.zero;
-        ppt.anchorMin = new Vector2(0.75f, 0.0f);
-        ppt.anchorMax = new Vector2(1.0f, 1.0f);
-        pointsLeftText = pointPanel.AddComponent<Text>();
+        GameObject sidePanel = new GameObject("side panel");
+        rt = sidePanel.AddComponent<RectTransform>();
+        rt.SetParent(mpt, false);
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        rt.anchorMin = new Vector2(0.8f, 0.2f);
+        rt.anchorMax = new Vector2(1.0f, 0.8f);
+        sidePanel.AddComponent<Image>().color = new Color(0, 0, 0, 0.5f);
+
+        GameObject pointsPanel = new GameObject("point title panel");
+        rt = pointsPanel.AddComponent<RectTransform>();
+        rt.SetParent(mpt, false);
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        rt.anchorMin = new Vector2(0.8f, 0.65f);
+        rt.anchorMax = new Vector2(1.0f, 0.8f);
+        t1 = pointsPanel.AddComponent<Text>();
+        t1.text = "points";
+        t1.font = font;
+        t1.resizeTextForBestFit = true;
+        t1.resizeTextMinSize = 10;
+        t1.resizeTextMaxSize = 200;
+        t1.color = Color.magenta;
+        t1.alignment = TextAnchor.MiddleCenter;
+
+        pointsPanel = new GameObject("point value panel");
+        rt = pointsPanel.AddComponent<RectTransform>();
+        rt.SetParent(mpt, false);
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        rt.anchorMin = new Vector2(0.8f, 0.2f);
+        rt.anchorMax = new Vector2(1.0f, 0.8f);
+        pointsLeftText = pointsPanel.AddComponent<Text>();
         pointsLeftText.font = font;
-        //pointsLeftText.fontSize = 40;
         pointsLeftText.resizeTextForBestFit = true;
         pointsLeftText.resizeTextMinSize = 10;
-        pointsLeftText.resizeTextMaxSize = 200;
+        pointsLeftText.resizeTextMaxSize = 300;
         pointsLeftText.color = Color.magenta;
         pointsLeftText.alignment = TextAnchor.MiddleCenter;
 
@@ -105,8 +126,8 @@ public class StatUI : MonoBehaviour {
         dbt.SetParent(mpt, false);
         dbt.offsetMin = Vector2.zero;
         dbt.offsetMax = Vector2.zero;
-        dbt.anchorMin = new Vector2(0.8f, 0.6f);
-        dbt.anchorMax = new Vector2(1.0f, 0.8f);
+        dbt.anchorMin = new Vector2(0.8f, 0.0f);
+        dbt.anchorMax = new Vector2(1.0f, 0.2f);
 
         doneButton = buildButton(doneButtonGO, "DONE", Color.green);
         ba = new UnityAction(() => visible = false);
@@ -139,12 +160,9 @@ public class StatUI : MonoBehaviour {
     }
 
     public void buildUI(int level) {
-        if (debug) {
-            pointsLeft = 99999;
-            level = 30;
-        } else {
-            pointsLeft = level;
-        }
+        // more linear than one for each level
+        // should make the early game easier and late game harder
+        pointsLeft = 3 + (level / 2);
 
         visible = true;
         actions.Clear();
@@ -152,15 +170,6 @@ public class StatUI : MonoBehaviour {
         buttons.Clear();
 
         int len = Mathf.Min(stats.numStats(), level + 3);
-
-        int cols = 1;
-        if (len < 8) {
-            cols = 1;
-        } else if (len < 16) {
-            cols = 2;
-        } else {
-            cols = 3;
-        }
 
         for (int i = 0; i < len; ++i) {
             Stat stat = stats.get(i);
@@ -179,25 +188,10 @@ public class StatUI : MonoBehaviour {
             //statPanel.AddComponent<Image>().color = Random.ColorHSV(0.6f, 0.7f, 1, 1, .1f, .2f, .5f, .5f);
             Image img = statPanel.AddComponent<Image>();
 
-            if (i % 2 == 0) {
-                img.color = new Color(0.0f, 0.0f, 0.4f, 0.75f);
-            } else {
-                img.color = new Color(0.0f, 0.2f, 0.4f, 0.75f);
-            }
-
-
-            //float fi = i;
-            float row = i / cols;
-            float col = i % cols;
-
-            float wid = 0.8f / cols;
-            int newl = len / cols;
-            if (len % 2 == 1) {
-                newl++;
-            }
-
-            spt.anchorMin = new Vector2(col * wid, 1.0f - (row + 1) / newl);
-            spt.anchorMax = new Vector2((col + 1) * wid, 1.0f - row / newl);
+            img.color = new Color(0.0f, (i % 2 == 0 ? 0.0f : 0.2f), 0.4f, 0.75f);
+            float fi = i;
+            spt.anchorMin = new Vector2(0.0f, 1.0f - (fi + 1) / len);
+            spt.anchorMax = new Vector2(0.8f, 1.0f - fi / len);
 
             // add name of stat
             GameObject namePanel = new GameObject("name");
@@ -215,7 +209,7 @@ public class StatUI : MonoBehaviour {
             //text.fontSize = 40;
             text.resizeTextForBestFit = true;
             text.resizeTextMinSize = 10;
-            text.resizeTextMaxSize = 50;
+            text.resizeTextMaxSize = 80;
             //text.horizontalOverflow = HorizontalWrapMode.Overflow;
 
             // add current stat value
@@ -234,7 +228,7 @@ public class StatUI : MonoBehaviour {
             text.alignment = TextAnchor.MiddleCenter;
             text.resizeTextForBestFit = true;
             text.resizeTextMinSize = 10;
-            text.resizeTextMaxSize = 50;
+            text.resizeTextMaxSize = 100;
             valueTable[stat.name] = text;
 
             // show increment and also make it a button???
@@ -259,8 +253,9 @@ public class StatUI : MonoBehaviour {
             buttons.Add(button);
             statPanels.Add(spt);
 
-
         }
+
+        checkButtonsInteractible();
     }
 
     private Button buildButton(GameObject parent, string text, Color color) {

@@ -44,24 +44,31 @@ public class Projectile : MonoBehaviour {
         }
         dying = false;
         freeze = false;
-        life = 3.0f;
+        life = 4.0f;
         pierce = 0.0f;
+        rb.isKinematic = false;
         rb.velocity = Vector3.zero;
     }
 
     void OnTriggerEnter(Collider col) {
-        if (type == PType.ARROW && gameObject.tag == Tags.PlayerProjectile && col.gameObject.tag == Tags.Enemy) {
+        if (gameObject.tag == Tags.PlayerProjectile && col.gameObject.tag == Tags.Enemy) {
             if (freeze) {
                 StartCoroutine(Freeze(col));
             }
-            if (gameObject.tag == Tags.PlayerProjectile) {
-                manager.player.projectileHit(damage);
+            manager.player.projectileHit(damage);
+            if (type == PType.ARROW) {
+                if (pierce >= 1.0f) {
+                    pierce -= 1.0f;
+                } else if (pierce > 0.0f) {
+                    if (Random.value > pierce) {
+                        returnSelf();
+                    } else {
+                        pierce -= 1.0f;
+                    }
+                } else {
+                    returnSelf();
+                }
             }
-            returnSelf();
-        }
-
-        if (col.gameObject.tag == Tags.Player) {
-            returnSelf();
         }
 
         if (col.gameObject.tag == Tags.Wall) {
@@ -95,6 +102,7 @@ public class Projectile : MonoBehaviour {
         mesh.SetActive(false);
         psem.enabled = false;
         col.enabled = false;
+        rb.isKinematic = true;
         if (lightComp) {
             lightComp.enabled = false;
         }
@@ -105,12 +113,7 @@ public class Projectile : MonoBehaviour {
 
     }
 
-    private void returnSelf() {
-        if (pierce >= 1.0f) {
-            pierce -= 1.0f;
-            return;
-        }
-
+    public void returnSelf() {
         if (dying) {
             return;
         }

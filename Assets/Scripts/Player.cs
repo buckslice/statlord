@@ -18,8 +18,7 @@ public class Player : MonoBehaviour {
     private float timeSinceAttack = 0.0f;
     public float curHealth = 1.0f;
 
-    // Use this for initialization
-    void Start() {
+    void Awake() {
         tform = transform;
         myRigidbody = GetComponent<Rigidbody>();
         stats = GetComponent<PlayerStats>();
@@ -50,7 +49,7 @@ public class Player : MonoBehaviour {
     private void updateHealth() {
 
         float targetX = curHealth / stats.get(Stats.health).value;
-        xbar = Mathf.Lerp(xbar, targetX, Time.deltaTime * 2.0f);
+        xbar = Mathf.Lerp(xbar, targetX, Time.deltaTime * 8.0f);
 
         healthBar.rectTransform.offsetMin = Vector2.zero;
         healthBar.rectTransform.offsetMax = Vector2.zero;
@@ -107,20 +106,8 @@ public class Player : MonoBehaviour {
         if (Input.GetMouseButton(0) && timeSinceAttack < 0.0f) {
             timeSinceAttack = stats.get(Stats.attackRate).value;
 
-            if (stats.get(Stats.multishot).value >= 2.0f) {
-                StartCoroutine(stats.multiShot());
-            } else {
-                if (Random.value < stats.get(Stats.fireballChance).value) {
-                    stats.fireProjectile(PType.FIREBALL);
-                } else {
-                    stats.fireProjectile(PType.ARROW);
-                }
-            }
+            StartCoroutine(stats.multiShot());
         }
-        //else if (Input.GetMouseButton(1) && timeSinceAttack < 0.0f) {
-        //    timeSinceAttack = stats.get(Stats.attackRate).value;
-        //    stats.fireProjectile(PType.FIREBALL);
-        //}
 
         curHealth += stats.get(Stats.healthpersec).value * Time.deltaTime;
         curHealth = Mathf.Clamp(curHealth, 0.0f, stats.get(Stats.health).value);
@@ -153,8 +140,9 @@ public class Player : MonoBehaviour {
 
     void OnTriggerEnter(Collider c) {
         if (c.gameObject.tag == Tags.EnemyProjectile) {
-            float damage = c.gameObject.GetComponent<Projectile>().damage;
-            applyDamage(damage);
+            Projectile p = c.GetComponent<Projectile>();
+            applyDamage(p.damage);
+            p.returnSelf();
         }
     }
 
