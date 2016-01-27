@@ -37,7 +37,7 @@ public class Player : MonoBehaviour {
         backBar.rectTransform.SetParent(canvas.transform, false);
         backBar.color = new Color(0.0f, 0.0f, 0.0f);
 
-        Application.runInBackground = true;
+        Application.runInBackground = false;
     }
 
     public void setHealthBar(bool visible) {
